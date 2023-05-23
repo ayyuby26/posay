@@ -1,0 +1,3 @@
+[submodule "posay"]
+	path = posay
+	url = https://github.com/ayyuby26/posay.git
