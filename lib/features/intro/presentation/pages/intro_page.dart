@@ -1,10 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:posay/color.dart';
 import 'package:posay/features/intro/presentation/widgets/content.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/util.dart';
 import 'package:flutter/material.dart';
 
-// import 'generated/locale_keys.g.dart';
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
 
@@ -16,20 +15,22 @@ class _IntroScreenState extends State<IntroScreen> {
   final pageController = PageController();
   int currPage = 0;
 
-  final listScreen = [
-    const Content(
-      icon: Icons.storefront,
-      desc: "intro.screen1",
-    ),
-    const Content(
-      icon: Icons.calculate_outlined,
-      desc: "intro.screen2",
-    ),
-    const Content(
-      icon: Icons.analytics_outlined,
-      desc: "intro.screen3",
-    ),
-  ];
+  List<Content> data(BuildContext context) { 
+    return [
+      Content(
+        icon: Icons.storefront,
+        desc: context.tr.introScreen1,
+      ),
+      Content(
+        icon: Icons.calculate_outlined,
+        desc: context.tr.introScreen2,
+      ),
+      Content(
+        icon: Icons.analytics_outlined,
+        desc: context.tr.introScreen3,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +39,14 @@ class _IntroScreenState extends State<IntroScreen> {
         children: [
           Expanded(
             child: PageView(
-              onPageChanged: (value) => setState(() => currPage = value),
+              onPageChanged: (val) => setState(() => currPage = val),
               controller: pageController,
-              children: listScreen,
+              children: data(context),
             ),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: listScreen.asMap().entries.map((e) => dot(e)).toList(),
+            children: data(context).asMap().entries.map((e) => dot(e)).toList(),
           )
         ],
       ),
@@ -55,7 +56,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Widget dot(MapEntry<int, Content> e) {
     return Container(
-      margin: e.key != listScreen.length - 1
+      margin: e.key != data(context).length - 1
           ? const EdgeInsets.only(right: 8)
           : null,
       width: 8,
@@ -71,23 +72,26 @@ class _IntroScreenState extends State<IntroScreen> {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: TextButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          style: TextButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
-        ),
-        onPressed: () {
-          pageController.animateToPage(
-            pageController.page!.toInt() + 1,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
-        },
-        child: Text(
-          (listScreen.length - 1) == currPage ? "finish" : "next",
-          style: const TextStyle(fontFamily: 'Lato'),
-        ).tr(),
-      ),
+          onPressed: () {
+            pageController.animateToPage(
+              pageController.page!.toInt() + 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
+          },
+          child: Text(
+            (data(context).length - 1) == currPage
+                ? context.tr.finish
+                : context.tr.next,
+            style: const TextStyle(fontFamily: 'Lato'),
+          )
+          // .tr(),
+          ),
     );
   }
 }

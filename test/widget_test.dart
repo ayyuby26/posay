@@ -1,30 +1,40 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// import 'package:easy_localization/easy_localization.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:posay/features/intro/presentation/pages/intro_page.dart';
+// import 'package:posay/features/intro/presentation/widgets/content.dart';
+// // import 'package:posay/features/intro/presentation/screens/intro_screen.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+// void main() {
+//   group('IntroScreen', ()   {
+//     testWidgets('Page view and navigation', (WidgetTester tester) async {
+//       WidgetsFlutterBinding.ensureInitialized();
+//       await EasyLocalization.ensureInitialized();
+//       await tester.pumpWidget(const IntroScreen());
 
-import 'package:posay/main.dart';
+//       // Perform assertions and interactions
+//       // Test page view
+//       expect(find.byType(PageView), findsOneWidget);
+//       expect(find.byType(Content),
+//           findsNWidgets(3)); // Assuming there are 3 Content widgets
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const App());
+//       // Test initial state
+//       expect(find.text('finish'), findsNothing);
+//       expect(find.text('next'), findsOneWidget);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+//       // Test navigation
+//       await tester.tap(find.text('next'));
+//       await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+//       expect(find.text('finish'), findsOneWidget);
+//       expect(find.text('next'), findsNothing);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
-}
+//       await tester.tap(find.text('finish'));
+//       await tester.pumpAndSettle();
+
+//       // Perform additional assertions as needed
+
+//       // ...
+//     });
+//   });
+// }

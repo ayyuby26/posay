@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+// import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:posay/color.dart';
 
@@ -40,7 +40,8 @@ class Content extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(desc, style: const TextStyle(color: color4)).tr(),
+              Text(desc, style: const TextStyle(color: color4))
+              // .tr(),
             ],
           ),
         ],

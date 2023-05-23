@@ -1,22 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:posay/color.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:posay/core/setup_run.dart';
+import 'package:posay/core/theme_app.dart';
+import 'package:posay/cubit/global_cubit.dart';
 import 'core/route/go_router.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-
-  runApp(
-    EasyLocalization(
-      path: 'assets/translations',
-      supportedLocales: const [
-        Locale('id', 'ID'),
-        Locale('en', 'US'),
-      ],
-      child: const App(),
-    ),
-  );
+  await SetUp.base();
+  runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -24,40 +16,34 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.setLocale(const Locale('en', 'US'));
-    return MaterialApp.router(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      routerConfig: router,
-      theme: ThemeData(
-        fontFamily: 'Lato',
-        colorScheme: const ColorScheme.light(primary: color2),
-        useMaterial3: true,
-        scaffoldBackgroundColor: color1,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.red,
-          surfaceTintColor: Colors.blue,
-        ),
+    return BlocProvider<GlobalCubit>(
+      create: (context) => GlobalCubit(),
+      child: BlocBuilder<GlobalCubit, GlobalState>(
+        builder: (context, state) {
+          final status = state;
+          if (status is GlobalInitial) {
+            return MaterialApp.router(
+              locale: status.locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              routerConfig: router,
+              theme: ThemeApp.base,
+            );
+          }
+          return const SizedBox();
+        },
       ),
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class NotifyBro extends ChangeNotifier {
+  Locale _locales = AppLocalizations.supportedLocales[0];
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Locale get getLocale => _locales;
 
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text("data"),
-      ),
-    );
+  void changeLocale() {
+    final index = _locales.countryCode == 'en' ? 1 : 0;
+    _locales = AppLocalizations.supportedLocales[index];
   }
 }
