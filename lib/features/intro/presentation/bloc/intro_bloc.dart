@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:posay/core/app_errors.dart';
 import 'package:posay/features/intro/data/models/intro_content.dart';
 import '../../data/repositories/intro_repository.dart';
 
