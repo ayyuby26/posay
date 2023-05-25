@@ -7,7 +7,7 @@ abstract class IntroEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// DESCRIPTION
+// LOAD DESCRIPTION INTRO
 class LoadIntroContents extends IntroEvent {
   final BuildContext context;
 
@@ -17,7 +17,7 @@ class LoadIntroContents extends IntroEvent {
   List<Object> get props => [context];
 }
 
-// INDEX
+// CHANGE INDEX
 class ChangeIndexIntro extends IntroEvent {
   final int index;
 

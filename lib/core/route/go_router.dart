@@ -7,7 +7,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const IntroScreen(),
+      builder: (context, state) => const IntroPage(),
     ),
     GoRoute(
       path: '/auth',

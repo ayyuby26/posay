@@ -20,30 +20,38 @@ class IntroContentWidget extends StatelessWidget {
           Icon(icon, size: 140, color: color2),
           Column(
             children: [
-              const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "POS AY",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: color3,
-                    ),
-                  ),
-                  Text(
-                    "yuby",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: color4,
-                    ),
-                  ),
-                ],
-              ),
-              Text(desc, style: const TextStyle(color: color4)),
+              _appBrand,
+              _introDescription,
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget get _introDescription {
+    return Text(desc, style: const TextStyle(color: color4));
+  }
+
+  Widget get _appBrand {
+    return const Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          "POS AY",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: color3,
+          ),
+        ),
+        Text(
+          "yuby",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: color4,
+          ),
+        ),
+      ],
     );
   }
 }

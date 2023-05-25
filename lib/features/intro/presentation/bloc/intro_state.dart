@@ -2,35 +2,25 @@ part of 'intro_bloc.dart';
 
 abstract class IntroState extends Equatable {
   final List<IntroContent> introContents;
-  const IntroState({this.introContents = const []});
+  final int index;
+  const IntroState({this.introContents = const [], this.index = 0});
+
+  @override
+  List<Object> get props => [];
+}
+
+// LOAD DESCRIPTION INTRO
+class IntroLoaded extends IntroState {
+  const IntroLoaded({super.introContents});
 
   @override
   List<Object> get props => [introContents];
 }
 
-// introContents
-class IntroLoaded extends IntroState {
-  const IntroLoaded({required super.introContents});
-
-  @override
-  List<Object> get props => [super.introContents];
-}
-
-// INDEX
+// CHANGE INDEX
 class IntroIndexChanged extends IntroState {
-  final int index;
-
-  const IntroIndexChanged({required super.introContents, required this.index});
+  const IntroIndexChanged({required super.introContents, required super.index});
 
   @override
-  List<Object> get props => [super.introContents, index];
-}
-
-class IntroError extends IntroState {
-  final AppError error;
-
-  const IntroError({required this.error});
-
-  @override
-  List<Object> get props => [error];
+  List<Object> get props => [introContents, index];
 }

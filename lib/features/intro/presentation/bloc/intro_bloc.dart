@@ -11,11 +11,8 @@ part 'intro_event.dart';
 part 'intro_state.dart';
 
 class IntroBloc extends Bloc<IntroEvent, IntroState> {
-
-
   final IntroRepository introRepository;
-  IntroBloc({required this.introRepository})
-      : super(const IntroLoaded(introContents: [])) {
+  IntroBloc({required this.introRepository}) : super(const IntroLoaded()) {
     on<LoadIntroContents>(_loadIntroContents);
     on<ChangeIndexIntro>(_changeIndexIntro);
   }
@@ -24,19 +21,18 @@ class IntroBloc extends Bloc<IntroEvent, IntroState> {
     LoadIntroContents event,
     Emitter<IntroState> emit,
   ) async {
-    try {
-      final List<IntroContent> introContents =
-          introRepository.getIntroContents(event.context);
-      emit(IntroLoaded(introContents: introContents));
-    } catch (e) {
-      emit(IntroError(error: AppError(e.toString())));
-    }
+    final List<IntroContent> introContents =
+        introRepository.getIntroContents(event.context);
+    emit(IntroLoaded(introContents: introContents));
   }
 
   FutureOr<void> _changeIndexIntro(
     ChangeIndexIntro event,
     Emitter<IntroState> emit,
   ) {
-    emit(IntroIndexChanged(index: event.index, introContents: state.introContents));
+    emit(IntroIndexChanged(
+      index: event.index,
+      introContents: state.introContents,
+    ));
   }
 }
