@@ -1,16 +1,15 @@
-// import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:posay/color.dart';
 
-class Content extends StatelessWidget {
+class IntroContentWidget extends StatelessWidget {
   final IconData icon;
   final String desc;
 
-  const Content({
-    super.key,
+  const IntroContentWidget({
+    Key? key,
     required this.icon,
     required this.desc,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +39,7 @@ class Content extends StatelessWidget {
                   ),
                 ],
               ),
-              Text(desc, style: const TextStyle(color: color4))
-              // .tr(),
+              Text(desc, style: const TextStyle(color: color4)),
             ],
           ),
         ],

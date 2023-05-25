@@ -23,6 +23,7 @@ class App extends StatelessWidget {
           final status = state;
           if (status is GlobalInitial) {
             return MaterialApp.router(
+              showPerformanceOverlay: true,
               locale: status.locale,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
@@ -36,14 +37,4 @@ class App extends StatelessWidget {
     );
   }
 }
-
-class NotifyBro extends ChangeNotifier {
-  Locale _locales = AppLocalizations.supportedLocales[0];
-
-  Locale get getLocale => _locales;
-
-  void changeLocale() {
-    final index = _locales.countryCode == 'en' ? 1 : 0;
-    _locales = AppLocalizations.supportedLocales[index];
-  }
-}
+ 

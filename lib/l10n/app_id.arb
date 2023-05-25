@@ -1,7 +1,7 @@
 {
-    "introScreen1": "Memudahkan anda dalam berjualan",
-    "introScreen2": "Memudahkan anda menghitung penghasilan",
-    "introScreen3": "Memudahkan anda menganalisa penjualan",
+    "introDesc1": "Memudahkan anda dalam berjualan",
+    "introDesc2": "Memudahkan anda menghitung penghasilan",
+    "introDesc3": "Memudahkan anda menganalisa penjualan",
     "next": "Selanjutnya",
     "finish": "Selesai"
 }
