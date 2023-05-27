@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posay/features/language/domain/repositories/language_repository.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
 import 'package:posay/injection.dart' as di;
 
@@ -25,7 +26,11 @@ class _LanguageSwitchState extends State<LanguageSwitch> {
               BlocBuilder<LanguageBloc, LanguageState>(
                 builder: (context, state) {
                   return Switch(
-                      value: state.locale == di.locator<List<Locale>>().first,
+                      value: state.locale.languageCode ==
+                          di
+                              .locator<LanguageRepository>()
+                              .defaultLanguage()
+                              .code,
                       onChanged: (_) {
                         context
                             .read<LanguageBloc>()

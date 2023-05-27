@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/local_storage/object_box.dart';
 import 'package:posay/features/intro/data/datasources/intro_contents_data_source.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:posay/features/language/data/datasources/language_data_source.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
 import 'package:posay/features/language/data/repositories/language_repository_impl.dart';
@@ -37,13 +36,8 @@ void init() {
   locator.registerLazySingleton<IntroContentsDataSource>(
       () => IntroContentsDataSourceImpl());
   locator.registerLazySingleton<LanguageDataSource>(() =>
-      LanguageDataSourceImpl(
-          supportedLocales: locator(), objectBoxLanguage: locator()));
-
-  // language
-  locator.registerLazySingleton<List<Locale>>(
-      () => AppLocalizations.supportedLocales);
-
+      LanguageDataSourceImpl(  objectBoxLanguage: locator()));
+ 
   // helper
   // locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 

@@ -17,9 +17,7 @@ class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return di.locator<IntroBloc>()
-            // ..add(LoadIntroContents(appLocalizations: context.tr))
-            ;
+        return di.locator<IntroBloc>();
       },
       child: const _IntroPage(),
     );

@@ -3,6 +3,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
 import 'package:posay/features/language/domain/entities/language.dart';
 import 'package:posay/core/failure.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 abstract class LanguageDataSource {
   (Failure, Language) getSavedLanguages();
@@ -12,17 +13,15 @@ abstract class LanguageDataSource {
 }
 
 class LanguageDataSourceImpl extends LanguageDataSource {
-  List<Locale> supportedLocales;
   Box<LanguageModel> objectBoxLanguage;
 
   LanguageDataSourceImpl({
-    required this.supportedLocales,
     required this.objectBoxLanguage,
   });
 
   @override
   Language getDefaultLanguage() {
-    final Locale locale = supportedLocales.first;
+    final Locale locale = AppLocalizations.supportedLocales.first;
     return Language(
       code: locale.languageCode,
       name: locale.languageCode.toUpperCase(),
@@ -31,7 +30,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   List<Language> getLanguages() {
-    return supportedLocales
+    return AppLocalizations.supportedLocales
         .map((e) => Language(
               code: e.languageCode,
               name: e.languageCode.toUpperCase(),
