@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/color.dart';
+import 'package:posay/features/intro/data/models/intro_content.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
@@ -35,7 +36,7 @@ class _IntroPage extends StatefulWidget {
 class _IntroPageState extends State<_IntroPage> {
   // late IntroBloc _intro;
   final _pageController = PageController();
-  final contents = di.locator<IntroRepository>();
+  final _introRepository = di.locator<IntroRepository>();
 
   @override
   void initState() {
@@ -51,11 +52,12 @@ class _IntroPageState extends State<_IntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    final contents = _introRepository.getIntroContents(context.tr);
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
-            Column(children: [buildIntro, buildIndicator]),
+            Column(children: [buildIntro(contents), buildIndicator(contents)]),
             const Align(
               alignment: Alignment.topRight,
               child: LanguageSwitch(),
@@ -67,21 +69,16 @@ class _IntroPageState extends State<_IntroPage> {
     );
   }
 
-  Widget get buildIntro {
+  Widget buildIntro(List<IntroContent> contents) {
     return Expanded(
       child: BlocBuilder<IntroBloc, IntroState>(
         builder: (context, state) {
           return PageView(
             controller: _pageController,
             onPageChanged: (index) {
-              context
-                  .read<IntroBloc>()
-                  .
-                  // _intro.
-                  add(ChangeIndexIntro(index: index));
+              context.read<IntroBloc>().add(ChangeIndexIntro(index: index));
             },
             children: contents
-                .getIntroContents(context.tr)
                 .map((content) => IntroContentWidget(
                       icon: content.icon,
                       desc: content.desc,
@@ -93,26 +90,26 @@ class _IntroPageState extends State<_IntroPage> {
     );
   }
 
-  Widget get buildIndicator {
+  Widget buildIndicator(List<IntroContent> contents) {
     return BlocBuilder<IntroBloc, IntroState>(
       builder: (context, state) {
         return Row(
           mainAxisSize: MainAxisSize.min,
-          children: indicatorWidget(state),
+          children: indicatorWidget(state, contents.length),
         );
       },
     );
   }
 
-  List<Widget> indicatorWidget(IntroState state) {
-    return List.generate(contents.getIntroContents(context.tr).length,
-        (index) => dot(index, state));
+  List<Widget> indicatorWidget(IntroState state, int contentsLength) {
+    return List.generate(
+        contentsLength, (index) => dot(index, state, contentsLength));
   }
 
-  Widget dot(int index, IntroState state) {
-    final count = contents.getIntroContents(context.tr).length;
+  Widget dot(int index, IntroState state, int contentsLength) {
     return Container(
-      margin: index != count - 1 ? const EdgeInsets.only(right: 8) : null,
+      margin:
+          index != contentsLength - 1 ? const EdgeInsets.only(right: 8) : null,
       width: 8,
       height: 8,
       decoration: BoxDecoration(
