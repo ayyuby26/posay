@@ -8,14 +8,14 @@ abstract class IntroEvent extends Equatable {
 }
 
 // LOAD DESCRIPTION INTRO
-class LoadIntroContents extends IntroEvent {
-  final BuildContext context;
+// class LoadIntroContents extends IntroEvent {
+//   final AppLocalizations appLocalizations;
 
-  const LoadIntroContents({required this.context});
+//   const LoadIntroContents({required this.appLocalizations});
 
-  @override
-  List<Object> get props => [context];
-}
+//   @override
+//   List<Object> get props => [appLocalizations];
+// }
 
 // CHANGE INDEX
 class ChangeIndexIntro extends IntroEvent {
@@ -25,4 +25,8 @@ class ChangeIndexIntro extends IntroEvent {
 
   @override
   List<Object> get props => [index];
+}
+
+class UpdateContentsIntro extends IntroEvent {
+  const UpdateContentsIntro();
 }

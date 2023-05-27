@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/color.dart';
+import 'package:posay/features/intro/data/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
+import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/injection.dart' as di;
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/util.dart';
@@ -15,7 +17,8 @@ class IntroPage extends StatelessWidget {
     return BlocProvider(
       create: (context) {
         return di.locator<IntroBloc>()
-          ..add(LoadIntroContents(context: context));
+            // ..add(LoadIntroContents(appLocalizations: context.tr))
+            ;
       },
       child: const _IntroPage(),
     );
@@ -30,25 +33,36 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
-  late IntroBloc _intro;
+  // late IntroBloc _intro;
   final _pageController = PageController();
+  final contents = di.locator<IntroRepository>();
 
   @override
   void initState() {
-    _intro = context.read<IntroBloc>();
+    // _intro = context.read<IntroBloc>();
     super.initState();
   }
 
   @override
   void dispose() {
-    _intro.close();
+    // _intro.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [buildIntro, buildIndicator]),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(children: [buildIntro, buildIndicator]),
+            const Align(
+              alignment: Alignment.topRight,
+              child: LanguageSwitch(),
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: bottomBtn,
     );
   }
@@ -60,9 +74,14 @@ class _IntroPageState extends State<_IntroPage> {
           return PageView(
             controller: _pageController,
             onPageChanged: (index) {
-              _intro.add(ChangeIndexIntro(index: index));
+              context
+                  .read<IntroBloc>()
+                  .
+                  // _intro.
+                  add(ChangeIndexIntro(index: index));
             },
-            children: state.introContents
+            children: contents
+                .getIntroContents(context.tr)
                 .map((content) => IntroContentWidget(
                       icon: content.icon,
                       desc: content.desc,
@@ -86,12 +105,12 @@ class _IntroPageState extends State<_IntroPage> {
   }
 
   List<Widget> indicatorWidget(IntroState state) {
-    final count = state.introContents.length;
-    return List.generate(count, (index) => dot(index, state));
+    return List.generate(contents.getIntroContents(context.tr).length,
+        (index) => dot(index, state));
   }
 
   Widget dot(int index, IntroState state) {
-    final count = state.introContents.length;
+    final count = contents.getIntroContents(context.tr).length;
     return Container(
       margin: index != count - 1 ? const EdgeInsets.only(right: 8) : null,
       width: 8,
@@ -114,7 +133,12 @@ class _IntroPageState extends State<_IntroPage> {
         ),
         onPressed: () {
           _pageController.animateToPage(
-            _intro.state.index + 1,
+            context
+                    .read<IntroBloc>()
+                    // _intro
+                    .state
+                    .index +
+                1,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );
