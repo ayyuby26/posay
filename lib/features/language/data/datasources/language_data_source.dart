@@ -13,6 +13,7 @@ abstract class LanguageDataSource {
 }
 
 class LanguageDataSourceImpl extends LanguageDataSource {
+  final List<Locale> supportedLocales = AppLocalizations.supportedLocales;
   Box<LanguageModel> objectBoxLanguage;
 
   LanguageDataSourceImpl({
@@ -21,7 +22,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   Language getDefaultLanguage() {
-    final Locale locale = AppLocalizations.supportedLocales.first;
+    final Locale locale = supportedLocales.first;
     return Language(
       code: locale.languageCode,
       name: locale.languageCode.toUpperCase(),
@@ -30,7 +31,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   List<Language> getLanguages() {
-    return AppLocalizations.supportedLocales
+    return supportedLocales
         .map((e) => Language(
               code: e.languageCode,
               name: e.languageCode.toUpperCase(),

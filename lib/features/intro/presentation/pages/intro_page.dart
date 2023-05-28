@@ -52,14 +52,34 @@ class _IntroPageState extends State<_IntroPage> {
   Widget build(BuildContext context) {
     final contents = _introRepository.getIntroContents(context.tr);
     return Scaffold(
-      body: SafeArea(
+      body: SizedBox(
+        width: double.maxFinite,
+        height: double.maxFinite,
         child: Stack(
           children: [
-            Column(children: [buildIntro(contents), buildIndicator(contents)]),
+            Opacity(
+              opacity: .4,
+              child: Image.asset(
+                "assets/background.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+            Column(children: [
+              buildIntro(contents),
+              buildIndicator(contents),
+            ]),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.maxFinite,
+                height: 50,
+                child: bottomBtn,
+              ),
+            ),
             const Align(
               alignment: Alignment.topRight,
               child: LanguageSwitch(),
-            )
+            ),
           ],
         ),
       ),

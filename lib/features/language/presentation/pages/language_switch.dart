@@ -14,33 +14,28 @@ class LanguageSwitch extends StatefulWidget {
 class _LanguageSwitchState extends State<LanguageSwitch> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       width: 100,
-      height: 100,
+      height: 50,
       child: Scaffold(
-        body: SizedBox(
-          width: 100,
-          child: Row(
-            children: [
-              const Text("ID"),
-              BlocBuilder<LanguageBloc, LanguageState>(
-                builder: (context, state) {
-                  return Switch(
-                      value: state.locale.languageCode ==
-                          di
-                              .locator<LanguageRepository>()
-                              .defaultLanguage()
-                              .code,
-                      onChanged: (_) {
-                        context
-                            .read<LanguageBloc>()
-                            .add(ChangeLanguageEvent(locale: state.locale));
-                      });
-                },
-              ),
-              const Text("EN")
-            ],
-          ),
+        body: Row(
+          children: [
+            const Text("ID"),
+            BlocBuilder<LanguageBloc, LanguageState>(
+              builder: (context, state) {
+                return Switch(
+                    value: state.locale.languageCode ==
+                        di.locator<LanguageRepository>().defaultLanguage().code,
+                    onChanged: (_) {
+                      context
+                          .read<LanguageBloc>()
+                          .add(ChangeLanguageEvent(locale: state.locale));
+                    });
+              },
+            ),
+            const Text("EN")
+          ],
         ),
       ),
     );

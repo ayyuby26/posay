@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-final screenWidth = WidgetsBinding.instance.renderView.size.width;
-final screenHeight = WidgetsBinding.instance.renderView.size.height;
+// final screenWidth = WidgetsBinding.instance.renderView.size.width;
+// final screenHeight = WidgetsBinding.instance.renderView.size.height;
 
 const sizedBoxHeight8 = SizedBox(height: 8);
 const sizedBoxHeight16 = SizedBox(height: 16);
