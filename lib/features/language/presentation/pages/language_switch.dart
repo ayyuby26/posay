@@ -11,8 +11,10 @@ class LanguageSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).viewPadding.top;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 16 + (height / 2)),
       width: 100,
       height: 50,
       child: Row(

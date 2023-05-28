@@ -16,9 +16,7 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) {
-        return di.locator<IntroBloc>();
-      },
+      create: (context) => di.locator<IntroBloc>(),
       child: const _IntroPage(),
     );
   }
@@ -32,76 +30,67 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
-  // late IntroBloc _intro;
   final _pageController = PageController();
   final _introRepository = di.locator<IntroRepository>();
-
-  @override
-  void initState() {
-    // _intro = context.read<IntroBloc>();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // _intro.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final contents = _introRepository.getIntroContents(context.tr);
     return Scaffold(
-      body: SizedBox(
-        width: double.maxFinite,
-        height: double.maxFinite,
-        child: Stack(
-          children: [
-            Opacity(
-              opacity: .4,
-              child: Image.asset(
-                "assets/background.png",
-                fit: BoxFit.cover,
-              ),
-            ),
-            Column(children: [
-              buildIntro(contents),
-              buildIndicator(contents),
-            ]),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: SizedBox(
-                width: double.maxFinite,
-                height: 50,
-                child: bottomBtn,
-              ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: LanguageSwitch(),
-            ),
+      body: Stack(
+        children: [
+          background,
+          Column(children: [
+            buildIntro(contents),
+            buildIndicator(contents),
+          ]),
+          Align(
+            alignment: Alignment.topRight,
+            child: LanguageSwitch(),
+          ),
+        ],
+      ),
+      bottomNavigationBar: nextButton,
+    );
+  }
+
+  Widget get background {
+    return Container(
+      height: screenHeight / 1.8,
+      foregroundDecoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            color1.withOpacity(.0),
+            color1.withOpacity(.9),
           ],
         ),
       ),
-      bottomNavigationBar: bottomBtn,
+      child: Image.asset(
+        "assets/background.png",
+        fit: BoxFit.cover,
+      ),
     );
   }
 
   Widget buildIntro(List<IntroContent> contents) {
+    final introList = contents
+        .map((content) => IntroContentWidget(
+              icon: content.icon,
+              desc: content.desc,
+            ))
+        .toList();
+
     return Expanded(
       child: BlocBuilder<IntroBloc, IntroState>(
         builder: (context, state) {
           return PageView(
             controller: _pageController,
-            onPageChanged: (index) {
-              context.read<IntroBloc>().add(ChangeIndexIntro(index: index));
+            onPageChanged: (i) {
+              context.read<IntroBloc>().add(ChangeIndexIntro(index: i));
             },
-            children: contents
-                .map((content) => IntroContentWidget(
-                      icon: content.icon,
-                      desc: content.desc,
-                    ))
-                .toList(),
+            children: introList,
           );
         },
       ),
@@ -121,39 +110,35 @@ class _IntroPageState extends State<_IntroPage> {
 
   List<Widget> indicatorWidget(IntroState state, int contentsLength) {
     return List.generate(
-        contentsLength, (index) => dot(index, state, contentsLength));
+      contentsLength,
+      (i) => dot(i, state, contentsLength),
+    );
   }
 
-  Widget dot(int index, IntroState state, int contentsLength) {
+  Widget dot(int i, IntroState state, int contentsLength) {
     return Container(
-      margin:
-          index != contentsLength - 1 ? const EdgeInsets.only(right: 8) : null,
+      margin: i != contentsLength - 1 ? edgesRight8 : null,
       width: 8,
       height: 8,
       decoration: BoxDecoration(
-        color: state.index == index ? color2 : color4,
-        borderRadius: borderRadiusCircular8,
+        color: state.index == i ? color2 : color4,
+        borderRadius: radiusCircular8,
       ),
     );
   }
 
-  Widget get bottomBtn {
+  Widget get nextButton {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: edgesAll16,
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: radiusCircular8,
           ),
         ),
         onPressed: () {
           _pageController.animateToPage(
-            context
-                    .read<IntroBloc>()
-                    // _intro
-                    .state
-                    .index +
-                1,
+            context.read<IntroBloc>().state.index + 1,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );

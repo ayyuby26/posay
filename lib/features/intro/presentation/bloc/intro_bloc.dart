@@ -10,19 +10,9 @@ part 'intro_state.dart';
 class IntroBloc extends Bloc<IntroEvent, IntroState> {
   final IntroRepository introRepository;
   IntroBloc({required this.introRepository}) : super(const IntroLoaded()) {
-    // on<LoadIntroContents>(_loadIntroContents);
     on<ChangeIndexIntro>(_changeIndexIntro);
     on<UpdateContentsIntro>(_updateContentsIntro);
   }
-
-  // FutureOr<void> _loadIntroContents(
-  //   LoadIntroContents event,
-  //   Emitter<IntroState> emit,
-  // ) async {
-  //   final List<IntroContent> introContents =
-  //       introRepository.getIntroContents(event.appLocalizations);
-  //   emit(IntroLoaded(introContents: introContents));
-  // }
 
   FutureOr<void> _changeIndexIntro(
     ChangeIndexIntro event,
