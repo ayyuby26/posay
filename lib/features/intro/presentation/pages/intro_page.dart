@@ -76,7 +76,7 @@ class _IntroPageState extends State<_IntroPage> {
                 child: bottomBtn,
               ),
             ),
-            const Align(
+            Align(
               alignment: Alignment.topRight,
               child: LanguageSwitch(),
             ),
