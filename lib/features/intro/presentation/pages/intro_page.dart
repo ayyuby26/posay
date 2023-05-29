@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/color.dart';
-import 'package:posay/features/intro/data/models/intro_content.dart';
-import 'package:posay/features/intro/data/repositories/intro_repository.dart';
+import 'package:posay/features/intro/domain/entities/intro.dart'; 
+import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
@@ -74,7 +74,7 @@ class _IntroPageState extends State<_IntroPage> {
     );
   }
 
-  Widget buildIntro(List<IntroContent> contents) {
+  Widget buildIntro(List<Intro> contents) {
     final introList = contents
         .map((content) => IntroContentWidget(
               icon: content.icon,
@@ -97,7 +97,7 @@ class _IntroPageState extends State<_IntroPage> {
     );
   }
 
-  Widget buildIndicator(List<IntroContent> contents) {
+  Widget buildIndicator(List<Intro> contents) {
     return BlocBuilder<IntroBloc, IntroState>(
       builder: (context, state) {
         return Row(

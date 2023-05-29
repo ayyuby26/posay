@@ -1,9 +1,9 @@
-
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/local_storage/object_box.dart';
-import 'package:posay/features/intro/data/datasources/intro_contents_data_source.dart';
+import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository.dart';
+import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/language/data/datasources/language_data_source.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
@@ -33,11 +33,10 @@ void init() {
       () => LanguageRepositoryImpl(languageDataSource: locator()));
 
   // data sources
-  locator.registerLazySingleton<IntroContentsDataSource>(
-      () => IntroContentsDataSourceImpl());
-  locator.registerLazySingleton<LanguageDataSource>(() =>
-      LanguageDataSourceImpl(  objectBoxLanguage: locator()));
- 
+  locator.registerLazySingleton<IntroDataSource>(() => IntroDataSourceImpl());
+  locator.registerLazySingleton<LanguageDataSource>(
+      () => LanguageDataSourceImpl(objectBoxLanguage: locator()));
+
   // helper
   // locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 

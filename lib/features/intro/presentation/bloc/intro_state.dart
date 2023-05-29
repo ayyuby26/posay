@@ -1,7 +1,7 @@
 part of 'intro_bloc.dart';
 
 abstract class IntroState extends Equatable {
-  final List<IntroContent> introContents;
+  final List<IntroModel> introContents;
   final int index;
   final int updateContents;
 

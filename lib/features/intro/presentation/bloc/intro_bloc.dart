@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:posay/features/intro/data/models/intro_content.dart';
-import '../../data/repositories/intro_repository.dart';
+import 'package:posay/features/intro/data/models/intro_model.dart';
+import 'package:posay/features/intro/domain/repositories/intro_repository.dart'; 
 
 part 'intro_event.dart';
 part 'intro_state.dart';

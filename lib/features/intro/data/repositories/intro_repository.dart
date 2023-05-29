@@ -1,18 +1,16 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:posay/features/intro/data/datasources/intro_contents_data_source.dart';
-import 'package:posay/features/intro/data/models/intro_content.dart';
-
-abstract class IntroRepository {
-  List<IntroContent> getIntroContents(AppLocalizations appLocalizations);
-}
+import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
+import 'package:posay/features/intro/domain/entities/intro.dart';
+import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 
 class IntroRepositoryImpl implements IntroRepository {
-  final IntroContentsDataSource dataSource;
+  final IntroDataSource dataSource;
 
   IntroRepositoryImpl({required this.dataSource});
 
   @override
-  List<IntroContent> getIntroContents(AppLocalizations appLocalizations) {
-    return dataSource.getIntroContents(appLocalizations);
+  List<Intro> getIntroContents(AppLocalizations appLocalizations) {
+    final introList = dataSource.getIntroList(appLocalizations);
+    return introList.map((e) => e.toEntity()).toList();
   }
 }

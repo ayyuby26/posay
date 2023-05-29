@@ -1,24 +1,24 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:posay/features/intro/data/models/intro_content.dart'; 
+import 'package:posay/features/intro/data/models/intro_model.dart';
 
-abstract class IntroContentsDataSource {
-  List<IntroContent> getIntroContents(AppLocalizations appLocalizations);
+abstract class IntroDataSource {
+  List<IntroModel> getIntroList(AppLocalizations appLocalizations);
 }
 
-class IntroContentsDataSourceImpl implements IntroContentsDataSource {
+class IntroDataSourceImpl implements IntroDataSource {
   @override
-  List<IntroContent> getIntroContents(AppLocalizations appLocalizations) {
+  List<IntroModel> getIntroList(AppLocalizations appLocalizations) {
     return [
-      IntroContent(
+      IntroModel(
         icon: Icons.storefront,
         desc: appLocalizations.introDesc1,
       ),
-      IntroContent(
+      IntroModel(
         icon: Icons.calculate_outlined,
         desc: appLocalizations.introDesc2,
       ),
-      IntroContent(
+      IntroModel(
         icon: Icons.analytics_outlined,
         desc: appLocalizations.introDesc3,
       ),
