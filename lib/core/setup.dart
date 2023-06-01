@@ -26,7 +26,7 @@ class Application {
   Future<void> setup() async {
     FlutterBindingInitializer.initialize();
     final store = await ObjectBoxStorageInitializer.initialize();
-   final objectBox =  ObjectBox(store);
+    final objectBox = ObjectBox(store);
     DependencyInitializer.initialize(objectBox);
   }
 }
