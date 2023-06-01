@@ -9,7 +9,8 @@ import 'package:posay/injection.dart' as di;
 
 void main() async {
   await Application().setup();
-  runApp(App(di.locator<ITheme>()));
+  final iTheme = di.locator<ITheme>();
+  runApp(App(iTheme));
 }
 
 class App extends StatelessWidget {
