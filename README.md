@@ -1,7 +1,5 @@
 # Implements:
 - Clean Architecture
-- TDD 
-- Unit Test
 - SOLID Principles
 - Clean Code
 - Depedency Injection
@@ -11,7 +9,7 @@
 - bloc = State Management
 - objectbox = Local Storage
 - go_router = Route Manager
-- easy_localization = Multilingual Manager
+- flutter_localizations = Multilingual Manager
 ---
 # How To run
 - run command `flutter pub get && flutter gen-l10n` 
