@@ -11,8 +11,9 @@ class ObjectBoxStorage {
   static Future<ObjectBoxStorage> create() async {
     final dir = await getApplicationDocumentsDirectory();
 
-    Store store =
-        await openStore(directory: p.join(dir.path, 'objectboxstorage'));
+    Store store = await openStore(
+      directory: p.join(dir.path, 'objectboxstorage'),
+    );
 
     return ObjectBoxStorage._create(store);
   }

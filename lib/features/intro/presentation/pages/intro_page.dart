@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:posay/color.dart';
-import 'package:posay/features/intro/domain/entities/intro.dart'; 
+import 'package:posay/features/intro/domain/entities/intro.dart';
 import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/injection.dart' as di;
+import 'package:posay/shared/constants/constants.dart';
 import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/util.dart';
+import 'package:posay/shared/i_colors.dart';
 
 class IntroPage extends StatelessWidget {
   const IntroPage({super.key});
@@ -30,6 +30,7 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
+  final Constants _constant = di.locator<Constants>();
   final _pageController = PageController();
   final _introRepository = di.locator<IntroRepository>();
 
@@ -56,14 +57,14 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget get background {
     return Container(
-      height: screenHeight / 1.8,
+      height: _constant.screenSize.height / 1.8,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            color1.withOpacity(.0),
-            color1.withOpacity(.9),
+            di.locator<IColor>().background.withOpacity(.0),
+            di.locator<IColor>().background.withOpacity(.9),
           ],
         ),
       ),
@@ -117,23 +118,23 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget dot(int i, IntroState state, int contentsLength) {
     return Container(
-      margin: i != contentsLength - 1 ? edgesRight8 : null,
+      margin: i != contentsLength - 1 ? _constant.edgesRight8 : null,
       width: 8,
       height: 8,
       decoration: BoxDecoration(
-        color: state.index == i ? color2 : color4,
-        borderRadius: radiusCircular8,
+        color: state.index == i ? IColor().secondary : IColor().tertiary,
+        borderRadius: _constant.radiusCircular8,
       ),
     );
   }
 
   Widget get nextButton {
     return Padding(
-      padding: edgesAll16,
+      padding: _constant.edgesAll16,
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: radiusCircular8,
+            borderRadius: _constant.radiusCircular8,
           ),
         ),
         onPressed: () {
@@ -143,7 +144,9 @@ class _IntroPageState extends State<_IntroPage> {
             curve: Curves.easeInOut,
           );
         },
-        child: BlocBuilder<IntroBloc, IntroState>(
+        child:
+            // const Text("data")
+            BlocBuilder<IntroBloc, IntroState>(
           builder: (context, state) {
             return Text(
               state.introContents.length - 1 == state.index

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:posay/color.dart';
+import 'package:posay/shared/i_colors.dart';
 
-class ThemeApp {
-  static ThemeData get base {
+class ITheme {
+  final IColor _color;
+
+  ITheme(this._color);
+
+  ThemeData get base {
     return ThemeData(
       fontFamily: 'Lato',
-      colorScheme: const ColorScheme.light(primary: color2),
+      colorScheme: ColorScheme.light(primary: _color.primary),
       useMaterial3: true,
-      scaffoldBackgroundColor: color1,
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.red,
-        surfaceTintColor: Colors.blue,
-      ),
+      scaffoldBackgroundColor: _color.background,
     );
   }
 }
-  
+
+

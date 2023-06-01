@@ -9,11 +9,13 @@ import 'package:posay/injection.dart' as di;
 
 void main() async {
   await SetUp.app();
-  runApp(const App());
+  runApp(App(di.locator<ITheme>()));
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  final ITheme _theme;
+
+  const App(this._theme, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class App extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             routerConfig: router,
-            theme: ThemeApp.base,
+            theme: _theme.base,
             debugShowCheckedModeBanner: false,
           );
         },
