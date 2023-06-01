@@ -8,7 +8,7 @@ import 'core/route/go_router.dart';
 import 'package:posay/injection.dart' as di;
 
 void main() async {
-  await SetUp.app();
+  await Application().setup();
   runApp(App(di.locator<ITheme>()));
 }
 

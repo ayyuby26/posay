@@ -4,14 +4,6 @@ import 'package:posay/core/local_storage/object_box_storage.dart';
 import 'package:posay/injection.dart' as di;
 import 'package:posay/core/local_storage/object_box.dart';
 
-class SetUp {
-  static Future<void> app() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    store = (await ObjectBoxStorage.create()).store;
-    di.init();
-  }
-}
-
 class FlutterBindingInitializer {
   static void initialize() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -25,15 +17,16 @@ class ObjectBoxStorageInitializer {
 }
 
 class DependencyInitializer {
-  static void initialize() {
-    di.init();
+  static void initialize(ObjectBox objectBox) {
+    di.init(objectBox);
   }
 }
 
 class Application {
-  Future<void> runApp() async {
+  Future<void> setup() async {
     FlutterBindingInitializer.initialize();
-    store = await ObjectBoxStorageInitializer.initialize();
-    DependencyInitializer.initialize();
+    final store = await ObjectBoxStorageInitializer.initialize();
+   final objectBox =  ObjectBox(store);
+    DependencyInitializer.initialize(objectBox);
   }
 }

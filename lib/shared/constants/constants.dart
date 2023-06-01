@@ -13,6 +13,5 @@ class Constants {
   final sizedBoxHeight16 = const SizedBox(height: 16);
   final radiusCircular8 = BorderRadius.circular(8);
   final edgesRight8 = const EdgeInsets.only(right: 8);
-  final edgesAll16 = const EdgeInsets.all(16);
-
+  final edgesAll16 = const EdgeInsets.all(16); 
 }
