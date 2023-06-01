@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/local_storage/object_box_storage.dart';
 import 'package:posay/injection.dart' as di;
-import 'package:posay/core/local_storage/object_box.dart';
 
 class FlutterBindingInitializer {
   static void initialize() {
@@ -17,8 +16,8 @@ class ObjectBoxStorageInitializer {
 }
 
 class DependencyInitializer {
-  static void initialize(ObjectBox objectBox) {
-    di.init(objectBox);
+  static void initialize(Store store) {
+    di.init(store);
   }
 }
 
@@ -26,7 +25,6 @@ class Application {
   Future<void> setup() async {
     FlutterBindingInitializer.initialize();
     final store = await ObjectBoxStorageInitializer.initialize();
-    final objectBox = ObjectBox(store);
-    DependencyInitializer.initialize(objectBox);
+    DependencyInitializer.initialize(store);
   }
 }
