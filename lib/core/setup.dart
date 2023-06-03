@@ -21,6 +21,10 @@ class DependencyInitializer {
   }
 }
 
+class LoadLanguage {
+  
+}
+
 class Setup {
   Future<void> init() async {
     FlutterBindingInitializer.initialize();

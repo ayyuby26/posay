@@ -41,7 +41,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   (Failure, Language) getSavedLanguages() {
-    Failure db = const LocalDatabaseFailure("");
+    Failure db = const LocalDatabaseFailure();
     late Language language;
     try {
       final data = objectBoxLanguage.getAll();
@@ -59,8 +59,13 @@ class LanguageDataSourceImpl extends LanguageDataSource {
   @override
   bool saveLanguage(LanguageModel languageModel) {
     bool result = false;
-    objectBoxLanguage.put(languageModel);
-    result = true;
+    try {
+      objectBoxLanguage.removeAll();
+      objectBoxLanguage.put(languageModel); //ini cuma add , gk bisa update
+      result = true;
+    } catch (e) {
+      result = false;
+    }
     return result;
   }
 }

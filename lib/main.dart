@@ -21,17 +21,21 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LanguageBloc>(
-      create: (context) => di.locator<LanguageBloc>(),
+      create: (context) =>
+          di.locator<LanguageBloc>()..add(const LoadLanguageEvent()),
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
-          return MaterialApp.router(
-            locale: state.locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            routerConfig: router,
-            theme: _theme.base,
-            debugShowCheckedModeBanner: false,
-          );
+          if (state is LanguageUpdateState) {
+            return MaterialApp.router(
+              locale: state.locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              routerConfig: router,
+              theme: _theme.base,
+              debugShowCheckedModeBanner: false,
+            );
+          }
+          return const SizedBox();
         },
       ),
     );

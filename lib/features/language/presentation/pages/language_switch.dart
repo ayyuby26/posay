@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/language/domain/repositories/language_repository.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
 import 'package:posay/injection.dart' as di;
+import 'package:posay/shared/extension.dart';
 
 class LanguageSwitch extends StatelessWidget {
   LanguageSwitch({super.key});
@@ -20,20 +21,21 @@ class LanguageSwitch extends StatelessWidget {
       child: Row(
         children: [
           const Text("ID"),
-          BlocBuilder<LanguageBloc, LanguageState>(builder: switchBtn),
+          BlocBuilder<LanguageBloc, LanguageState>(builder: langSwitch),
           const Text("EN")
         ],
       ),
     );
   }
 
-  Widget switchBtn(BuildContext context, LanguageState state) {
+  Widget langSwitch(BuildContext context, LanguageState state) {
+    final current = context.localeOf.languageCode;
     return Switch(
-      value: state.locale.languageCode == defaultLang.code,
-      onChanged: (_) {
+      value: current == defaultLang.code,
+      onChanged: (isEnglish) {
         context
             .read<LanguageBloc>()
-            .add(ChangeLanguageEvent(locale: state.locale));
+            .add(ChangeLanguageEvent(locale: Locale(current)));
       },
     );
   }
