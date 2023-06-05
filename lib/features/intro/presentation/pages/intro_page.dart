@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/intro/domain/entities/intro.dart';
@@ -5,7 +6,7 @@ import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
-import 'package:posay/injection.dart' as di;
+import 'package:posay/injection.dart';
 import 'package:posay/shared/constants/constants.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
@@ -16,7 +17,7 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => di.locator<IntroBloc>(),
+      create: (context) => Injection().locator<IntroBloc>(),
       child: const _IntroPage(),
     );
   }
@@ -30,9 +31,9 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
-  final Constants _constant = di.locator<Constants>();
+  final Constants _constant = Injection().locator<Constants>();
   final _pageController = PageController();
-  final _introRepository = di.locator<IntroRepository>();
+  final _introRepository = Injection().locator<IntroRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +64,8 @@ class _IntroPageState extends State<_IntroPage> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            di.locator<IColor>().background.withOpacity(.0),
-            di.locator<IColor>().background.withOpacity(.9),
+            Injection().locator<IColor>().background.withOpacity(.0),
+            Injection().locator<IColor>().background.withOpacity(.9),
           ],
         ),
       ),
@@ -137,12 +138,28 @@ class _IntroPageState extends State<_IntroPage> {
             borderRadius: _constant.radiusCircular8,
           ),
         ),
-        onPressed: () {
+        onPressed: () async {
           _pageController.animateToPage(
             context.read<IntroBloc>().state.index + 1,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
           );
+
+          final client = Injection().locator<Client>();
+
+          final databases = Databases(client);
+
+          try {
+            final documents = await databases.listDocuments(
+              databaseId: '647cf24da7aa1549c941',
+              collectionId: '647cf43a799b57f5e20c',
+              queries: [Query.equal('username', 'michael')],
+            );
+
+            print(documents.documents[0].data);
+          } on AppwriteException catch (e) {
+            print(e);
+          }
         },
         child:
             // const Text("data")

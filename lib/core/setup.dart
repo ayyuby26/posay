@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/local_storage/object_box_storage.dart';
-import 'package:posay/injection.dart' as di;
+import 'package:posay/injection.dart';
 
 class FlutterBindingInitializer {
   static void initialize() {
@@ -17,13 +17,11 @@ class ObjectBoxStorageInitializer {
 
 class DependencyInitializer {
   static void initialize(Store store) {
-    di.init(store);
+    Injection().init(store);
   }
 }
 
-class LoadLanguage {
-  
-}
+class LoadLanguage {}
 
 class Setup {
   Future<void> init() async {

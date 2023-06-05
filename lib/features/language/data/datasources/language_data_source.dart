@@ -42,7 +42,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
   @override
   (Failure, Language) getSavedLanguages() {
     Failure db = const LocalDatabaseFailure();
-    late Language language;
+    Language language = const Language(code: "code", name: "name");
     try {
       final data = objectBoxLanguage.getAll();
       if (data.isEmpty) {

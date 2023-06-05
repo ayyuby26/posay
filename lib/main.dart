@@ -5,11 +5,11 @@ import 'package:posay/core/setup.dart';
 import 'package:posay/core/theme_app.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
 import 'core/route/go_router.dart';
-import 'package:posay/injection.dart' as di;
+import 'package:posay/injection.dart';
 
 void main() async {
   await Setup().init();
-  final iTheme = di.locator<ITheme>();
+  final iTheme = Injection().locator<ITheme>();
   runApp(App(iTheme));
 }
 
@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<LanguageBloc>(
       create: (context) =>
-          di.locator<LanguageBloc>()..add(const LoadLanguageEvent()),
+          Injection().locator<LanguageBloc>()..add(const LoadLanguageEvent()),
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
           if (state is LanguageUpdateState) {

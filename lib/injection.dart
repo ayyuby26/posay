@@ -1,5 +1,8 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:posay/core/appwrite_client.dart';
+import 'package:posay/core/config/appwrite_config.dart';
 import 'package:posay/core/local_storage/object_box.dart';
 import 'package:posay/core/theme_app.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
@@ -17,43 +20,61 @@ import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/constants/constants.dart';
 import 'package:posay/shared/constants/media_query_screen_size_provider.dart';
 
-final locator = GetIt.instance;
+class Injection {
+  static final Injection _instance = Injection._internal();
 
-void init(Store store) {
-  // provider
-  locator.registerFactory(() => IntroBloc(introRepository: locator()));
-  locator.registerFactory(() => LanguageBloc(languageDataSource: locator()));
+  factory Injection() {
+    return _instance;
+  }
 
-  // use case
-  locator
-      .registerLazySingleton(() => GetLanguages(languageRepository: locator()));
-  locator
-      .registerLazySingleton(() => SaveLanguage(languageRepository: locator()));
+  Injection._internal();
 
-  // repository
-  locator.registerLazySingleton<IntroRepository>(
-      () => IntroRepositoryImpl(dataSource: locator()));
-  locator.registerLazySingleton<LanguageRepository>(
-      () => LanguageRepositoryImpl(languageDataSource: locator()));
+  final _locator = GetIt.instance;
 
-  // data sources
-  locator.registerLazySingleton<IntroDataSource>(() => IntroDataSourceImpl());
-  locator.registerLazySingleton<LanguageDataSource>(
-      () => LanguageDataSourceImpl(objectBoxLanguage: locator()));
+  GetIt get locator => _locator;
 
-  // helper
-  // locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+  init(Store store) {
+    // provider
+    _locator.registerFactory(() => IntroBloc(introRepository: _locator()));
+    _locator
+        .registerFactory(() => LanguageBloc(languageDataSource: _locator()));
 
-  // external
-  locator.registerLazySingleton<ObjectBox>(() => ObjectBox(store));
-  locator.registerLazySingleton<Box<LanguageModel>>(
-      () => store.box<LanguageModel>());
+    // use case
+    _locator.registerLazySingleton(
+        () => GetLanguages(languageRepository: _locator()));
+    _locator.registerLazySingleton(
+        () => SaveLanguage(languageRepository: _locator()));
 
-  // constants
-  locator.registerLazySingleton<Constants>(
-    () => Constants(screenSizeProvider: MediaQueryScreenSizeProvider()),
-  );
+    // repository
+    _locator.registerLazySingleton<IntroRepository>(
+        () => IntroRepositoryImpl(dataSource: _locator()));
+    _locator.registerLazySingleton<LanguageRepository>(
+        () => LanguageRepositoryImpl(languageDataSource: _locator()));
 
-  locator.registerLazySingleton<IColor>(() => IColor());
-  locator.registerLazySingleton<ITheme>(() => ITheme(locator()));
+    // data sources
+    _locator
+        .registerLazySingleton<IntroDataSource>(() => IntroDataSourceImpl());
+    _locator.registerLazySingleton<LanguageDataSource>(
+        () => LanguageDataSourceImpl(objectBoxLanguage: _locator()));
+
+    // helper
+    // _locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
+
+    // external
+    _locator.registerLazySingleton<ObjectBox>(() => ObjectBox(store));
+    _locator.registerLazySingleton<AppwriteConfig>(() => AppwriteConfig());
+    _locator.registerLazySingleton<Client>(
+        () => AppwriteClient(_locator()).setAppWriteConfig());
+    _locator.registerFactory<Box<LanguageModel>>(
+      () => store.box<LanguageModel>(),
+    );
+
+    // constants
+    _locator.registerLazySingleton<Constants>(
+      () => Constants(screenSizeProvider: MediaQueryScreenSizeProvider()),
+    );
+
+    _locator.registerLazySingleton<IColor>(() => IColor());
+    _locator.registerLazySingleton<ITheme>(() => ITheme(_locator()));
+  }
 }
