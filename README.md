@@ -12,7 +12,10 @@
 - flutter_localizations = Multilingual Manager
 ---
 # How To run
-- run command `flutter pub get && flutter gen-l10n` 
+run command `flutter pub get && flutter gen-l10n` 
+
+# Update Local DB
+run command `dart pub run build_runner build`
 
 # Color Pallete
 <img width="263" alt="image" src="https://github.com/memspace/zefyr/assets/18584572/7e3e8353-1240-49c5-81e9-bbf8561fd9be">

@@ -1,17 +1,19 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/intro/domain/entities/intro.dart';
 
-class IntroModel extends Equatable {
-  final IconData icon;
+@Entity()
+class IntroModel {
+  int id = 0;
+
+  final int iconCodePoint;
   final String desc;
 
-  const IntroModel({required this.icon, required this.desc});
+  IntroModel({required this.iconCodePoint, required this.desc});
+
+  IconData get icon => IconData(iconCodePoint, fontFamily: 'MaterialIcons');
 
   Intro toEntity() {
     return Intro(icon: icon, desc: desc);
   }
-
-  @override
-  List<Object> get props => [icon, desc];
 }

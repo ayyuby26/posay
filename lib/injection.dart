@@ -6,9 +6,13 @@ import 'package:posay/core/config/appwrite_config.dart';
 import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/core/local_storage/object_box.dart';
 import 'package:posay/core/theme_app.dart';
+import 'package:posay/features/auth/data/datasources/user_data_source.dart';
 import 'package:posay/features/auth/data/models/user_model.dart';
+import 'package:posay/features/auth/data/repositories/user_repository_impl.dart';
+import 'package:posay/features/auth/domain/repositories/user_repository.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
-import 'package:posay/features/intro/data/repositories/intro_repository.dart';
+import 'package:posay/features/intro/data/models/intro_model.dart';
+import 'package:posay/features/intro/data/repositories/intro_repository_impl.dart';
 import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/language/data/datasources/language_data_source.dart';
@@ -69,12 +73,17 @@ class Injection {
     // repository
     _locator.registerLazySingleton<IntroRepository>(
         () => IntroRepositoryImpl(dataSource: _locator()));
+    _locator.registerLazySingleton<UserRepository>(
+        () => UserRepositoryImpl(userDataSource: _locator()));
     _locator.registerLazySingleton<LanguageRepository>(
         () => LanguageRepositoryImpl(languageDataSource: _locator()));
 
     // data sources
+    _locator.registerLazySingleton<UserDataSource>(
+      () => UserDataSourceImpl(_locator()),
+    );
     _locator.registerLazySingleton<IntroDataSource>(
-      () => IntroDataSourceImpl(),
+      () => IntroDataSourceImpl(_locator()),
     );
     _locator.registerLazySingleton<LanguageDataSource>(
       () => LanguageDataSourceImpl(
@@ -96,6 +105,9 @@ class Injection {
     );
     _locator.registerFactory<Box<UserModel>>(
       () => store.box<UserModel>(),
+    );
+    _locator.registerFactory<Box<IntroModel>>(
+      () => store.box<IntroModel>(),
     );
 
     // constants

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatelessWidget {
- static String get path => "/auth";
+  static String get path => "/auth";
 
   const AuthPage({super.key});
 
@@ -9,7 +9,7 @@ class AuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: const Center(child: Text("data")),
+      body: const Center(child: Text("AUTH PAGE")),
     );
   }
 }

@@ -8,7 +8,9 @@ abstract class UserDataSource {
 
 class UserDataSourceImpl extends UserDataSource {
   Box<UserModel> userModel;
+
   UserDataSourceImpl(this.userModel);
+  
   @override
   User getLocalUser() {
     return userModel.getAll().first.toEntity();
