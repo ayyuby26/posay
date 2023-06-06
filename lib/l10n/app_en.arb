@@ -3,5 +3,8 @@
     "introDesc2": "Makes it easier for you to calculate income",
     "introDesc3": "Make it easy for you to analyze sales",
     "next": "Next",
-    "finish": "Finish"
+    "finish": "Finish",
+    "username": "Username",
+    "password": "Password",
+    "login":"LOGIN"
 }

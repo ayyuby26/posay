@@ -45,4 +45,4 @@ app.*.map.json
 
 # custom
 lib/objectbox.g.dart
-.vscode/launch.json
+.vscode/

@@ -21,3 +21,12 @@ class AuthLogin extends AuthEvent {
   @override
   List<Object> get props => [username, password, context];
 }
+
+class AuthLogout extends AuthEvent {
+  final BuildContext context;
+
+  const AuthLogout(this.context);
+  
+  @override
+  List<Object> get props => [context];
+}

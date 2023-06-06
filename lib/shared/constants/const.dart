@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:posay/shared/constants/media_query_screen_size_provider.dart';
 import 'package:posay/shared/screen_size.dart';
 
-class Constants {
-  static Constants? _instance;
+class Const {
+  static Const? _instance;
 
-  factory Constants() {
-    _instance ??= Constants._();
+  factory Const() {
+    _instance ??= Const._();
     return _instance!;
   }
 
-  Constants._();
+  Const._();
 
   static ScreenSize get screenSize => MediaQueryScreenSizeProvider().screenSize;
 

@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:posay/injector.dart';
-import 'package:posay/shared/constants/constants.dart';
+import 'package:posay/features/language/presentation/pages/language_switch.dart';
+import 'package:posay/shared/constants/const.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/unfocus.dart';
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
   static String get path => "/auth";
   const AuthPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => Injector.gett<AuthBloc>(),
-      child: const _AuthPage(),
-    );
-  }
+  State<AuthPage> createState() => AuthPageState();
 }
 
-class _AuthPage extends StatefulWidget {
-  const _AuthPage();
-
-  @override
-  State<_AuthPage> createState() => _AuthPageState();
-}
-
-class _AuthPageState extends State<_AuthPage> {
+class AuthPageState extends State<AuthPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   @override
@@ -40,18 +29,18 @@ class _AuthPageState extends State<_AuthPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: Constants.edgesAll16,
+                  padding: Const.edgesAll16,
                   child: TextFormField(
                     controller: usernameController,
                     decoration: InputDecoration(
-                      contentPadding: Constants.edgesAll16,
-                      labelText: "Username",
+                      contentPadding: Const.edgesAll16,
+                      labelText: context.tr.username,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: Constants.radiusCircular16,
+                        borderRadius: Const.radiusCircular16,
                         borderSide: BorderSide(color: IColor.tertiary),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: Constants.radiusCircular16,
+                        borderRadius: Const.radiusCircular16,
                         borderSide: BorderSide(color: IColor.tertiary),
                       ),
                       filled: true,
@@ -60,18 +49,18 @@ class _AuthPageState extends State<_AuthPage> {
                   ),
                 ),
                 Padding(
-                  padding: Constants.edgesAll16,
+                  padding: Const.edgesAll16,
                   child: TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(
-                      contentPadding: Constants.edgesAll16,
-                      labelText: "Password",
+                      contentPadding: Const.edgesAll16,
+                      labelText: context.tr.password,
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: Constants.radiusCircular16,
+                        borderRadius: Const.radiusCircular16,
                         borderSide: BorderSide(color: IColor.tertiary),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: Constants.radiusCircular16,
+                        borderRadius: Const.radiusCircular16,
                         borderSide: BorderSide(color: IColor.tertiary),
                       ),
                       filled: true,
@@ -79,20 +68,35 @@ class _AuthPageState extends State<_AuthPage> {
                     ),
                   ),
                 ),
-                TextButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                            AuthLogin(
-                              username: usernameController.text,
-                              password: passwordController.text,
-                              context: context,
-                            ),
-                          );
-                    },
-                    child: const Text("LOGIN"))
+                Padding(
+                  padding: Const.edgesAll16,
+                  child: SizedBox(
+                    width: Const.screenSize.width,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: Const.radiusCircular16,
+                          ),
+                        ),
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                AuthLogin(
+                                  username: usernameController.text,
+                                  password: passwordController.text,
+                                  context: context,
+                                ),
+                              );
+                        },
+                        child: Text(context.tr.login)),
+                  ),
+                )
                 // buildIntro(contents),
                 // buildIndicator(contents),
               ],
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: LanguageSwitch(),
             ),
           ],
         ),
@@ -102,7 +106,7 @@ class _AuthPageState extends State<_AuthPage> {
 
   Widget get background {
     return Container(
-      height: Constants.screenSize.height / 1.8,
+      height: Const.screenSize.height / 1.8,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,

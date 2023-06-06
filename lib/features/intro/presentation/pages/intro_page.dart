@@ -7,7 +7,7 @@ import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/injector.dart';
-import 'package:posay/shared/constants/constants.dart';
+import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
@@ -59,7 +59,7 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget get background {
     return Container(
-      height: Constants.screenSize.height / 1.8,
+      height: Const.screenSize.height / 1.8,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -120,23 +120,23 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget dot(int i, IntroState state, int contentsLength) {
     return Container(
-      margin: i != contentsLength - 1 ? Constants.edgesRight8 : null,
+      margin: i != contentsLength - 1 ? Const.edgesRight8 : null,
       width: 8,
       height: 8,
       decoration: BoxDecoration(
         color: state.index == i ? IColor.secondary : IColor.tertiary,
-        borderRadius: Constants.radiusCircular8,
+        borderRadius: Const.radiusCircular8,
       ),
     );
   }
 
   Widget get nextButton {
     return Padding(
-      padding: Constants.edgesAll16,
+      padding: Const.edgesAll16,
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: Constants.radiusCircular8,
+            borderRadius: Const.radiusCircular8,
           ),
         ),
         onPressed: () async {

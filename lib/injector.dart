@@ -12,6 +12,7 @@ import 'package:posay/features/auth/data/repositories/user_repository_impl.dart'
 import 'package:posay/features/auth/domain/repositories/user_repository.dart';
 import 'package:posay/features/auth/domain/usecases/get_local_user.dart';
 import 'package:posay/features/auth/domain/usecases/login.dart';
+import 'package:posay/features/auth/domain/usecases/logout.dart';
 import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
@@ -51,14 +52,15 @@ class Injector {
     _locator.registerFactory(() => AppLocalizations.supportedLocales);
 
     // provider
-    _locator.registerFactory(() => AuthBloc(_locator(), _locator()));
+    _locator.registerFactory(() => AuthBloc(_locator(), _locator(), _locator()));
     _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
     _locator.registerFactory(
       () => LanguageBloc(
-          getDefaultLanguage: _locator(),
-          getLanguages: _locator(),
-          getSavedLanguage: _locator(),
-          saveLanguageToLocalDb: _locator()),
+        getDefaultLanguage: _locator(),
+        getLanguages: _locator(),
+        getSavedLanguage: _locator(),
+        saveLanguageToLocalDb: _locator(),
+      ),
     );
 
     // USECASE
@@ -80,15 +82,18 @@ class Injector {
     );
 
     // Auth
-    _locator.registerLazySingleton(() => GetLocalUser(userRepository: _locator()));
+    _locator.registerLazySingleton(() => Logout(userRepository: _locator()));
+    _locator
+        .registerLazySingleton(() => GetLocalUser(userRepository: _locator()));
     _locator.registerLazySingleton(() => Login(userRepository: _locator()));
-    _locator.registerLazySingleton(() => SaveUserToLocalDb(userRepository: _locator()));
+    _locator.registerLazySingleton(
+        () => SaveUserToLocalDb(userRepository: _locator()));
 
     // repository
     _locator.registerLazySingleton<IntroRepository>(
         () => IntroRepositoryImpl(dataSource: _locator()));
     _locator.registerLazySingleton<UserRepository>(
-        () => UserRepositoryImpl(userDataSource: _locator()));
+        () => UserRepositoryImpl(_locator(), _locator()));
     _locator.registerLazySingleton<LanguageRepository>(
         () => LanguageRepositoryImpl(languageDataSource: _locator()));
 

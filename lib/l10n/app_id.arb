@@ -3,5 +3,8 @@
     "introDesc2": "Memudahkan anda menghitung penghasilan",
     "introDesc3": "Memudahkan anda menganalisa penjualan",
     "next": "Selanjutnya",
-    "finish": "Selesai"
+    "finish": "Selesai",
+    "username": "Nama pengguna",
+    "password": "Kata sandi",
+    "login":"MASUK"
 }
