@@ -3,7 +3,6 @@ import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
 import 'package:posay/features/language/domain/entities/language.dart';
 
-
 abstract class LanguageDataSource {
   Language getSavedLanguage();
   List<Language> getLanguages();
@@ -48,7 +47,8 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   bool saveLanguageToLocalDb(Language language) {
-    final int result = objectBoxLanguage.put(language.toModel()..id = 1);
+    objectBoxLanguage.removeAll();
+    final int result = objectBoxLanguage.put(language.toModel());
     return result == 1;
   }
 }
