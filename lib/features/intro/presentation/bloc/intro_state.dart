@@ -1,7 +1,7 @@
 part of 'intro_bloc.dart';
 
 abstract class IntroState extends Equatable {
-  final List<IntroModel> introContents;
+  final List<Intro> introContents;
   final int index;
   final int updateContents;
 
@@ -16,8 +16,8 @@ abstract class IntroState extends Equatable {
 }
 
 // LOAD DESCRIPTION INTRO
-class IntroLoaded extends IntroState {
-  const IntroLoaded({super.introContents});
+class IntroInitState extends IntroState {
+  const IntroInitState({super.introContents});
 }
 
 // CHANGE INDEX

@@ -7,17 +7,6 @@ abstract class IntroEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// LOAD DESCRIPTION INTRO
-// class LoadIntroContents extends IntroEvent {
-//   final AppLocalizations appLocalizations;
-
-//   const LoadIntroContents({required this.appLocalizations});
-
-//   @override
-//   List<Object> get props => [appLocalizations];
-// }
-
-// CHANGE INDEX
 class ChangeIndexIntro extends IntroEvent {
   final int index;
 
@@ -27,6 +16,10 @@ class ChangeIndexIntro extends IntroEvent {
   List<Object> get props => [index];
 }
 
-class UpdateContentsIntro extends IntroEvent {
-  const UpdateContentsIntro();
+class GetIntroListEvent extends IntroEvent {
+  final AppLocalizations tr;
+  const GetIntroListEvent(this.tr);
+
+  @override
+  List<Object> get props => [tr];
 }

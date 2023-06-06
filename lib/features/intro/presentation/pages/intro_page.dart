@@ -18,7 +18,8 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => Injection().locator<IntroBloc>(),
+      create: (_) =>
+          Injection().locator<IntroBloc>()..add(GetIntroListEvent(context.tr)),
       child: const _IntroPage(),
     );
   }

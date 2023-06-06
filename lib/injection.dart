@@ -2,6 +2,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/appwrite_client.dart';
+import 'package:posay/core/posay_bloc_observer.dart';
 import 'package:posay/core/config/appwrite_config.dart';
 import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/core/local_storage/object_box.dart';
@@ -14,6 +15,7 @@ import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository_impl.dart';
 import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
+import 'package:posay/features/intro/domain/usecases/get_intro.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/language/data/datasources/language_data_source.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
@@ -47,7 +49,7 @@ class Injection {
     _locator.registerFactory(() => AppLocalizations.supportedLocales);
 
     // provider
-    _locator.registerFactory(() => IntroBloc(introRepository: _locator()));
+    _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
     _locator.registerFactory(
       () => LanguageBloc(
           getDefaultLanguage: _locator(),
@@ -55,8 +57,13 @@ class Injection {
           getSavedLanguage: _locator(),
           saveLanguageToLocalDb: _locator()),
     );
+ 
 
-    // use case
+    // USECASE
+    // intro
+    _locator.registerLazySingleton(() => GetIntro(introRepository: _locator()));
+
+    // language
     _locator.registerLazySingleton(
       () => GetSavedLanguage(languageRepository: _locator()),
     );
