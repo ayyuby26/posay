@@ -2,7 +2,6 @@ import 'package:appwrite/appwrite.dart';
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/appwrite_client.dart';
-import 'package:posay/core/posay_bloc_observer.dart';
 import 'package:posay/core/config/appwrite_config.dart';
 import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/core/local_storage/object_box.dart';

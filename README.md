@@ -11,10 +11,13 @@
 - go_router = Route Manager
 - flutter_localizations = Multilingual Manager
 ---
-# How To run
-run command `flutter pub get && flutter gen-l10n` 
+# First After Clone
+run command `flutter pub get && flutter gen-l10n && dart pub run build_runner build`
 
-# Update Local DB
+# Rebuild .arb
+run command `flutter gen-l10n` 
+
+# Rebuild Local DB
 run command `dart pub run build_runner build`
 
 # Color Pallete

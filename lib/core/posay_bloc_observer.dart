@@ -4,7 +4,7 @@ import 'package:posay/shared/print.dart';
 class PosayBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    Print.red('${bloc.runtimeType} » $error » $stackTrace');
+    Print.red('${bloc.runtimeType} • $error » $stackTrace');
     super.onError(bloc, error, stackTrace);
   }
 
