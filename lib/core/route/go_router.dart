@@ -15,13 +15,11 @@ final router = GoRouter(
       user = r;
     });
 
-    final isIntroViewed = !Injection().locator<Box<IntroModel>>().isEmpty();
-    if (isIntroViewed) {
-      if (user != null) return null;
-      return AuthPage.path;
-    } else {
-      return IntroPage.path;
-    } 
+    final introNotSeen = Injection().locator<Box<IntroModel>>().isEmpty();
+
+    if (introNotSeen) return IntroPage.path;
+    if (user == null) return AuthPage.path;
+    return null;
   },
   routes: [
     GoRoute(
