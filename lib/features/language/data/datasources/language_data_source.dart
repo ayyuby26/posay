@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
 import 'package:posay/features/language/domain/entities/language.dart';
-import 'package:posay/core/failure.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 abstract class LanguageDataSource {
-  (Failure, Language) getSavedLanguages();
+  Language getSavedLanguage();
   List<Language> getLanguages();
   Language getDefaultLanguage();
-  bool saveLanguage(LanguageModel languageModel);
+  bool saveLanguageToLocalDb(Language language);
 }
 
 class LanguageDataSourceImpl extends LanguageDataSource {
-  final List<Locale> supportedLocales = AppLocalizations.supportedLocales;
-  Box<LanguageModel> objectBoxLanguage;
+  final List<Locale> supportedLocales;
+  final Box<LanguageModel> objectBoxLanguage;
 
   LanguageDataSourceImpl({
     required this.objectBoxLanguage,
+    required this.supportedLocales,
   });
 
   @override
@@ -40,32 +40,15 @@ class LanguageDataSourceImpl extends LanguageDataSource {
   }
 
   @override
-  (Failure, Language) getSavedLanguages() {
-    Failure db = const LocalDatabaseFailure();
-    Language language = const Language(code: "code", name: "name");
-    try {
-      final data = objectBoxLanguage.getAll();
-      if (data.isEmpty) {
-      } else {
-        final dd = data.first;
-        language = Language(code: dd.code, name: dd.name);
-      }
-    } catch (e) {
-      db = LocalDatabaseFailure(e.toString());
-    }
-    return (db, language);
+  Language getSavedLanguage() {
+    final List<LanguageModel> languages = objectBoxLanguage.getAll();
+    if (languages.isNotEmpty) return languages.first.toEntity();
+    return getDefaultLanguage();
   }
 
   @override
-  bool saveLanguage(LanguageModel languageModel) {
-    bool result = false;
-    try {
-      objectBoxLanguage.removeAll();
-      objectBoxLanguage.put(languageModel); //ini cuma add , gk bisa update
-      result = true;
-    } catch (e) {
-      result = false;
-    }
-    return result;
+  bool saveLanguageToLocalDb(Language language) {
+    final int result = objectBoxLanguage.put(language.toModel()..id = 1);
+    return result == 1;
   }
 }

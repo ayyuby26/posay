@@ -3,12 +3,12 @@ import 'package:posay/features/language/domain/entities/language.dart';
 import 'package:posay/features/language/domain/repositories/language_repository.dart';
 import 'package:posay/shared/failure.dart';
 
-class GetLanguages {
+class GetSavedLanguage {
   final LanguageRepository languageRepository;
 
-  GetLanguages({required this.languageRepository});
+  GetSavedLanguage({required this.languageRepository});
 
-  Either<Failure, List<Language>> execute() {
-    return languageRepository.getLanguages();
+  Either<Failure, Language> execute() {
+    return languageRepository.getSavedLanguage();
   }
 }

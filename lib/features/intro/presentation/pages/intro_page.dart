@@ -1,6 +1,6 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:posay/features/intro/domain/entities/intro.dart';
 import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
@@ -12,6 +12,7 @@ import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
 class IntroPage extends StatelessWidget {
+  static String get path => "/intro";
   const IntroPage({super.key});
 
   @override
@@ -139,26 +140,17 @@ class _IntroPageState extends State<_IntroPage> {
           ),
         ),
         onPressed: () async {
-          _pageController.animateToPage(
-            context.read<IntroBloc>().state.index + 1,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
+          final currIndex = context.read<IntroBloc>().state.index;
 
-          final client = Injection().locator<Client>();
-
-          final databases = Databases(client);
-
-          try {
-            final documents = await databases.listDocuments(
-              databaseId: '647cf24da7aa1549c941',
-              collectionId: '647cf43a799b57f5e20c',
-              queries: [Query.equal('username', 'michael')],
+          final contents = _introRepository.getIntroContents(context.tr);
+          if ((contents.length - 1) == currIndex) {
+            context.replace(IntroPage.path);
+          } else {
+            _pageController.animateToPage(
+              currIndex + 1,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
             );
-
-            print(documents.documents[0].data);
-          } on AppwriteException catch (e) {
-            print(e);
           }
         },
         child:

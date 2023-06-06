@@ -22,5 +22,5 @@ class DatabaseFailure extends Failure {
 }
 
 class LocalDatabaseFailure extends Failure {
-  const LocalDatabaseFailure([String? message]) : super(message ?? "");
+  const LocalDatabaseFailure([message]) : super(message ?? "");
 }

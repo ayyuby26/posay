@@ -1,10 +1,10 @@
-import 'package:posay/features/language/data/models/language_model.dart';
+import 'package:dartz/dartz.dart';
 import 'package:posay/features/language/domain/entities/language.dart';
-import 'package:posay/core/failure.dart';
+import 'package:posay/shared/failure.dart';
 
 abstract class LanguageRepository {
-  (Failure, Language) getSavedLanguages();
-  List<Language> getLanguages();
-  Language defaultLanguage();
-  bool saveLanguage(LanguageModel languageModel);
+  Either<Failure, Language> getSavedLanguage();
+  Either<Failure, List<Language>> getLanguages();
+  Either<Failure, Language> defaultLanguage();
+  bool saveLanguageToLocalDb(Language language);
 }

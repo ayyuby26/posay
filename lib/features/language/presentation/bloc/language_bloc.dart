@@ -2,66 +2,79 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:posay/features/language/data/datasources/language_data_source.dart';
-import 'package:posay/features/language/data/models/language_model.dart';
+import 'package:posay/features/language/domain/entities/language.dart';
+import 'package:posay/features/language/domain/usecases/get_default_language.dart';
+import 'package:posay/features/language/domain/usecases/get_languages.dart';
+import 'package:posay/features/language/domain/usecases/get_saved_language.dart';
+import 'package:posay/features/language/domain/usecases/save_language.dart';
+import 'package:posay/shared/failure.dart';
 
 part 'language_event.dart';
 part 'language_state.dart';
 
 class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
-  LanguageDataSource languageDataSource;
-  LanguageBloc({required this.languageDataSource})
-      : super(const LanguageInit()) {
+  GetSavedLanguage getSavedLanguage;
+  SaveLanguageToLocalDb saveLanguageToLocalDb;
+  GetLanguages getLanguages;
+  GetDefaultLanguage getDefaultLanguage;
+
+  String _message = "";
+  late Language _language;
+
+  LanguageBloc({
+    required this.getDefaultLanguage,
+    required this.getLanguages,
+    required this.getSavedLanguage,
+    required this.saveLanguageToLocalDb,
+  }) : super(const LanguageInit()) {
     on<LoadLanguageEvent>(_loadLanguageEvent);
     on<ChangeLanguageEvent>(_changeLanguageEvent);
   }
+
+  void _setMessage(Failure failure) => _message = failure.message;
 
   FutureOr<void> _loadLanguageEvent(
     LoadLanguageEvent event,
     Emitter<LanguageState> emit,
   ) {
-    final data = languageDataSource.getSavedLanguages();
+    final savedLanguage = getSavedLanguage.execute();
 
-    // successfully got the data from Database
-    final success = data.$1.message.isEmpty;
+    savedLanguage.fold((l) {
+      final defaultLang = getDefaultLanguage.execute();
+      defaultLang.fold(_setMessage, (r) => _language = r);
+    }, (r) => _language = r);
 
-    if (success) {
-      final languageModel = LanguageModel(
-        code: data.$2.code,
-        name: data.$2.name,
-      );
+    saveLanguageToLocalDb.execute(_language);
 
-      languageDataSource.saveLanguage(languageModel);
+    final languageUpdateState = LanguageUpdateState(
+      locale: Locale(_language.code),
+      message: _message,
+    );
 
-      emit(LanguageUpdateState(locale: Locale(languageModel.code)));
-    } else {
-      final defaultLang = languageDataSource.getDefaultLanguage();
-      languageDataSource.saveLanguage(
-        LanguageModel(
-          code: defaultLang.code,
-          name: defaultLang.name,
-        ),
-      );
-
-      emit(LanguageUpdateState(locale: Locale(defaultLang.code)));
-    }
+    emit(languageUpdateState);
   }
 
   FutureOr<void> _changeLanguageEvent(
     ChangeLanguageEvent event,
     Emitter<LanguageState> emit,
   ) {
-    final ss = languageDataSource
-        .getLanguages()
-        .firstWhere((e) => e.code != event.locale.languageCode);
-        
-    languageDataSource.saveLanguage(
-      LanguageModel(
-        code: ss.code,
-        name: ss.name,
-      ),
-    );
+    try {
+      final languages = getLanguages.execute();
 
-    emit(LanguageUpdateState(locale: Locale(ss.code)));
+      languages.fold(_setMessage, (r) {
+        _language = r.firstWhere((e) => e.code != event.locale.languageCode);
+      });
+
+      saveLanguageToLocalDb.execute(_language);
+
+      final languageUpdateState = LanguageUpdateState(
+        locale: Locale(_language.code),
+        message: _message,
+      );
+
+      emit(languageUpdateState);
+    } catch (e) {
+      _message = e.toString();
+    }
   }
 }

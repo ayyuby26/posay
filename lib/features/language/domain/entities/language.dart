@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:posay/features/language/data/models/language_model.dart';
 
 class Language extends Equatable {
   const Language({
@@ -8,6 +9,10 @@ class Language extends Equatable {
 
   final String code;
   final String name;
+
+  LanguageModel toModel() {
+    return LanguageModel(code: code, name: name);
+  }
 
   @override
   List<Object> get props => [code, name];

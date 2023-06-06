@@ -1,13 +1,13 @@
-import 'package:posay/features/language/data/models/language_model.dart';
+import 'package:posay/features/language/domain/entities/language.dart';
 import 'package:posay/features/language/domain/repositories/language_repository.dart';
 
-class SaveLanguage {
+class SaveLanguageToLocalDb {
   final LanguageRepository languageRepository;
 
-  SaveLanguage({required this.languageRepository});
+  SaveLanguageToLocalDb({required this.languageRepository});
 
-  bool execute(LanguageModel languageModel) {
-    final bool languages = languageRepository.saveLanguage(languageModel);
+  bool execute(Language language) {
+    final bool languages = languageRepository.saveLanguageToLocalDb(language);
     return languages;
   }
 }
