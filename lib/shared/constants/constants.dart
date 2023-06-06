@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:posay/shared/constants/media_query_screen_size_provider.dart';
 import 'package:posay/shared/screen_size.dart';
-import 'package:posay/shared/constants/screen_size_provider.dart';
 
 class Constants {
-  final ScreenSizeProvider screenSizeProvider;
+  static Constants? _instance;
 
-  Constants({required this.screenSizeProvider});
+  factory Constants() {
+    _instance ??= Constants._();
+    return _instance!;
+  }
 
-  ScreenSize get screenSize => screenSizeProvider.screenSize;
+  Constants._();
 
-  final sizedBoxHeight8 = const SizedBox(height: 8);
-  final sizedBoxHeight16 = const SizedBox(height: 16);
-  final radiusCircular8 = BorderRadius.circular(8);
-  final edgesRight8 = const EdgeInsets.only(right: 8);
-  final edgesAll16 = const EdgeInsets.all(16); 
+  static ScreenSize get screenSize => MediaQueryScreenSizeProvider().screenSize;
+
+  static const sizedBoxHeight8 = SizedBox(height: 8);
+  static const sizedBoxHeight16 = SizedBox(height: 16);
+  static final radiusCircular8 = BorderRadius.circular(8);
+  static final radiusCircular16 = BorderRadius.circular(16);
+  static const edgesRight8 = EdgeInsets.only(right: 8);
+  static const edgesAll16 = EdgeInsets.all(16);
 }

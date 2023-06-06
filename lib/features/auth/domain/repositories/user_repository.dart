@@ -4,4 +4,6 @@ import 'package:posay/shared/failure.dart';
 
 abstract class UserRepository {
   Either<Failure, User> getLocalUser();
+  Either<Failure, int> saveUserToLocalDb(User user);
+  Future<Either<Failure, User>> login(String username, String password);
 }

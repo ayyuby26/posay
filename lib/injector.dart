@@ -10,6 +10,10 @@ import 'package:posay/features/auth/data/datasources/user_data_source.dart';
 import 'package:posay/features/auth/data/models/user_model.dart';
 import 'package:posay/features/auth/data/repositories/user_repository_impl.dart';
 import 'package:posay/features/auth/domain/repositories/user_repository.dart';
+import 'package:posay/features/auth/domain/usecases/get_local_user.dart';
+import 'package:posay/features/auth/domain/usecases/login.dart';
+import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
+import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository_impl.dart';
@@ -26,8 +30,6 @@ import 'package:posay/features/language/domain/usecases/get_saved_language.dart'
 import 'package:posay/features/language/domain/usecases/save_language.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
 import 'package:posay/shared/i_colors.dart';
-import 'package:posay/shared/constants/constants.dart';
-import 'package:posay/shared/constants/media_query_screen_size_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Injector {
@@ -49,6 +51,7 @@ class Injector {
     _locator.registerFactory(() => AppLocalizations.supportedLocales);
 
     // provider
+    _locator.registerFactory(() => AuthBloc(_locator(), _locator()));
     _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
     _locator.registerFactory(
       () => LanguageBloc(
@@ -76,6 +79,11 @@ class Injector {
       () => GetLanguages(languageRepository: _locator()),
     );
 
+    // Auth
+    _locator.registerLazySingleton(() => GetLocalUser(userRepository: _locator()));
+    _locator.registerLazySingleton(() => Login(userRepository: _locator()));
+    _locator.registerLazySingleton(() => SaveUserToLocalDb(userRepository: _locator()));
+
     // repository
     _locator.registerLazySingleton<IntroRepository>(
         () => IntroRepositoryImpl(dataSource: _locator()));
@@ -86,7 +94,7 @@ class Injector {
 
     // data sources
     _locator.registerLazySingleton<UserDataSource>(
-      () => UserDataSourceImpl(_locator()),
+      () => UserDataSourceImpl(_locator(), _locator()),
     );
     _locator.registerLazySingleton<IntroDataSource>(
       () => IntroDataSourceImpl(_locator()),
@@ -106,6 +114,7 @@ class Injector {
     _locator.registerLazySingleton<AppwriteConfig>(() => AppwriteConfig());
     _locator.registerLazySingleton<Client>(
         () => AppwriteClient(_locator()).setAppWriteConfig());
+    _locator.registerLazySingleton<Databases>(() => Databases(_locator()));
     _locator.registerFactory<Box<LanguageModel>>(
       () => store.box<LanguageModel>(),
     );
@@ -117,12 +126,9 @@ class Injector {
     );
 
     // constants
-    _locator.registerLazySingleton<Constants>(
-      () => Constants(screenSizeProvider: MediaQueryScreenSizeProvider()),
-    );
     _locator.registerLazySingleton(() => DbConstantsId());
 
     _locator.registerLazySingleton<IColor>(() => IColor());
-    _locator.registerLazySingleton<ITheme>(() => ITheme(_locator()));
+    _locator.registerLazySingleton<ITheme>(() => ITheme());
   }
 }

@@ -10,7 +10,7 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure(String message) : super(message);
+  const ServerFailure([data]) : super('$data');
 }
 
 class ConnectionFailure extends Failure {

@@ -17,4 +17,23 @@ class UserRepositoryImpl implements UserRepository {
       return const Left(LocalDatabaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, User>> login(String username, String password) async {
+    try {
+      final result = await userDataSource.login(username, password);
+      return Right(result.toEntity());
+    } catch (e) {
+      return Left(ServerFailure(e));
+    }
+  }
+
+  @override
+  Either<Failure, int> saveUserToLocalDb(User user) {
+    try {
+      return Right(userDataSource.saveUserToLocalDb(user));
+    } catch (e) {
+      return Left(LocalDatabaseFailure(e));
+    }
+  }
 }

@@ -33,7 +33,6 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
-  final Constants _constant = Injector.gett<Constants>();
   final _pageController = PageController();
   final _introRepository = Injector.gett<IntroRepository>();
 
@@ -60,14 +59,14 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget get background {
     return Container(
-      height: _constant.screenSize.height / 1.8,
+      height: Constants.screenSize.height / 1.8,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Injector.gett<IColor>().background.withOpacity(.0),
-            Injector.gett<IColor>().background.withOpacity(.9),
+            IColor.background.withOpacity(.0),
+            IColor.background.withOpacity(.9),
           ],
         ),
       ),
@@ -121,23 +120,23 @@ class _IntroPageState extends State<_IntroPage> {
 
   Widget dot(int i, IntroState state, int contentsLength) {
     return Container(
-      margin: i != contentsLength - 1 ? _constant.edgesRight8 : null,
+      margin: i != contentsLength - 1 ? Constants.edgesRight8 : null,
       width: 8,
       height: 8,
       decoration: BoxDecoration(
-        color: state.index == i ? IColor().secondary : IColor().tertiary,
-        borderRadius: _constant.radiusCircular8,
+        color: state.index == i ? IColor.secondary : IColor.tertiary,
+        borderRadius: Constants.radiusCircular8,
       ),
     );
   }
 
   Widget get nextButton {
     return Padding(
-      padding: _constant.edgesAll16,
+      padding: Constants.edgesAll16,
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: _constant.radiusCircular8,
+            borderRadius: Constants.radiusCircular8,
           ),
         ),
         onPressed: () async {
