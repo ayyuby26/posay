@@ -30,20 +30,21 @@ import 'package:posay/shared/constants/constants.dart';
 import 'package:posay/shared/constants/media_query_screen_size_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Injection {
-  static final Injection _instance = Injection._internal();
+class Injector {
+  static Injector? _instance;
 
-  factory Injection() {
-    return _instance;
+  factory Injector() {
+    _instance ??= Injector._();
+    return _instance!;
   }
 
-  Injection._internal();
+  Injector._();
 
-  final _locator = GetIt.instance;
+  static final _locator = GetIt.instance;
 
-  GetIt get locator => _locator;
+  static GetIt get gett => _locator;
 
-  init(Store store) {
+  static void init(Store store) {
     // languages from lib/l10n/*.arb
     _locator.registerFactory(() => AppLocalizations.supportedLocales);
 
@@ -56,7 +57,6 @@ class Injection {
           getSavedLanguage: _locator(),
           saveLanguageToLocalDb: _locator()),
     );
- 
 
     // USECASE
     // intro

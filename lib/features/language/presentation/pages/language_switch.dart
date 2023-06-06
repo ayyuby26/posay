@@ -3,14 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/language/domain/entities/language.dart';
 import 'package:posay/features/language/domain/repositories/language_repository.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
-import 'package:posay/injection.dart';
+import 'package:posay/injector.dart';
 import 'package:posay/shared/extension.dart';
 
 class LanguageSwitch extends StatelessWidget {
   LanguageSwitch({super.key});
 
-  final defaultLang =
-      Injection().locator<LanguageRepository>().defaultLanguage();
+  final defaultLang = Injector.gett<LanguageRepository>().defaultLanguage();
 
   @override
   Widget build(BuildContext context) {

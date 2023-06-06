@@ -6,7 +6,7 @@ import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
-import 'package:posay/injection.dart';
+import 'package:posay/injector.dart';
 import 'package:posay/shared/constants/constants.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
@@ -19,7 +19,7 @@ class IntroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          Injection().locator<IntroBloc>()..add(GetIntroListEvent(context.tr)),
+          Injector.gett<IntroBloc>()..add(GetIntroListEvent(context.tr)),
       child: const _IntroPage(),
     );
   }
@@ -33,9 +33,9 @@ class _IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<_IntroPage> {
-  final Constants _constant = Injection().locator<Constants>();
+  final Constants _constant = Injector.gett<Constants>();
   final _pageController = PageController();
-  final _introRepository = Injection().locator<IntroRepository>();
+  final _introRepository = Injector.gett<IntroRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +66,8 @@ class _IntroPageState extends State<_IntroPage> {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Injection().locator<IColor>().background.withOpacity(.0),
-            Injection().locator<IColor>().background.withOpacity(.9),
+            Injector.gett<IColor>().background.withOpacity(.0),
+            Injector.gett<IColor>().background.withOpacity(.9),
           ],
         ),
       ),
@@ -145,9 +145,7 @@ class _IntroPageState extends State<_IntroPage> {
 
           final contents = _introRepository.getIntroContents(context.tr);
           if ((contents.length - 1) == currIndex) {
-            Injection()
-                .locator<IntroRepository>()
-                .saveIntro(contents.first.toModel);
+            Injector.gett<IntroRepository>().saveIntro(contents.first.toModel);
             context.replace(IntroPage.path);
           } else {
             _pageController.animateToPage(

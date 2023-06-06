@@ -4,18 +4,18 @@ import 'package:posay/features/auth/domain/repositories/user_repository.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
-import 'package:posay/injection.dart';
+import 'package:posay/injector.dart';
 import '../../features/intro/presentation/pages/intro_page.dart';
 
 // GoRouter configuration
 final router = GoRouter(
   redirect: (context, state) {
     dynamic user;
-    Injection().locator<UserRepository>().getLocalUser().fold((l) => null, (r) {
-      user = r;
-    });
 
-    final introNotSeen = Injection().locator<Box<IntroModel>>().isEmpty();
+    final getUser = Injector.gett<UserRepository>().getLocalUser();
+    getUser.fold((e) {}, (r) => user = r);
+
+    final introNotSeen = Injector.gett<Box<IntroModel>>().isEmpty();
 
     if (introNotSeen) return IntroPage.path;
     if (user == null) return AuthPage.path;

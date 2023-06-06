@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:posay/injection.dart';
+import 'package:posay/injector.dart';
 import 'package:posay/shared/i_colors.dart';
 
 class IntroContentWidget extends StatelessWidget {
@@ -18,7 +18,7 @@ class IntroContentWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(icon, size: 140, color: Injection().locator<IColor>().secondary),
+          Icon(icon, size: 140, color: Injector.gett<IColor>().secondary),
           Column(
             children: [
               _appBrand,
@@ -32,7 +32,7 @@ class IntroContentWidget extends StatelessWidget {
 
   Widget get _introDescription {
     return Text(desc,
-        style: TextStyle(color: Injection().locator<IColor>().tertiary));
+        style: TextStyle(color: Injector.gett<IColor>().tertiary));
   }
 
   Widget get _appBrand {
@@ -43,14 +43,14 @@ class IntroContentWidget extends StatelessWidget {
           "POS AY",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Injection().locator<IColor>().primary,
+            color: Injector.gett<IColor>().primary,
           ),
         ),
         Text(
           "yuby",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Injection().locator<IColor>().tertiary,
+            color: Injector.gett<IColor>().tertiary,
           ),
         ),
       ],
