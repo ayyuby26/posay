@@ -46,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
-    event.context.replace(AuthPage.path);
+    if (event.context.canPop()) event.context.pop();
     final result = logout.execute();
     result.fold(event.context.dialogError, (r) {
       event.context.replace(AuthPage.path);

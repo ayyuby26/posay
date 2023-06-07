@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/pop_up.dart';
@@ -35,7 +34,6 @@ class _DashboardPageState extends State<DashboardPage> {
                   content: parentContext.tr.logoutConfirmContent,
                   titleOk: parentContext.tr.logout,
                   onPressed: () {
-                    if (context.canPop()) context.pop();
                     context.read<AuthBloc>().add(AuthLogout(context));
                   },
                 );
