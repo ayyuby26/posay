@@ -17,6 +17,7 @@ class PopUp {
     required String content,
     required String titleOk,
     required BuildContext context,
+    required Color ForegroundColorOk,
     void Function()? onPressed,
   }) {
     return showDialog(
@@ -34,9 +35,7 @@ class PopUp {
               child: Text(context.tr.cancel),
             ),
             TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.red,
-              ),
+              style: TextButton.styleFrom(foregroundColor: ForegroundColorOk),
               onPressed: onPressed,
               child: Text(
                 titleOk,

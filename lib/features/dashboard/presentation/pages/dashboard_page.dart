@@ -29,6 +29,7 @@ class _DashboardPageState extends State<DashboardPage> {
           IconButton(
               onPressed: () {
                 PopUp.okCancel(
+                  ForegroundColorOk: Colors.red,
                   context: context,
                   title: parentContext.tr.logoutConfirmTitle,
                   content: parentContext.tr.logoutConfirmContent,
