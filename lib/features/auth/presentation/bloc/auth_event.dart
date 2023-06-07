@@ -30,3 +30,5 @@ class AuthLogout extends AuthEvent {
   @override
   List<Object> get props => [context];
 }
+
+class AuthShowPassEvent extends AuthEvent{}

@@ -50,30 +50,51 @@ class AuthPageState extends State<AuthPage> {
                 ),
                 Padding(
                   padding: Const.edgesAll16,
-                  child: TextFormField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      contentPadding: Const.edgesAll16,
-                      labelText: context.tr.password,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: Const.radiusCircular16,
-                        borderSide: BorderSide(color: IColor.tertiary),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: Const.radiusCircular16,
-                        borderSide: BorderSide(color: IColor.tertiary),
-                      ),
-                      filled: true,
-                      fillColor: IColor.background,
-                    ),
+                  child: BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                      return TextFormField(
+                        obscureText: !state.isShow,
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              context.read<AuthBloc>().add(AuthShowPassEvent());
+                            },
+                            icon: BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                return Icon(
+                                  state.isShow
+                                      ? Icons.remove_red_eye
+                                      : Icons.visibility_off,
+                                );
+                              },
+                            ),
+                          ),
+                          contentPadding: Const.edgesAll16,
+                          labelText: context.tr.password,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: Const.radiusCircular16,
+                            borderSide: BorderSide(color: IColor.tertiary),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: Const.radiusCircular16,
+                            borderSide: BorderSide(color: IColor.tertiary),
+                          ),
+                          filled: true,
+                          fillColor: IColor.background,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 Padding(
                   padding: Const.edgesAll16,
                   child: SizedBox(
                     width: Const.screenSize.width,
+                    height: 55,
                     child: TextButton(
                         style: TextButton.styleFrom(
+                          backgroundColor: IColor.secondary,
                           shape: RoundedRectangleBorder(
                             borderRadius: Const.radiusCircular16,
                           ),
@@ -87,7 +108,10 @@ class AuthPageState extends State<AuthPage> {
                                 ),
                               );
                         },
-                        child: Text(context.tr.login)),
+                        child: Text(
+                          context.tr.login,
+                          style: const TextStyle(color: Colors.white),
+                        )),
                   ),
                 )
                 // buildIntro(contents),

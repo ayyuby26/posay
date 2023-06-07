@@ -25,6 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) : super(AuthInitial()) {
     on<AuthLogin>(_authLogin);
     on<AuthLogout>(_authLogout);
+    on<AuthShowPassEvent>(_authShowPassEvent);
   }
 
   String _message = "";
@@ -58,5 +59,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       event.context.replace(AuthPage.path);
       emit(AuthLogoutSuccess());
     });
+  }
+
+  FutureOr<void> _authShowPassEvent(
+    AuthShowPassEvent event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(AuthShowPass(!state.isShow));
   }
 }
