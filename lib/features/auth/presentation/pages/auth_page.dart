@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
@@ -18,6 +19,7 @@ class AuthPage extends StatefulWidget {
 class AuthPageState extends State<AuthPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,7 @@ class AuthPageState extends State<AuthPage> {
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return TextFormField(
-                        obscureText: !state.isShow,
+                        obscureText: !state.isShowPass,
                         controller: passwordController,
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
@@ -63,7 +65,7 @@ class AuthPageState extends State<AuthPage> {
                             icon: BlocBuilder<AuthBloc, AuthState>(
                               builder: (context, state) {
                                 return Icon(
-                                  state.isShow
+                                  state.isShowPass
                                       ? Icons.remove_red_eye
                                       : Icons.visibility_off,
                                 );
@@ -122,6 +124,29 @@ class AuthPageState extends State<AuthPage> {
               alignment: Alignment.topRight,
               child: LanguageSwitch(),
             ),
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoadingState) {
+                  return Container(
+                    width: double.maxFinite,
+                    height: double.maxFinite,
+                    color: Colors.black38,
+                    child: Center(
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: Const.radiusCircular16,
+                          color: Colors.white,
+                        ),
+                        child: const CupertinoActivityIndicator(),
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            )
           ],
         ),
       ),

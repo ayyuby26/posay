@@ -32,3 +32,5 @@ class AuthLogout extends AuthEvent {
 }
 
 class AuthShowPassEvent extends AuthEvent{}
+
+class AuthLoadingEvent extends AuthEvent{}

@@ -27,6 +27,7 @@ class UserRepositoryImpl implements UserRepository {
       final result = await userDataSource.login(username, password);
       return Right(result.toEntity());
     } catch (e) {
+      if (e is DatabaseFailure) return Left(DatabaseFailure(e.message));
       return Left(ServerFailure(e));
     }
   }

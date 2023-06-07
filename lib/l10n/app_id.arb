@@ -1,10 +1,15 @@
 {
-    "introDesc1": "Memudahkan anda dalam berjualan",
-    "introDesc2": "Memudahkan anda menghitung penghasilan",
-    "introDesc3": "Memudahkan anda menganalisa penjualan",
+    "introDesc1": "Memudahkan Anda dalam berjualan",
+    "introDesc2": "Memudahkan Anda menghitung penghasilan",
+    "introDesc3": "Memudahkan Anda menganalisa penjualan",
     "next": "Selanjutnya",
     "finish": "Selesai",
-    "username": "Nama pengguna",
-    "password": "Kata sandi",
-    "login":"MASUK"
+    "username": "Nama Pengguna",
+    "password": "Kata Sandi",
+    "login":"MASUK",
+    "userNotFound":"Akun tidak ditemukan",
+    "cancel":"Batal",
+    "logoutConfirmTitle":"Konfirmasi Keluar",
+    "logoutConfirmContent":"Apakah Anda yakin ingin keluar?",
+    "logout":"Keluar"
 }

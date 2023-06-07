@@ -3,6 +3,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/features/auth/data/models/user_model.dart';
 import 'package:posay/features/auth/domain/entities/user.dart';
+import 'package:posay/shared/failure.dart';
 
 abstract class UserDataSource {
   User getLocalUser();
@@ -28,14 +29,18 @@ class UserDataSourceImpl extends UserDataSource {
       collectionId: DbConstantsId.authId,
     );
 
-    final isFound = getUsers.documents.firstWhere((e) =>
-        e.data['username'] == username && e.data['password'] == password);
+    try {
+      final isFound = getUsers.documents.firstWhere((e) =>
+          e.data['username'] == username && e.data['password'] == password);
 
-    return UserModel(
-      username: username,
-      password: password,
-      name: isFound.data['name'],
-    );
+      return UserModel(
+        username: username,
+        password: password,
+        name: isFound.data['name'],
+      );
+    } catch (e) {
+      throw const DatabaseFailure();
+    }
   }
 
   @override

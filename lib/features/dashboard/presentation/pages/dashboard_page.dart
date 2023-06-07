@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:posay/shared/extension.dart';
+import 'package:posay/shared/pop_up.dart';
 
 class DashboardPage extends StatefulWidget {
   static String get path => "/";
@@ -12,6 +14,13 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  late BuildContext parentContext;
+  @override
+  void didChangeDependencies() {
+    parentContext = context;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,36 +29,14 @@ class _DashboardPageState extends State<DashboardPage> {
         actions: [
           IconButton(
               onPressed: () {
-                showDialog(
+                PopUp.okCancel(
                   context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Center(child: Text("Konfirmasi keluar")),
-                      content: const Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("Apakah anda yakin ingin keluar?"),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: context.pop,
-                          child: const Text("Batal"),
-                        ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.red,
-                          ),
-                          onPressed: () {
-                            context.read<AuthBloc>().add(AuthLogout(context));
-                          },
-                          child: const Text(
-                            "Keluar",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    );
+                  title: parentContext.tr.logoutConfirmTitle,
+                  content: parentContext.tr.logoutConfirmContent,
+                  titleOk: parentContext.tr.logout,
+                  onPressed: () {
+                    if (context.canPop()) context.pop();
+                    context.read<AuthBloc>().add(AuthLogout(context));
                   },
                 );
               },
