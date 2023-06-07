@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posay/features/dashboard/features/report/presentation/pages/report_page.dart';
+import 'package:posay/features/dashboard/features/setting/presentation/pages/setting_page.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_page.dart';
+import 'package:posay/features/dashboard/features/transaction/presentation/pages/transaction_page.dart';
 import 'package:posay/features/dashboard/presentation/bloc/dashboard_bloc.dart';
-import 'package:posay/features/report/presentation/pages/report_page.dart';
-import 'package:posay/features/setting/presentation/pages/setting_page.dart';
-import 'package:posay/features/stock/presentation/pages/stock_page.dart';
-import 'package:posay/features/transaction/presentation/pages/transaction_page.dart';
 
 class DashboardPage extends StatelessWidget {
   static String get path => "/";

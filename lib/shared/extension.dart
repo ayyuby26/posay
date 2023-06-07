@@ -12,6 +12,10 @@ extension TranslateExtension on BuildContext {
   Locale get localeOf => Localizations.localeOf(this);
 }
 
+extension Tools on BuildContext {
+  double get appBarHeight => MediaQuery.of(this).viewPadding.top;
+}
+
 extension Loading on BuildContext {
   get loading {
     showDialog(
@@ -61,7 +65,6 @@ extension ShowDialog on BuildContext {
       ),
     );
   }
- 
 
   dialogError(Failure failure) {
     return showDialog(

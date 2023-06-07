@@ -43,16 +43,22 @@ class Profile extends StatelessWidget {
         borderRadius: Const.radiusCircular8,
       ),
       margin: Const.edgesAll16,
-      padding: Const.edgesAll8,
-      child: const Row(
+      padding: Const.edgesAll16,
+      child: Row(
         children: [
-          Icon(Icons.person_pin_rounded),
-          Const.sizedBoxW8,
+          // const Icon(Icons.person_pin_rounded),
+          // Const.sizedBoxW8,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text("username"),
-              Text("Name"),
+              Text(
+                "welcome,",
+                style: TextStyle(color: IColor.secondary),
+              ),
+              const Text(
+                "Name",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
         ],

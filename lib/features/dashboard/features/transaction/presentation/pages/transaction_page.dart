@@ -15,6 +15,9 @@ class _TransactionPageState extends State<TransactionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Transaction"),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: "Add Transaction",
