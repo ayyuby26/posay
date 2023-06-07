@@ -17,8 +17,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class AuthPageState extends State<AuthPage> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final usernameController = TextEditingController(text: "michael");
+  final passwordController = TextEditingController(text: "michael123");
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class AuthPageState extends State<AuthPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: Const.edgesAll16,
+                  padding: Const.edgesSymmetricV8H16,
                   child: TextFormField(
                     controller: usernameController,
                     decoration: InputDecoration(
@@ -51,7 +51,7 @@ class AuthPageState extends State<AuthPage> {
                   ),
                 ),
                 Padding(
-                  padding: Const.edgesAll16,
+                  padding: Const.edgesSymmetricV8H16,
                   child: BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return TextFormField(

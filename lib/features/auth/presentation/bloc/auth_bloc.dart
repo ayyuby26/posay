@@ -11,7 +11,6 @@ import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/failure.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -32,16 +31,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _authLogin(AuthLogin event, Emitter<AuthState> emit) async {
     emit(AuthLoadingState());
-    final result = await login.execute(event.username, event.password);
+    final result = await login.execute(
+      event.username,
+      event.password,
+      event.context,
+    );
     emit(AuthLoadedState());
 
-    result.fold((e) {
-      event.context.popUpOk(
-        title: "Oops",
-        content:
-            e is DatabaseFailure ? event.context.tr.userNotFound : e.message,
-      );
-    }, (user) {
+    result.fold(event.context.dialogError, (user) {
       saveUserToLocalDb.execute(user);
       event.context.replace(DashboardPage.path);
       emit(AuthLoginSuccess());
@@ -51,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
     event.context.replace(AuthPage.path);
     final result = logout.execute();
-    result.fold((l) => null, (r) {
+    result.fold(event.context.dialogError, (r) {
       event.context.replace(AuthPage.path);
       emit(AuthLogoutSuccess());
     });

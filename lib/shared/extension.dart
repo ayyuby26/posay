@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:posay/shared/failure.dart';
 import 'package:posay/shared/i_colors.dart';
 
 extension TranslateExtension on BuildContext {
@@ -73,6 +74,35 @@ extension ShowDialog on BuildContext {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [Text(content)],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            SizedBox(
+              width: double.maxFinite,
+              child: TextButton(
+                  style:
+                      TextButton.styleFrom(backgroundColor: IColor.secondary),
+                  onPressed: pop,
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.white),
+                  )),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  dialogError(Failure failure) {
+    return showDialog(
+      context: this,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(child: Text("Oops")),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [Text(failure.message)],
           ),
           actionsAlignment: MainAxisAlignment.center,
           actions: [

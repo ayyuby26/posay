@@ -1,14 +1,19 @@
 import 'package:appwrite/appwrite.dart';
+
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/features/auth/data/models/user_model.dart';
 import 'package:posay/features/auth/domain/entities/user.dart';
-import 'package:posay/shared/failure.dart';
 
 abstract class UserDataSource {
   User getLocalUser();
   int saveUserToLocalDb(User user);
-  Future<UserModel> login(String username, String password);
+  Future<UserModel> login(
+    String username,
+    String password,
+    List<Map<String, dynamic>> users,
+  );
+  Future<List<Map<String, dynamic>>> getUsers();
 }
 
 class UserDataSourceImpl extends UserDataSource {
@@ -23,28 +28,32 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<UserModel> login(String username, String password) async {
-    final getUsers = await databases.listDocuments(
-      databaseId: DbConstantsId.databaseId,
-      collectionId: DbConstantsId.authId,
+  Future<UserModel> login(
+    String username,
+    String password,
+    List<Map<String, dynamic>> users,
+  ) async {
+    final user = users.firstWhere(
+        (e) => e['username'] == username && e['password'] == password);
+
+    return UserModel(
+      username: username,
+      password: password,
+      name: user['name'],
     );
-
-    try {
-      final isFound = getUsers.documents.firstWhere((e) =>
-          e.data['username'] == username && e.data['password'] == password);
-
-      return UserModel(
-        username: username,
-        password: password,
-        name: isFound.data['name'],
-      );
-    } catch (e) {
-      throw const DatabaseFailure();
-    }
   }
 
   @override
   int saveUserToLocalDb(User user) {
     return userModel.put(user.toEntity);
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getUsers() async {
+    final users = await databases.listDocuments(
+      databaseId: DbConstantsId.databaseId,
+      collectionId: DbConstantsId.authId,
+    );
+    return users.documents.map((e) => e.data).toList();
   }
 }

@@ -20,4 +20,5 @@ class Const {
   static final radiusCircular16 = BorderRadius.circular(16);
   static const edgesRight8 = EdgeInsets.only(right: 8);
   static const edgesAll16 = EdgeInsets.all(16);
+  static const edgesSymmetricV8H16 = EdgeInsets.symmetric(vertical: 8, horizontal: 16);
 }
