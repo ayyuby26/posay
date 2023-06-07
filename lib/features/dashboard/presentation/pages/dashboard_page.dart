@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/pop_up.dart';
+import 'package:posay/shared/print.dart';
 
 class DashboardPage extends StatefulWidget {
   static String get path => "/";
@@ -23,7 +25,23 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Text("DASHBOARD"),
+      body: Column(
+        children: [
+          TextButton(
+              onPressed: () async {
+                String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+                  "#ff6666",
+                  context.tr.cancel,
+                  true,
+                  ScanMode.BARCODE,
+                );
+                context.okPopUp(title: "Result", content: barcodeScanRes);
+                Print.green(barcodeScanRes);
+              },
+              child: const Text("Scan")),
+          const Text("DASHBOARD"),
+        ],
+      ),
       appBar: AppBar(
         actions: [
           IconButton(

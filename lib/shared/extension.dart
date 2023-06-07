@@ -62,7 +62,7 @@ extension ShowDialog on BuildContext {
     );
   }
 
-  popUpOk({
+  okPopUp({
     required String title,
     required String content,
   }) {

@@ -155,7 +155,7 @@ class AuthPageState extends State<AuthPage> {
 
   Widget get background {
     return Container(
-      height: Const.screenSize.height / 1.8,
+      height: Const.screenSize.height / 1.2,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
