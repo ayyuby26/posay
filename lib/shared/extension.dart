@@ -61,38 +61,7 @@ extension ShowDialog on BuildContext {
       ),
     );
   }
-
-  okPopUp({
-    required String title,
-    required String content,
-  }) {
-    return showDialog(
-      context: this,
-      builder: (context) {
-        return AlertDialog(
-          title: Center(child: Text(title)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [Text(content)],
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: [
-            SizedBox(
-              width: double.maxFinite,
-              child: TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: IColor.secondary),
-                  onPressed: pop,
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            )
-          ],
-        );
-      },
-    );
-  }
+ 
 
   dialogError(Failure failure) {
     return showDialog(

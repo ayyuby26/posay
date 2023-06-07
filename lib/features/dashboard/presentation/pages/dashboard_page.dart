@@ -1,68 +1,74 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/pop_up.dart';
-import 'package:posay/shared/print.dart';
+import 'package:posay/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:posay/features/report/presentation/pages/report_page.dart';
+import 'package:posay/features/setting/presentation/pages/setting_page.dart';
+import 'package:posay/features/stock/presentation/pages/stock_page.dart';
+import 'package:posay/features/transaction/presentation/pages/transaction_page.dart';
 
-class DashboardPage extends StatefulWidget {
+class DashboardPage extends StatelessWidget {
   static String get path => "/";
   const DashboardPage({super.key});
 
   @override
-  State<DashboardPage> createState() => _DashboardPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => DashboardBloc(),
+      child: const _DashboardPage(),
+    );
+  }
 }
 
-class _DashboardPageState extends State<DashboardPage> {
-  late BuildContext parentContext;
-  @override
-  void didChangeDependencies() {
-    parentContext = context;
-    super.didChangeDependencies();
-  }
+class _DashboardPage extends StatefulWidget {
+  const _DashboardPage();
 
   @override
+  State<_DashboardPage> createState() => __DashboardPageState();
+}
+
+class __DashboardPageState extends State<_DashboardPage> {
+  final pages = [
+    const ReportPage(),
+    const TransactionPage(),
+    const StockPage(),
+    const SettingPage()
+  ];
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          TextButton(
-              onPressed: () async {
-                String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-                  "#ff6666",
-                  context.tr.cancel,
-                  true,
-                  ScanMode.BARCODE,
-                );
-                context.okPopUp(title: "Result", content: barcodeScanRes);
-                Print.green(barcodeScanRes);
-              },
-              child: const Text("Scan")),
-          const Text("DASHBOARD"),
-        ],
-      ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                PopUp.okCancel(
-                  ForegroundColorOk: Colors.red,
-                  context: context,
-                  title: parentContext.tr.logoutConfirmTitle,
-                  content: parentContext.tr.logoutConfirmContent,
-                  titleOk: parentContext.tr.logout,
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthLogout(context));
-                  },
-                );
-              },
-              icon: const Icon(
-                Icons.output,
-                color: Colors.red,
-              ))
-        ],
-      ),
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: pages[state.index],
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart_rounded),
+                label: "Report",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.compare_arrows_rounded),
+                label: "Transaction",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.inventory,
+                  size: 20,
+                ),
+                label: "Stock",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: "Setting",
+              ),
+            ],
+            onTap: (value) {
+              context.read<DashboardBloc>().add(DashboardIndexEvent(value));
+            },
+            currentIndex: state.index,
+          ),
+        );
+      },
     );
   }
 }
