@@ -37,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold((e) {
       event.context.popUpOk(
-        title: "Error",
+        title: "Oops",
         content:
             e is DatabaseFailure ? event.context.tr.userNotFound : e.message,
       );
@@ -49,14 +49,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
-    // event.context.pop();
     event.context.replace(AuthPage.path);
-    // final result = logout.execute();
-    // result.fold((l) => null, (r) {
-    //   event.context.pop();
-    //   event.context.replace(AuthPage.path);
-    //   emit(AuthLogoutSuccess());
-    // });
+    final result = logout.execute();
+    result.fold((l) => null, (r) {
+      event.context.replace(AuthPage.path);
+      emit(AuthLogoutSuccess());
+    });
   }
 
   FutureOr<void> _authShowPassEvent(
