@@ -19,48 +19,13 @@ class StockPageState extends State<StockPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        tooltip: "Add Stock",
-        onPressed: () {
-          context.push(AddStockPage.path);
-        },
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: const _AddStock(),
       body: Unfocus(
         child: Column(
           children: [
             SizedBox(height: context.appBarHeight),
-            Padding(
-              padding: Const.edgesSymmetricV8H16,
-              child: TextFormField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: IColor.tertiary,
-                  ),
-                  contentPadding: Const.edgesAll16,
-                  hintText: context.tr.finish,
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: Const.radiusCircular16,
-                    borderSide: BorderSide(
-                      color: IColor.tertiary.withOpacity(.3),
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: Const.radiusCircular16,
-                    borderSide: BorderSide(
-                      color: IColor.tertiary.withOpacity(.3),
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
+            _SearchBox(),
+            Const.Height8,
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () {
@@ -158,53 +123,57 @@ class _Item extends StatelessWidget {
         ),
       ),
     );
-    // Container(
-    //   width: double.maxFinite,
-    //   padding: Const.edgesAll16,
-    //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-    //   decoration: BoxDecoration(
-    //     color: Colors.white,
-    //     borderRadius: Const.radiusCircular8,
-    //     border: Border.all(
-    //       color: IColor.tertiary.withOpacity(.3),
-    //     ),
-    //   ),
-    //   child: const Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Row(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           Expanded(
-    //             child: Text(
-    //               "Jahe Kencur",
-    //               style: TextStyle(
-    //                 fontWeight: FontWeight.bold,
-    //                 fontSize: 18,
-    //               ),
-    //             ),
-    //           ),
-    //           Text(
-    //             "3 pcs",
-    //           ),
-    //         ],
-    //       ),
-    //       Row(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           Text("Rp 3.000"),
-    //           Text(
-    //             "EXP: 28 Jan 2020",
-    //             style: TextStyle(
-    //               color: Colors.green,
-    //             ),
-    //           ),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
+  }
+}
+
+class _SearchBox extends StatelessWidget {
+  final searchController = TextEditingController();
+  _SearchBox();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: Const.edgesSymmetricV8H16,
+      child: TextFormField(
+        controller: searchController,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.search,
+            color: IColor.tertiary,
+          ),
+          contentPadding: Const.edgesAll16,
+          hintText: context.tr.finish,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: Const.radiusCircular16,
+            borderSide: BorderSide(
+              color: IColor.tertiary.withOpacity(.3),
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: Const.radiusCircular16,
+            borderSide: BorderSide(
+              color: IColor.tertiary.withOpacity(.3),
+            ),
+          ),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
+class _AddStock extends StatelessWidget {
+  const _AddStock();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      tooltip: "Add Stock",
+      onPressed: () {
+        context.push(AddStockPage.path);
+      },
+      child: const Icon(Icons.add),
+    );
   }
 }
