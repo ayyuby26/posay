@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posay/core/state_enum.dart';
+import 'package:posay/features/auth/domain/entities/user.dart';
 import 'package:posay/features/auth/domain/usecases/login.dart';
 import 'package:posay/features/auth/domain/usecases/logout.dart';
 import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
@@ -41,7 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(event.context.dialogError, (user) {
       saveUserToLocalDb.execute(user);
       event.context.pushReplacement(DashboardPage.path);
-      emit(AuthLoginSuccess());
+      emit(AuthLoginSuccess(user));
     });
   }
 

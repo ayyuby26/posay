@@ -1,17 +1,21 @@
 part of 'auth_bloc.dart';
 
 abstract class AuthState extends Equatable {
+  final User? user;
   final RequestState status;
   final bool isShowPass;
-  const AuthState({this.isShowPass = false, this.status = RequestState.empty});
+  const AuthState(
+      {this.isShowPass = false, this.status = RequestState.empty, this.user});
 
   @override
-  List<Object> get props => [isShowPass, status];
+  List<Object?> get props => [isShowPass, status, user];
 }
 
 class AuthInitial extends AuthState {}
 
-class AuthLoginSuccess extends AuthState {}
+class AuthLoginSuccess extends AuthState {
+  const AuthLoginSuccess(User user) : super(user: user);
+}
 
 class AuthLogoutSuccess extends AuthState {}
 

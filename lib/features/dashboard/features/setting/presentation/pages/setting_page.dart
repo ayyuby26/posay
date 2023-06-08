@@ -55,9 +55,10 @@ class Profile extends StatelessWidget {
                 "${context.tr.welcome},",
                 style: TextStyle(color: IColor.secondary),
               ),
-              const Text(
-                "Name",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              Text(
+                "${context.read<AuthBloc>().state.user?.name}",
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
