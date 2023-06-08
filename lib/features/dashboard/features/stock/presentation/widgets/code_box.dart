@@ -19,7 +19,7 @@ class CodeBox extends StatelessWidget {
             controller: codeController,
             decoration: InputDecoration(
               contentPadding: Const.edgesAll16,
-              labelText: "Code",
+              labelText: context.tr.code,
               focusedBorder: borderStyleLeft,
               enabledBorder: borderStyleLeft,
               filled: true,

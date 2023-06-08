@@ -5,6 +5,7 @@ import 'package:posay/features/dashboard/features/setting/presentation/pages/set
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_page.dart';
 import 'package:posay/features/dashboard/features/transaction/presentation/pages/transaction_page.dart';
 import 'package:posay/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:posay/shared/extension.dart';
 
 class DashboardPage extends StatelessWidget {
   static String get path => "/dashboard";
@@ -42,25 +43,25 @@ class __DashboardPageState extends State<_DashboardPage> {
           body: pages[state.index],
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart_rounded),
-                label: "Report",
+                icon: const Icon(Icons.bar_chart_rounded),
+                label: context.tr.report,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.compare_arrows_rounded),
-                label: "Transaction",
+                icon: const Icon(Icons.compare_arrows_rounded),
+                label: context.tr.transaction,
               ),
               BottomNavigationBarItem(
-                icon: Icon(
+                icon: const Icon(
                   Icons.inventory,
                   size: 20,
                 ),
-                label: "Stock",
+                label: context.tr.stock,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Setting",
+                icon: const Icon(Icons.settings),
+                label: context.tr.setting,
               ),
             ],
             onTap: (value) {

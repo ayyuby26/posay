@@ -21,7 +21,7 @@ class PriceBox extends StatelessWidget {
       decoration: InputDecoration(
         prefixIcon: prefixIcon(context),
         contentPadding: Const.edgesAll16,
-        labelText: "Price",
+        labelText: context.tr.price,
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,
         filled: true,

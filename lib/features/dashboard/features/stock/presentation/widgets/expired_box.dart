@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/widget_style.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/currency_input_formatter.dart';
@@ -27,7 +28,7 @@ class ExpiredBox extends StatelessWidget {
                 controller: dateController,
                 decoration: InputDecoration(
                   contentPadding: Const.edgesAll16,
-                  labelText: "Expired Date",
+                  labelText: context.tr.expiredDate,
                   focusedBorder: borderStyleLeft,
                   enabledBorder: borderStyleLeft,
                   filled: true,

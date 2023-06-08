@@ -52,7 +52,7 @@ class Profile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "welcome,",
+                "${context.tr.welcome},",
                 style: TextStyle(color: IColor.secondary),
               ),
               const Text(

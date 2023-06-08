@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posay/shared/constants/const.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
 class SearchBox extends StatelessWidget {
@@ -18,7 +19,7 @@ class SearchBox extends StatelessWidget {
             color: IColor.tertiary,
           ),
           contentPadding: Const.edgesAll16,
-          hintText: "Cari...",
+          hintText: context.tr.search,
           focusedBorder: OutlineInputBorder(
             borderRadius: Const.radiusCircular16,
             borderSide: BorderSide(

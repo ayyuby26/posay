@@ -34,7 +34,7 @@ class _AddStockPageState extends State<AddStockPage> with RestorationMixin {
         return Future.value(true);
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text("Add Stock/Stock Detail")),
+        appBar: AppBar(title: Text(context.tr.stockAdd)),
         body: Unfocus(
           child: Padding(
             padding: Const.edgesAll16,
@@ -51,7 +51,7 @@ class _AddStockPageState extends State<AddStockPage> with RestorationMixin {
                 TextButton(
                   style: buttonStylePrimary,
                   onPressed: () {},
-                  child: Text("ADD/SAVE", style: textStyle),
+                  child: Text(context.tr.add.toUpperCase(), style: textStyle),
                 ),
                 Const.height16,
                 TextButton(
@@ -60,15 +60,18 @@ class _AddStockPageState extends State<AddStockPage> with RestorationMixin {
                     PopUp.okCancel(
                       foregroundColorOk: Colors.red,
                       context: context,
-                      title: "Konfirmasi Hapus",
-                      content: "Yakin Ingin Menghapus",
-                      titleOk: "Hapus",
+                      title: context.tr.deleteConfirmation,
+                      content: context.tr.areYouSureYouWantToDelete,
+                      titleOk: context.tr.delete,
                       onPressed: () {
                         // context.read<AuthBloc>().add(AuthLogout(context));
                       },
                     );
                   },
-                  child: Text("DELETE", style: textStyle),
+                  child: Text(
+                    context.tr.delete.toUpperCase(),
+                    style: textStyle,
+                  ),
                 )
               ],
             ),
