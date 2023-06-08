@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/auth/domain/repositories/user_repository.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/add_stock_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
 import 'package:posay/injector.dart';
@@ -9,6 +10,7 @@ import '../../features/intro/presentation/pages/intro_page.dart';
 
 // GoRouter configuration
 final router = GoRouter(
+  initialLocation: DashboardPage.path,
   redirect: (context, state) {
     dynamic user;
 
@@ -33,6 +35,10 @@ final router = GoRouter(
     GoRoute(
       path: DashboardPage.path,
       builder: (context, state) => const DashboardPage(),
+    ),
+    GoRoute(
+      path: AddStockPage.path,
+      builder: (context, state) => const AddStockPage(),
     ),
   ],
 );

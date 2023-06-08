@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/add_stock_page.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
@@ -19,7 +21,9 @@ class StockPageState extends State<StockPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         tooltip: "Add Stock",
-        onPressed: () {},
+        onPressed: () {
+          context.push(AddStockPage.path);
+        },
         child: const Icon(Icons.add),
       ),
       body: Unfocus(
@@ -57,27 +61,32 @@ class StockPageState extends State<StockPage> {
             const SizedBox(
               height: 8,
             ),
-            const Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    _Item(),
-                    SizedBox(height: 72),
-                  ],
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () {
+                  return Future.delayed(const Duration(seconds: 2));
+                },
+                child: const SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      _Item(),
+                      SizedBox(height: 72),
+                    ],
+                  ),
                 ),
               ),
             ),

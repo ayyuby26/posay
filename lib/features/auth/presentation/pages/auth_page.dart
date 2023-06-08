@@ -95,25 +95,26 @@ class AuthPageState extends State<AuthPage> {
                     width: Const.screenSize.width,
                     height: 55,
                     child: TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: IColor.secondary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: Const.radiusCircular16,
-                          ),
+                      style: TextButton.styleFrom(
+                        backgroundColor: IColor.secondary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: Const.radiusCircular16,
                         ),
-                        onPressed: () {
-                          context.read<AuthBloc>().add(
-                                AuthLogin(
-                                  username: usernameController.text,
-                                  password: passwordController.text,
-                                  context: context,
-                                ),
-                              );
-                        },
-                        child: Text(
-                          context.tr.login,
-                          style: const TextStyle(color: Colors.white),
-                        )),
+                      ),
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              AuthLogin(
+                                username: usernameController.text,
+                                password: passwordController.text,
+                                context: context,
+                              ),
+                            );
+                      },
+                      child: Text(
+                        context.tr.login,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 )
                 // buildIntro(contents),

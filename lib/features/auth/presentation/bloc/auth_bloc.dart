@@ -40,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold(event.context.dialogError, (user) {
       saveUserToLocalDb.execute(user);
-      event.context.replace(DashboardPage.path);
+      event.context.pushReplacement(DashboardPage.path);
       emit(AuthLoginSuccess());
     });
   }
@@ -49,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event.context.canPop()) event.context.pop();
     final result = logout.execute();
     result.fold(event.context.dialogError, (r) {
-      event.context.replace(AuthPage.path);
+      event.context.pushReplacement(AuthPage.path);
       emit(AuthLogoutSuccess());
     });
   }

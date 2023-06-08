@@ -145,7 +145,7 @@ class _IntroPageState extends State<_IntroPage> {
           final contents = _introRepository.getIntroContents(context.tr);
           if ((contents.length - 1) == currIndex) {
             Injector.gett<IntroRepository>().saveIntro(contents.first.toModel);
-            context.replace(IntroPage.path);
+            context.pushReplacement(IntroPage.path);
           } else {
             _pageController.animateToPage(
               currIndex + 1,
