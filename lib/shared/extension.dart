@@ -10,6 +10,7 @@ extension TranslateExtension on BuildContext {
 
   /// current language
   Locale get localeOf => Localizations.localeOf(this);
+  bool get isEn => Localizations.localeOf(this).languageCode == "en";
 }
 
 extension Tools on BuildContext {

@@ -101,7 +101,7 @@ class Btn extends StatelessWidget {
               Icons.output,
               color: Colors.white,
             ),
-            Const.sizedBoxW16,
+            Const.width16,
             Text(
               context.tr.logout,
               style: const TextStyle(color: Colors.white),

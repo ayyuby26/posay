@@ -102,57 +102,109 @@ class _Item extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.maxFinite,
-      padding: Const.edgesAll16,
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: Const.radiusCircular8,
-        border: Border.all(
-          color: IColor.tertiary.withOpacity(.3),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: SizedBox(
+        width: double.maxFinite,
+        child: TextButton(
+          style: TextButton.styleFrom(
+            padding: Const.edgesAll16,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: IColor.tertiary.withOpacity(.3),
+                ),
+                borderRadius: Const.radiusCircular8),
+          ),
+          onPressed: () {
+            context.push(AddStockPage.path);
+          },
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Jahe Kencur",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "3 pcs",
+                  ),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Rp 3.000"),
+                  Text(
+                    "EXP: 28 Jan 2020",
+                    style: TextStyle(
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  "Jahe Kencur",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              Text(
-                "3 pcs",
-                // style: TextStyle(
-                //   fontWeight: FontWeight.bold,
-                //   fontSize: 18,
-                // ),
-              ),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Rp 3.000"),
-              Text(
-                "EXP: 28 Jan 2020",
-                style: TextStyle(
-                  color: Colors.green,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
+    // Container(
+    //   width: double.maxFinite,
+    //   padding: Const.edgesAll16,
+    //   margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+    //   decoration: BoxDecoration(
+    //     color: Colors.white,
+    //     borderRadius: Const.radiusCircular8,
+    //     border: Border.all(
+    //       color: IColor.tertiary.withOpacity(.3),
+    //     ),
+    //   ),
+    //   child: const Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Row(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           Expanded(
+    //             child: Text(
+    //               "Jahe Kencur",
+    //               style: TextStyle(
+    //                 fontWeight: FontWeight.bold,
+    //                 fontSize: 18,
+    //               ),
+    //             ),
+    //           ),
+    //           Text(
+    //             "3 pcs",
+    //           ),
+    //         ],
+    //       ),
+    //       Row(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           Text("Rp 3.000"),
+    //           Text(
+    //             "EXP: 28 Jan 2020",
+    //             style: TextStyle(
+    //               color: Colors.green,
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
   }
 }
