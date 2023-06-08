@@ -96,7 +96,7 @@ class AuthPageState extends State<AuthPage> {
                     height: 55,
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: IColor.secondary,
+                        backgroundColor: IColor.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: Const.radiusCircular16,
                         ),

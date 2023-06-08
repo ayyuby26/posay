@@ -16,7 +16,7 @@ extension TranslateExtension on BuildContext {
 extension Tools on BuildContext {
   double get appBarHeight => MediaQuery.of(this).viewPadding.top;
 }
-
+ 
 extension Loading on BuildContext {
   get loading {
     showDialog(

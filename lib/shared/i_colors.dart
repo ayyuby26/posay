@@ -19,4 +19,5 @@ class IColor {
   static Color get primary => const Color(0xff212A3E);
   static Color get secondary => const Color(0xff394867);
   static Color get tertiary => const Color(0xff9BA4B5);
+  static Color get border => tertiary.withOpacity(.3);
 }

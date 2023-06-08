@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:posay/core/setup.dart';
 import 'package:posay/core/theme_app.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/language/presentation/bloc/language_bloc.dart';
 import 'core/route/go_router.dart';
 import 'package:posay/injector.dart';
@@ -28,6 +29,7 @@ class App extends StatelessWidget {
               Injector.gett<LanguageBloc>()..add(const LoadLanguageEvent()),
         ),
         BlocProvider(create: (_) => Injector.gett<AuthBloc>()),
+        BlocProvider(create: (_) => StockBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
