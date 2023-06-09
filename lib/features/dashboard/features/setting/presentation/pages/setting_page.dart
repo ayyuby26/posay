@@ -5,7 +5,6 @@ import 'package:posay/features/language/presentation/pages/language_switch.dart'
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
-import 'package:posay/shared/pop_up.dart';
 import 'package:posay/shared/widget_style.dart';
 
 class SettingPage extends StatefulWidget {
@@ -33,7 +32,9 @@ class SsettingPageState extends State<SettingPage> {
             child: Column(
               children: [
                 Align(
-                    alignment: Alignment.centerRight, child: LanguageSwitch()),
+                  alignment: Alignment.centerRight,
+                  child: LanguageSwitch(),
+                ),
                 const Profile(),
                 const Btn(),
               ],
@@ -109,9 +110,8 @@ class Btn extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          PopUp.okCancel(
+          context.okCancel(
             foregroundColorOk: Colors.red,
-            context: context,
             title: context.tr.logoutConfirmTitle,
             content: context.tr.logoutConfirmContent,
             titleOk: context.tr.logout,

@@ -12,7 +12,6 @@ import 'package:posay/features/auth/domain/usecases/logout.dart';
 import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:posay/shared/extension.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -55,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
     if (event.context.canPop()) event.context.pop();
     final result = logout.execute();
-    result.fold(event.context.dialogError, (r) {
+    result.fold((l) => emit(AuthLogoutFailure(l.message)), (r) {
       event.context.pushReplacement(AuthPage.path);
       emit(AuthLogoutSuccess());
     });

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/pop_up.dart';
 import 'package:posay/shared/print.dart';
 
 class TransactionPage extends StatefulWidget {
@@ -35,10 +34,9 @@ class _TransactionPageState extends State<TransactionPage> {
                   ScanMode.BARCODE,
                 );
                 // ignore: use_build_context_synchronously
-                PopUp.ok(
+                context.ok(
                   title: "Result",
                   content: barcodeScanRes,
-                  context: context,
                 );
                 Print.green(barcodeScanRes);
               },

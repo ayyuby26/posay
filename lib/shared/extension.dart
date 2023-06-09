@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posay/shared/constants/const.dart';
-import 'package:posay/shared/failure.dart';
 import 'package:posay/shared/i_colors.dart';
 
 extension TranslateExtension on BuildContext {
@@ -42,7 +41,7 @@ extension Ok on BuildContext {
     required String title,
     required String content,
   }) {
-    if (canPop()) pop();
+    if (ModalRoute.of(this)?.isCurrent != true) pop();
     return showDialog(
       context: this,
       builder: (context) {
@@ -71,68 +70,38 @@ extension Ok on BuildContext {
   }
 }
 
-extension ShowDialog on BuildContext {
-  okCancel({
+extension OkCancel on BuildContext {
+  Future okCancel({
     required String title,
     required String content,
     required String titleOk,
-    required void Function(BuildContext) onPress,
+    required Color foregroundColorOk,
+    void Function()? onPressed,
   }) {
-    return (
-      showDialog(
-        context: this,
-        builder: (context1) {
-          return AlertDialog(
-            title: Center(child: Text(title)),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [Text(content)],
-            ),
-            actions: [
-              TextButton(
-                onPressed: pop,
-                child: Text(tr.cancel),
-              ),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.red,
-                ),
-                onPressed: () => onPress(this),
-                child: Text(
-                  titleOk,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  dialogError(Failure failure) {
+    if (ModalRoute.of(this)?.isCurrent != true) pop();
     return showDialog(
       context: this,
       builder: (context) {
         return AlertDialog(
-          title: const Center(child: Text("Oops")),
+          shape: Const.roundedCircular16,
+          title: Center(child: Text(title)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [Text(failure.message)],
+            children: [Text(content)],
           ),
-          actionsAlignment: MainAxisAlignment.center,
           actions: [
-            SizedBox(
-              width: double.maxFinite,
-              child: TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: IColor.secondary),
-                  onPressed: pop,
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            )
+            TextButton(
+              onPressed: context.pop,
+              child: Text(context.tr.cancel),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: foregroundColorOk),
+              onPressed: onPressed,
+              child: Text(
+                titleOk,
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
           ],
         );
       },

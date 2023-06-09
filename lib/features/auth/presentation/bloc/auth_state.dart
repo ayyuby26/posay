@@ -27,6 +27,10 @@ class AuthLoginFailure extends AuthState {
 
 class AuthLogoutSuccess extends AuthState {}
 
+class AuthLogoutFailure extends AuthState {
+  const AuthLogoutFailure(String message) : super(message: message);
+}
+
 class AuthShowPass extends AuthState {
   const AuthShowPass(isShowPass) : super(isShowPass: isShowPass);
 }

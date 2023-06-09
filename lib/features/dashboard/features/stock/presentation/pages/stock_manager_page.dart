@@ -9,7 +9,6 @@ import 'package:posay/features/dashboard/features/stock/presentation/widgets/pri
 import 'package:posay/shared/widget_style.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/pop_up.dart';
 import 'package:posay/shared/unfocus.dart';
 
 class StockManagerPage extends StatefulWidget {
@@ -58,9 +57,8 @@ class _StockManagerPageState extends State<StockManagerPage>
                 TextButton(
                   style: buttonStyleCancel,
                   onPressed: () {
-                    PopUp.okCancel(
+                    context.okCancel(
                       foregroundColorOk: Colors.red,
-                      context: context,
                       title: context.tr.deleteConfirmation,
                       content: context.tr.areYouSureYouWantToDelete,
                       titleOk: context.tr.delete,
