@@ -12,15 +12,16 @@ import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/pop_up.dart';
 import 'package:posay/shared/unfocus.dart';
 
-class AddStockPage extends StatefulWidget {
-  static String get path => "/addStock";
-  const AddStockPage({super.key});
+class StockManagerPage extends StatefulWidget {
+  static String get path => "/stockManager";
+  const StockManagerPage({super.key});
 
   @override
-  State<AddStockPage> createState() => _AddStockPageState();
+  State<StockManagerPage> createState() => _StockManagerPageState();
 }
 
-class _AddStockPageState extends State<AddStockPage> with RestorationMixin {
+class _StockManagerPageState extends State<StockManagerPage>
+    with RestorationMixin {
   final _codeController = TextEditingController();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();

@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/features/auth/domain/repositories/user_repository.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
-import 'package:posay/features/dashboard/features/stock/presentation/pages/add_stock_page.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
 import 'package:posay/injector.dart';
@@ -37,8 +37,8 @@ final router = GoRouter(
       builder: (context, state) => const DashboardPage(),
     ),
     GoRoute(
-      path: AddStockPage.path,
-      builder: (context, state) => const AddStockPage(),
+      path: StockManagerPage.path,
+      builder: (context, state) => const StockManagerPage(),
     ),
   ],
 );

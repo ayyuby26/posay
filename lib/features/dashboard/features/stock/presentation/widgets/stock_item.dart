@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:posay/features/dashboard/features/stock/presentation/pages/add_stock_page.dart';
+import 'package:intl/intl.dart';
+import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/shared/constants/const.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
 class StockItem extends StatelessWidget {
-  const StockItem({super.key});
+  final Stock stock;
+  const StockItem(this.stock, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +28,9 @@ class StockItem extends StatelessWidget {
                 borderRadius: Const.radiusCircular8),
           ),
           onPressed: () {
-            context.push(AddStockPage.path);
+            context.push(StockManagerPage.path);
           },
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -35,27 +39,25 @@ class StockItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      "Jahe Kencur",
-                      style: TextStyle(
+                      stock.name,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
                   ),
-                  Text(
-                    "3 pcs",
-                  ),
+                  Text("${stock.total} pcs"),
                 ],
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Rp 3.000"),
+                  Text("${ad(stock.price, stock.currency)}"),
                   Text(
-                    "EXP: 28 Jan 2020",
+                    "EXP: ${dateStringify(stock.expired, context)}",
                     style: TextStyle(
-                      color: Colors.green,
+                      color: wow(stock.expired),
                     ),
                   ),
                 ],
@@ -66,4 +68,35 @@ class StockItem extends StatelessWidget {
       ),
     );
   }
+
+  Color wow(DateTime? expired) {
+    if (expired == null) return Colors.white;
+    final now = DateTime.now();
+
+    final today = now.isAtSameMomentAs(expired);
+    final yesterday = now.isAfter(expired);
+    final future = now.isBefore(expired);
+
+    if (today) {
+      return Colors.orange;
+    } else if (yesterday) {
+      return Colors.red;
+    } else if (future) {
+      return Colors.green;
+    }
+    return Colors.white;
+  }
+}
+
+ad(double s, String currency) {
+  final currencyFormatter = NumberFormat.currency(
+    locale: currency == "usd" ? 'en_US' : 'ID',
+    symbol: currency == "usd" ? "USD " : 'Rp ',
+  );
+  return currencyFormatter.format(s);
+}
+
+String? dateStringify(DateTime? dateTime, BuildContext context) {
+  final dateFormat = DateFormat.yMMMd(context.isEn ? 'en_US' : 'id_ID');
+  return dateTime == null ? "" : dateFormat.format(dateTime);
 }

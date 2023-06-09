@@ -12,3 +12,5 @@ abstract class StockEvent extends Equatable {
 class StockUpdateExpired extends StockEvent {
   const StockUpdateExpired({DateTime? expired}) : super(expired: expired);
 }
+
+class StockGetData extends StockEvent {}

@@ -12,7 +12,7 @@ class User extends Equatable {
     required this.name,
   });
 
-  UserModel get toEntity {
+  UserModel get toModel {
     return UserModel(
       username: username,
       password: password,

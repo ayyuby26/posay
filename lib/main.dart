@@ -29,7 +29,7 @@ class App extends StatelessWidget {
               Injector.gett<LanguageBloc>()..add(const LoadLanguageEvent()),
         ),
         BlocProvider(create: (_) => Injector.gett<AuthBloc>()),
-        BlocProvider(create: (_) => StockBloc()),
+        BlocProvider(create: (_) => Injector.gett<StockBloc>()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

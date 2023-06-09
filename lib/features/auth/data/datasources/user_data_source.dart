@@ -45,7 +45,7 @@ class UserDataSourceImpl extends UserDataSource {
 
   @override
   int saveUserToLocalDb(User user) {
-    return userModel.put(user.toEntity);
+    return userModel.put(user.toModel);
   }
 
   @override
