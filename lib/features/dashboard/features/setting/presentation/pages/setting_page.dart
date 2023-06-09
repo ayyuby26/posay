@@ -16,6 +16,12 @@ class SettingPage extends StatefulWidget {
 
 class SsettingPageState extends State<SettingPage> {
   @override
+  void initState() {
+    context.read<AuthBloc>().add(AuthGetLocalUser());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -55,10 +61,16 @@ class Profile extends StatelessWidget {
                 "${context.tr.welcome},",
                 style: TextStyle(color: IColor.secondary),
               ),
-              Text(
-                "${context.read<AuthBloc>().state.user?.name}",
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  return Text(
+                    state.user?.name ?? "",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
               ),
             ],
           ),

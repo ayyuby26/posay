@@ -19,7 +19,10 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     StockUpdateExpired event,
     Emitter<StockState> emit,
   ) {
-    emit(StockUpdated(expired: event.expired, stockList: state.stockList));
+    emit(StockUpdated(
+      expired: event.expired,
+      stockList: state.stockList,
+    ));
   }
 
   FutureOr<void> stockGetData(

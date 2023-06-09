@@ -58,8 +58,8 @@ class Injector {
 
     // [ PROVIDER ]-------------------------------------------------------------
     _locator.registerFactory(() => StockBloc(_locator()));
-    _locator
-        .registerFactory(() => AuthBloc(_locator(), _locator(), _locator()));
+    _locator.registerFactory(
+        () => AuthBloc(_locator(), _locator(), _locator(), _locator()));
     _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
     _locator.registerFactory(
       () => LanguageBloc(
