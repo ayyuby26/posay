@@ -17,7 +17,8 @@ class SettingPage extends StatefulWidget {
 class SsettingPageState extends State<SettingPage> {
   @override
   void initState() {
-    context.read<AuthBloc>().add(AuthGetLocalUser());
+    final isEmpty = context.read<AuthBloc>().state.user == null;
+    if (isEmpty) context.read<AuthBloc>().add(AuthGetLocalUser());
     super.initState();
   }
 

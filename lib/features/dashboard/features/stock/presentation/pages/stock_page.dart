@@ -25,7 +25,8 @@ class StockPageState extends State<StockPage> {
 
   @override
   void initState() {
-    context.read<StockBloc>().add(StockGetData());
+    final stockEmpty = context.read<StockBloc>().state.stockList.isEmpty;
+    if (stockEmpty) context.read<StockBloc>().add(StockGetData());
     super.initState();
   }
 

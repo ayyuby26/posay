@@ -10,6 +10,7 @@ import 'package:posay/injector.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
+import 'package:posay/shared/widget_style.dart';
 
 class IntroPage extends StatelessWidget {
   static String get path => "/intro";
@@ -134,14 +135,9 @@ class _IntroPageState extends State<_IntroPage> {
     return Padding(
       padding: Const.edgesAll16,
       child: TextButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: Const.radiusCircular8,
-          ),
-        ),
+        style: buttonStylePrimary,
         onPressed: () async {
           final currIndex = context.read<IntroBloc>().state.index;
-
           final contents = _introRepository.getIntroContents(context.tr);
           if ((contents.length - 1) == currIndex) {
             Injector.gett<IntroRepository>().saveIntro(contents.first.toModel);
@@ -162,6 +158,7 @@ class _IntroPageState extends State<_IntroPage> {
               state.introContents.length - 1 == state.index
                   ? context.tr.finish
                   : context.tr.next,
+              style: textStyle,
             );
           },
         ),
