@@ -14,7 +14,7 @@ class CodeBox extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: TextFormField(
+          child: TextField(
             inputFormatters: inputFormatters,
             controller: codeController,
             decoration: InputDecoration(

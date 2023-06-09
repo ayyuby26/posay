@@ -58,26 +58,6 @@ class _IntroPageState extends State<_IntroPage> {
     );
   }
 
-  Widget get background {
-    return Container(
-      height: Const.screenSize.height / 1.8,
-      foregroundDecoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            IColor.background.withOpacity(.0),
-            IColor.background.withOpacity(.9),
-          ],
-        ),
-      ),
-      child: Image.asset(
-        "assets/background.png",
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
   Widget buildIntro(List<Intro> contents) {
     final introList = contents
         .map((content) => IntroContentWidget(

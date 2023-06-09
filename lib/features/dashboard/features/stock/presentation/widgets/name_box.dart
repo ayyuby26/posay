@@ -9,7 +9,7 @@ class NameBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return TextField(
       controller: nameController,
       decoration: InputDecoration(
         contentPadding: Const.edgesAll16,

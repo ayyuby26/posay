@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
@@ -25,6 +26,7 @@ class PopUp {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: Const.roundedCircular16,
           title: Center(child: Text(title)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -49,15 +51,17 @@ class PopUp {
     );
   }
 
- static Future ok({
+  static Future ok({
     required String title,
     required String content,
     required BuildContext context,
   }) {
+    if (context.canPop()) context.pop();
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: Const.roundedCircular16,
           title: Center(child: Text(title)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -65,17 +69,15 @@ class PopUp {
           ),
           actionsAlignment: MainAxisAlignment.center,
           actions: [
-            SizedBox(
-              width: double.maxFinite,
-              child: TextButton(
-                  style:
-                      TextButton.styleFrom(backgroundColor: IColor.secondary),
-                  onPressed: context.pop,
-                  child: const Text(
-                    "OK",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            )
+            TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: IColor.primary,
+                ),
+                onPressed: context.pop,
+                child: const Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white),
+                ))
           ],
         );
       },

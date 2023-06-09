@@ -43,8 +43,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     emit(AuthLoadedState());
 
-    result.fold(event.context.dialogError, (user) {
+    result.fold((l) => emit(AuthLoginFailure(l.message)), (user) {
       saveUserToLocalDb.execute(user);
+
+      if (event.context.canPop()) event.context.pop();
       event.context.pushReplacement(DashboardPage.path);
       emit(AuthLoginSuccess(user));
     });

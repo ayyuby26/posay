@@ -49,3 +49,40 @@ ButtonStyle get buttonStyleCancel {
 TextStyle get textStyle {
   return const TextStyle(color: Colors.white);
 }
+
+Widget iconic(double size) {
+  return Stack(
+    children: [
+      Icon(Icons.circle, size: size),
+      SizedBox(
+        width: size,
+        height: size,
+        child: Icon(
+          Icons.person_4_rounded,
+          size: size / 2.59,
+          color: Colors.white,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget get background {
+  return Container(
+    height: Const.screenSize.height / 1.8,
+    foregroundDecoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          IColor.background.withOpacity(.0),
+          IColor.background.withOpacity(.9),
+        ],
+      ),
+    ),
+    child: Image.asset(
+      "assets/background.png",
+      fit: BoxFit.cover,
+    ),
+  );
+}

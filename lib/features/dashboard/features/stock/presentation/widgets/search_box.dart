@@ -12,7 +12,7 @@ class SearchBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: Const.edgesSymmetricV8H16,
-      child: TextFormField(
+      child: TextField(
         enabled: enabled,
         controller: searchController,
         decoration: InputDecoration(

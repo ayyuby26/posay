@@ -6,6 +6,7 @@ import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/pop_up.dart';
+import 'package:posay/shared/widget_style.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -25,14 +26,20 @@ class SsettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Align(alignment: Alignment.centerRight, child: LanguageSwitch()),
-            const Profile(),
-            const Btn(),
-          ],
-        ),
+      body: Stack(
+        children: [
+          background,
+          SafeArea(
+            child: Column(
+              children: [
+                Align(
+                    alignment: Alignment.centerRight, child: LanguageSwitch()),
+                const Profile(),
+                const Btn(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -52,9 +59,8 @@ class Profile extends StatelessWidget {
       margin: Const.edgesAll16,
       padding: Const.edgesAll16,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // const Icon(Icons.person_pin_rounded),
-          // Const.sizedBoxW8,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -74,6 +80,11 @@ class Profile extends StatelessWidget {
                 },
               ),
             ],
+          ),
+          Icon(
+            Icons.person_4_rounded,
+            size: 50,
+            color: IColor.primary,
           ),
         ],
       ),

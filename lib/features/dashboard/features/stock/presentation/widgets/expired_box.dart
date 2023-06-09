@@ -18,7 +18,7 @@ class ExpiredBox extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              TextFormField(
+              TextField(
                 style: const TextStyle(color: Colors.black),
                 keyboardType: TextInputType.number,
                 inputFormatters: [
