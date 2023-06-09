@@ -12,7 +12,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   GetStockList getStockList;
   StockBloc(this.getStockList) : super(StockInitial()) {
     on<StockUpdateExpired>(_stockUpdateExpired);
-    on<StockGetData>(_stockGetData);
+    on<StockGetData>(stockGetData);
   }
 
   FutureOr<void> _stockUpdateExpired(
@@ -22,12 +22,12 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     emit(StockUpdated(expired: event.expired, stockList: state.stockList));
   }
 
-  FutureOr<void> _stockGetData(
+  FutureOr<void> stockGetData(
     StockGetData event,
     Emitter<StockState> emit,
   ) async {
-    final result = await getStockList.execute();
     emit(StockDataLoading());
+    final result = await getStockList.execute();
     result.fold(
       (l) => emit(StockDataError(l.message)),
       (r) => emit(StockDataSuccess(r)),
