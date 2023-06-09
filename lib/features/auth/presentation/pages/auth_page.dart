@@ -29,76 +29,99 @@ class AuthPageState extends State<AuthPage> {
           children: [
             background,
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Padding(
-                  padding: Const.edgesSymmetricV8H16,
-                  child: TextFormField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      contentPadding: Const.edgesAll16,
-                      labelText: context.tr.username,
-                      focusedBorder: outlineInputBorder,
-                      enabledBorder: outlineInputBorder,
-                      filled: true,
-                      fillColor: IColor.background,
+                const Stack(
+                  children: [
+                    Icon(
+                      Icons.circle,
+                      size: 200,
                     ),
-                  ),
+                    SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Icon(
+                        Icons.person_4_rounded,
+                        size: 77,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: Const.edgesSymmetricV8H16,
-                  child: BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      return TextFormField(
-                        obscureText: !state.isShowPass,
-                        controller: passwordController,
+                Column(
+                  children: [
+                    Padding(
+                      padding: Const.edgesSymmetricV8H16,
+                      child: TextFormField(
+                        controller: usernameController,
                         decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              context.read<AuthBloc>().add(AuthShowPassEvent());
-                            },
-                            icon: BlocBuilder<AuthBloc, AuthState>(
-                              builder: (context, state) {
-                                return Icon(
-                                  state.isShowPass
-                                      ? Icons.remove_red_eye
-                                      : Icons.visibility_off,
-                                );
-                              },
-                            ),
-                          ),
                           contentPadding: Const.edgesAll16,
-                          labelText: context.tr.password,
+                          labelText: context.tr.username,
                           focusedBorder: outlineInputBorder,
                           enabledBorder: outlineInputBorder,
                           filled: true,
                           fillColor: IColor.background,
                         ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: Const.edgesAll16,
-                  child: SizedBox(
-                    width: Const.screenSize.width,
-                    height: 55,
-                    child: TextButton(
-                      style: buttonStylePrimary,
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                              AuthLogin(
-                                username: usernameController.text,
-                                password: passwordController.text,
-                                context: context,
-                              ),
-                            );
-                      },
-                      child: Text(context.tr.login, style: textStyle),
+                      ),
                     ),
-                  ),
-                )
-                // buildIntro(contents),
+                    Padding(
+                      padding: Const.edgesSymmetricV8H16,
+                      child: BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            obscureText: !state.isShowPass,
+                            controller: passwordController,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(AuthShowPassEvent());
+                                },
+                                icon: BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                    return Icon(
+                                      state.isShowPass
+                                          ? Icons.remove_red_eye
+                                          : Icons.visibility_off,
+                                    );
+                                  },
+                                ),
+                              ),
+                              contentPadding: Const.edgesAll16,
+                              labelText: context.tr.password,
+                              focusedBorder: outlineInputBorder,
+                              enabledBorder: outlineInputBorder,
+                              filled: true,
+                              fillColor: IColor.background,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: Const.edgesAll16,
+                      child: SizedBox(
+                        width: Const.screenSize.width,
+                        height: 55,
+                        child: TextButton(
+                          style: buttonStylePrimary,
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  AuthLogin(
+                                    username: usernameController.text,
+                                    password: passwordController.text,
+                                    context: context,
+                                  ),
+                                );
+                          },
+                          child: Text(context.tr.login, style: textStyle),
+                        ),
+                      ),
+                    )
+                    // buildIntro(contents),
+                  ],
+                ),
                 // buildIndicator(contents),
               ],
             ),
@@ -137,7 +160,7 @@ class AuthPageState extends State<AuthPage> {
 
   Widget get background {
     return Container(
-      height: Const.screenSize.height / 1.2,
+      height: Const.screenSize.height / 1.8,
       foregroundDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
