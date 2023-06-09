@@ -7,6 +7,7 @@ import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/unfocus.dart';
+import 'package:posay/shared/widget_style.dart';
 
 class AuthPage extends StatefulWidget {
   static String get path => "/auth";
@@ -37,14 +38,8 @@ class AuthPageState extends State<AuthPage> {
                     decoration: InputDecoration(
                       contentPadding: Const.edgesAll16,
                       labelText: context.tr.username,
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: Const.radiusCircular16,
-                        borderSide: BorderSide(color: IColor.tertiary),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: Const.radiusCircular16,
-                        borderSide: BorderSide(color: IColor.tertiary),
-                      ),
+                      focusedBorder: outlineInputBorder,
+                      enabledBorder: outlineInputBorder,
                       filled: true,
                       fillColor: IColor.background,
                     ),
@@ -74,14 +69,8 @@ class AuthPageState extends State<AuthPage> {
                           ),
                           contentPadding: Const.edgesAll16,
                           labelText: context.tr.password,
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: Const.radiusCircular16,
-                            borderSide: BorderSide(color: IColor.tertiary),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: Const.radiusCircular16,
-                            borderSide: BorderSide(color: IColor.tertiary),
-                          ),
+                          focusedBorder: outlineInputBorder,
+                          enabledBorder: outlineInputBorder,
                           filled: true,
                           fillColor: IColor.background,
                         ),
@@ -95,12 +84,7 @@ class AuthPageState extends State<AuthPage> {
                     width: Const.screenSize.width,
                     height: 55,
                     child: TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: IColor.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: Const.radiusCircular16,
-                        ),
-                      ),
+                      style: buttonStylePrimary,
                       onPressed: () {
                         context.read<AuthBloc>().add(
                               AuthLogin(
@@ -110,10 +94,7 @@ class AuthPageState extends State<AuthPage> {
                               ),
                             );
                       },
-                      child: Text(
-                        context.tr.login,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                      child: Text(context.tr.login, style: textStyle),
                     ),
                   ),
                 )
