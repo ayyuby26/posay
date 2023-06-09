@@ -53,11 +53,11 @@ class StockItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("${ad(stock.price, stock.currency)}"),
+                  Text("${currencyFormatter(stock.price, stock.currency)}"),
                   Text(
                     "EXP: ${dateStringify(stock.expired, context)}",
                     style: TextStyle(
-                      color: wow(stock.expired),
+                      color: expiredColor(stock.expired),
                     ),
                   ),
                 ],
@@ -69,7 +69,7 @@ class StockItem extends StatelessWidget {
     );
   }
 
-  Color wow(DateTime? expired) {
+  Color expiredColor(DateTime? expired) {
     if (expired == null) return Colors.white;
     final now = DateTime.now();
 
@@ -86,17 +86,17 @@ class StockItem extends StatelessWidget {
     }
     return Colors.white;
   }
-}
 
-ad(double s, String currency) {
-  final currencyFormatter = NumberFormat.currency(
-    locale: currency == "usd" ? 'en_US' : 'ID',
-    symbol: currency == "usd" ? "USD " : 'Rp ',
-  );
-  return currencyFormatter.format(s);
-}
+  currencyFormatter(double price, String currency) {
+    final currencyFormatter = NumberFormat.currency(
+      locale: currency == "usd" ? 'en_US' : 'ID',
+      symbol: currency == "usd" ? "USD " : 'Rp ',
+    );
+    return currencyFormatter.format(price);
+  }
 
-String? dateStringify(DateTime? dateTime, BuildContext context) {
-  final dateFormat = DateFormat.yMMMd(context.isEn ? 'en_US' : 'id_ID');
-  return dateTime == null ? "" : dateFormat.format(dateTime);
+  String? dateStringify(DateTime? dateTime, BuildContext context) {
+    final dateFormat = DateFormat.yMMMd(context.isEn ? 'en_US' : 'id_ID');
+    return dateTime == null ? "" : dateFormat.format(dateTime);
+  }
 }
