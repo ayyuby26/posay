@@ -15,6 +15,8 @@ extension TranslateExtension on BuildContext {
 
 extension Tools on BuildContext {
   double get appBarHeight => MediaQuery.of(this).viewPadding.top;
+  void get closeSnackBar => ScaffoldMessenger.of(this).removeCurrentSnackBar();
+  closeDialog() => ModalRoute.of(this)?.isCurrent != true ? pop() : null;
 }
 
 extension Loading on BuildContext {

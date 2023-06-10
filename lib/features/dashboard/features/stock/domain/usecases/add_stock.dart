@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
+import 'package:posay/features/dashboard/features/stock/data/models/stock_model.dart';
 import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/repositories/stock_repository.dart';
 import 'package:posay/shared/failure.dart';
 
-class GetStockList {
+class AddStock {
   final StockRepository stockRepository;
 
-  GetStockList({required this.stockRepository});
+  AddStock({required this.stockRepository});
 
-  Future<Either<Failure, List<Stock>>> execute() async {
-    return stockRepository.getStockList(-1);
+  Future<Either<Failure, Stock>> execute(StockModel stock) async {
+    return stockRepository.addStock(stock);
   }
 }

@@ -3,12 +3,12 @@ import 'package:posay/features/dashboard/features/stock/domain/entities/stock.da
 import 'package:posay/features/dashboard/features/stock/domain/repositories/stock_repository.dart';
 import 'package:posay/shared/failure.dart';
 
-class GetStockList {
+class NextPageStock {
   final StockRepository stockRepository;
 
-  GetStockList({required this.stockRepository});
+  NextPageStock({required this.stockRepository});
 
-  Future<Either<Failure, List<Stock>>> execute() async {
-    return stockRepository.getStockList(-1);
+  Future<Either<Failure, List<Stock>>> execute(int currLength) async {
+    return stockRepository.getStockList(currLength);
   }
 }

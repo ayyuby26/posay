@@ -10,29 +10,27 @@ abstract class AuthEvent extends Equatable {
 class AuthLogin extends AuthEvent {
   final String username;
   final String password;
-  final BuildContext context;
 
   const AuthLogin({
     required this.username,
     required this.password,
-    required this.context,
   });
 
   @override
-  List<Object> get props => [username, password, context];
+  List<Object> get props => [username, password];
 }
 
 class AuthLogout extends AuthEvent {
   final BuildContext context;
 
   const AuthLogout(this.context);
-  
+
   @override
   List<Object> get props => [context];
 }
 
-class AuthShowPassEvent extends AuthEvent{}
+class AuthShowPassEvent extends AuthEvent {}
 
-class AuthLoadingEvent extends AuthEvent{}
+class AuthLoadingEvent extends AuthEvent {}
 
-class AuthGetLocalUser extends AuthEvent{}
+class AuthGetLocalUser extends AuthEvent {}

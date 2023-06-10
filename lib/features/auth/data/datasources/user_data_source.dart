@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/appwrite.dart' as x;
 
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/db_constants_id.dart';
@@ -11,7 +12,6 @@ abstract class UserDataSource {
   Future<UserModel> login(
     String username,
     String password,
-    List<Map<String, dynamic>> users,
   );
   Future<List<Map<String, dynamic>>> getUsers();
 }
@@ -28,18 +28,21 @@ class UserDataSourceImpl extends UserDataSource {
   }
 
   @override
-  Future<UserModel> login(
-    String username,
-    String password,
-    List<Map<String, dynamic>> users,
-  ) async {
-    final user = users.firstWhere(
-        (e) => e['username'] == username && e['password'] == password);
+  Future<UserModel> login(String username, String password) async {
+    final users = await databases.listDocuments(
+        databaseId: DbConstantsId.databaseId,
+        collectionId: DbConstantsId.authId,
+        queries: [
+          x.Query.equal("username", [username])
+        ]);
+
+    final user =
+        users.documents.firstWhere((e) => e.data['password'] == password);
 
     return UserModel(
       username: username,
       password: password,
-      name: user['name'],
+      name: user.data['name'],
     );
   }
 

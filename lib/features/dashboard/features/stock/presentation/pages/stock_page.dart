@@ -22,11 +22,20 @@ class StockPage extends StatefulWidget {
 
 class StockPageState extends State<StockPage> {
   final searchController = TextEditingController();
+  final _controller = ScrollController();
 
   @override
   void initState() {
     final stockEmpty = context.read<StockBloc>().state.stockList.isEmpty;
     if (stockEmpty) context.read<StockBloc>().add(StockGetData());
+
+    // Setup the listener.
+    _controller.addListener(() {
+      if (_controller.position.atEdge) {
+        bool isTop = _controller.position.pixels == 0;
+        if (!isTop) context.read<StockBloc>().add(StockNextPage());
+      }
+    });
     super.initState();
   }
 
@@ -82,18 +91,12 @@ class StockPageState extends State<StockPage> {
                             const Center(child: CupertinoActivityIndicator()),
                       );
                     }
-                    if (state is StockDataSuccess || state is StockUpdated) {
+                    if (state.stockList.isNotEmpty) {
                       return SingleChildScrollView(
+                        controller: _controller,
                         child: Column(
                           children:
                               state.stockList.map((e) => StockItem(e)).toList(),
-                          // [
-                          //   Container(
-                          //     color: Colors.red,
-                          //     width: 100,
-                          //     height: 900,
-                          //   )
-                          // ],
                         ),
                       );
                     }
@@ -105,10 +108,16 @@ class StockPageState extends State<StockPage> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         tooltip: "Add Stock",
-        onPressed: () => context.push(StockManagerPage.path),
+        onPressed: () async {
+          final newData = await context.push(StockManagerPage.path);
+          if (newData is bool && newData) {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              context.read<StockBloc>().add(StockGetData());
+            });
+          }
+        },
         child: const Icon(Icons.add),
       ),
     );

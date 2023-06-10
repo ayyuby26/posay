@@ -9,6 +9,7 @@ part 'stock_model.g.dart';
 @Entity()
 class StockModel {
   int id = 0;
+  String databaseId;
   final String name;
   final String code;
   @Property(uid: 8658536853573444526)
@@ -20,6 +21,7 @@ class StockModel {
   final String currency;
 
   StockModel({
+    required this.databaseId,
     required this.name,
     required this.code,
     required this.total,
@@ -32,6 +34,7 @@ class StockModel {
 
   Stock toEntity() {
     return Stock(
+      databaseId: databaseId,
       name: name,
       code: code,
       total: total,
@@ -45,4 +48,6 @@ class StockModel {
 
   factory StockModel.fromJson(Map<String, dynamic> json) =>
       _$StockModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StockModelToJson(this);
 }

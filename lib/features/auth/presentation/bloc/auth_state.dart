@@ -4,9 +4,9 @@ abstract class AuthState extends Equatable {
   final User? user;
   final RequestState status;
   final bool isShowPass;
-  final String message;
+  final Failure? message;
   const AuthState(
-      {this.message = "",
+      {this.message,
       this.isShowPass = false,
       this.status = RequestState.empty,
       this.user});
@@ -22,13 +22,13 @@ class AuthLoginSuccess extends AuthState {
 }
 
 class AuthLoginFailure extends AuthState {
-  const AuthLoginFailure(String message) : super(message: message);
+  const AuthLoginFailure(Failure message) : super(message: message);
 }
 
 class AuthLogoutSuccess extends AuthState {}
 
 class AuthLogoutFailure extends AuthState {
-  const AuthLogoutFailure(String message) : super(message: message);
+  const AuthLogoutFailure(Failure message) : super(message: message);
 }
 
 class AuthShowPass extends AuthState {
@@ -44,5 +44,5 @@ class AuthLocalUserLoaded extends AuthState {
 }
 
 class AuthLocalUserFailure extends AuthState {
-  const AuthLocalUserFailure(String message) : super(message: message);
+  const AuthLocalUserFailure(Failure message) : super(message: message);
 }

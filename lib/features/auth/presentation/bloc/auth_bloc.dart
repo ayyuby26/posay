@@ -11,7 +11,7 @@ import 'package:posay/features/auth/domain/usecases/login.dart';
 import 'package:posay/features/auth/domain/usecases/logout.dart';
 import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
-import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:posay/shared/failure.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -38,15 +38,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final result = await login.execute(
       event.username,
       event.password,
-      event.context,
     );
     emit(AuthLoadedState());
 
-    result.fold((l) => emit(AuthLoginFailure(l.message)), (user) {
+    result.fold((l) => emit(AuthLoginFailure(l)), (user) {
       saveUserToLocalDb.execute(user);
-
-      if (event.context.canPop()) event.context.pop();
-      event.context.pushReplacement(DashboardPage.path);
       emit(AuthLoginSuccess(user));
     });
   }
@@ -54,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
     if (event.context.canPop()) event.context.pop();
     final result = logout.execute();
-    result.fold((l) => emit(AuthLogoutFailure(l.message)), (r) {
+    result.fold((l) => emit(AuthLogoutFailure(l)), (r) {
       event.context.pushReplacement(AuthPage.path);
       emit(AuthLogoutSuccess());
     });
@@ -70,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   FutureOr<void> _authGetLocalUser(
       AuthGetLocalUser event, Emitter<AuthState> emit) {
     final result = getLocalUser.execute();
-    result.fold((l) => emit(AuthLocalUserFailure(l.message)),
+    result.fold((l) => emit(AuthLocalUserFailure(l)),
         (r) => emit(AuthLocalUserLoaded(r)));
   }
 }

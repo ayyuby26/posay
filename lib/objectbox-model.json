@@ -82,7 +82,7 @@
     },
     {
       "id": "5:5393992314492888139",
-      "lastPropertyId": "11:8658536853573444526",
+      "lastPropertyId": "12:5201367708836884262",
       "name": "StockModel",
       "properties": [
         {
@@ -130,6 +130,11 @@
           "id": "11:8658536853573444526",
           "name": "total",
           "type": 6
+        },
+        {
+          "id": "12:5201367708836884262",
+          "name": "databaseId",
+          "type": 9
         }
       ],
       "relations": []

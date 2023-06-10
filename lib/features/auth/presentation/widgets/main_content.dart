@@ -24,7 +24,7 @@ class MainContentAuth extends StatelessWidget {
             password(context),
             loginBtn(context),
           ],
-        ),
+        ), //       LANJUT KIRIM ID STOCK KE STOCK MANAGER PAGE
       ],
     );
   }
@@ -95,7 +95,6 @@ class MainContentAuth extends StatelessWidget {
                   AuthLogin(
                     username: _userController.text,
                     password: _passController.text,
-                    context: context,
                   ),
                 );
           },
