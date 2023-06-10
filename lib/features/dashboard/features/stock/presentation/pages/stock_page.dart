@@ -33,7 +33,10 @@ class StockPageState extends State<StockPage> {
     _controller.addListener(() {
       if (_controller.position.atEdge) {
         bool isTop = _controller.position.pixels == 0;
-        if (!isTop) context.read<StockBloc>().add(StockNextPage());
+        final state = context.read<StockBloc>().state;
+        if (!isTop && state is! StockLastPage) {
+          context.read<StockBloc>().add(StockNextPage());
+        }
       }
     });
     super.initState();

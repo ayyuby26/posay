@@ -76,7 +76,9 @@ class StockItem extends StatelessWidget {
           builder: (context, state) {
             if (state.stockList.last == stock) {
               if (state is StockLastPage) {
-                return const SizedBox();
+                return const SizedBox(
+                  height: 77,
+                );
               }
               return const Padding(
                 padding: EdgeInsets.only(bottom: 16),
