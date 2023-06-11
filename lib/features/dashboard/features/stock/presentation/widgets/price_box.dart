@@ -11,30 +11,23 @@ class PriceBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        CurrencyInputFormatter(context),
-      ],
-      controller: priceController,
-      decoration: InputDecoration(
-        prefixIcon: prefixIcon(context),
-        contentPadding: Const.edgesAll16,
-        labelText: context.tr.price,
-        focusedBorder: outlineInputBorder,
-        enabledBorder: outlineInputBorder,
-        filled: true,
-        fillColor: Colors.white,
-      ),
-    );
-  }
-
-  SizedBox prefixIcon(BuildContext context) {
     return SizedBox(
-      width: 1,
-      child: Center(
-        child: Text(context.isEn ? "\$" : "Rp"),
+      child: TextField(
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly,
+          CurrencyInputFormatter(context),
+        ],
+        controller: priceController,
+        decoration: InputDecoration(
+          prefixText: context.isEn ? "\$  " : "Rp  ",
+          contentPadding: Const.edgesSymmetricV8H16,
+          labelText: context.tr.price,
+          focusedBorder: outlineInputBorder,
+          enabledBorder: outlineInputBorder,
+          filled: true,
+          fillColor: Colors.white,
+        ),
       ),
     );
   }

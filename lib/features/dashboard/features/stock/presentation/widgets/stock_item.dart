@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
-import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
@@ -27,13 +24,14 @@ class StockItem extends StatelessWidget {
                 padding: Const.edgesAll16,
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      color: IColor.tertiary.withOpacity(.3),
-                    ),
-                    borderRadius: Const.radiusCircular8),
+                  side: BorderSide(
+                    color: IColor.tertiary.withOpacity(.3),
+                  ),
+                  borderRadius: Const.radiusCircular8,
+                ),
               ),
               onPressed: () {
-                context.push(StockManagerPage.path);
+                context.push(StockManagerPage.pathParam(stock.databaseId));
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,22 +69,6 @@ class StockItem extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        BlocBuilder<StockBloc, StockState>(
-          builder: (context, state) {
-            if (state.stockList.last == stock) {
-              if (state is StockLastPage) {
-                return const SizedBox(
-                  height: 77,
-                );
-              }
-              return const Padding(
-                padding: EdgeInsets.only(bottom: 16),
-                child: CupertinoActivityIndicator(),
-              );
-            }
-            return const SizedBox();
-          },
         ),
       ],
     );

@@ -9,6 +9,6 @@ class NextPageStock {
   NextPageStock({required this.stockRepository});
 
   Future<Either<Failure, List<Stock>>> execute(int currLength) async {
-    return stockRepository.getStockList(currLength);
+    return stockRepository.getStockList(currLength: currLength);
   }
 }

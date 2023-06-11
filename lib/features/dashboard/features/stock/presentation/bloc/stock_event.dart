@@ -1,6 +1,6 @@
 part of 'stock_bloc.dart';
 
-abstract class StockEvent extends Equatable {
+sealed class StockEvent extends Equatable {
   final DateTime? expired;
 
   const StockEvent({this.expired});
@@ -13,7 +13,7 @@ class StockUpdateExpired extends StockEvent {
   const StockUpdateExpired({DateTime? expired}) : super(expired: expired);
 }
 
-class StockGetData extends StockEvent {}
+final class StockGetData extends StockEvent {}
 
 class StockAddData extends StockEvent {
   final String code;
@@ -44,5 +44,34 @@ class StockAddData extends StockEvent {
       ];
 }
 
-class StockNextPage extends StockEvent {}
+class StockNextPage extends StockEvent {
+  final bool? isLast;
+  final bool isScrollAuto;
 
+  const StockNextPage({this.isLast, this.isScrollAuto = false});
+
+  @override
+  List<Object?> get props => [isLast,isScrollAuto];
+}
+
+class StockSearching extends StockEvent {
+  final String search;
+
+  const StockSearching(this.search);
+
+  @override
+  List<Object> get props => [search];
+}
+
+class StockAddLoadingBottom extends StockEvent {}
+
+class StockHideLoadingBottom extends StockEvent {
+  final bool isScrollable;
+
+  const StockHideLoadingBottom(this.isScrollable);
+  @override
+  List<Object> get props => [isScrollable];
+}
+
+class StockHasReachMaxReset extends StockEvent {}
+class StockSearchReset extends StockEvent {}

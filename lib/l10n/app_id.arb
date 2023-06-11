@@ -30,5 +30,12 @@
     "deleteConfirmation":  "Konfirmasi Hapus",
     "areYouSureYouWantToDelete": "Anda yakin ingin menghapus?",
     "scanBarcode":  "Pindai Barcode",
-    "selectDate":  "Pilih Tanggal"
+    "selectDate":  "Pilih Tanggal",
+    "unit": "Satuan",
+    "successAddData": "Berhasil Tambah Data",
+    "stocksEmpty": "Stok Kosong",
+    "tryAgain": "Coba Lagi",
+    "searchPage": "Halaman Pencarian",
+    "searchByName": "Cari dengan nama...",
+    "findStockDesc": "Cari Stok yang ingin ditemukan..."
 }

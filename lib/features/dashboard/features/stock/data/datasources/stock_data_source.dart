@@ -3,7 +3,10 @@ import 'package:posay/core/db_constants_id.dart';
 import 'package:posay/features/dashboard/features/stock/data/models/stock_model.dart';
 
 abstract class StockDataSource {
-  Future<List<StockModel>> getStockList(int currLength);
+  Future<List<StockModel>> getStockList({
+    int currLength = -1,
+    String search = '',
+  });
   Future<StockModel> addStock(StockModel stock);
 }
 
@@ -13,12 +16,18 @@ class StockDataSourceImpl extends StockDataSource {
   StockDataSourceImpl(this.databases);
 
   @override
-  Future<List<StockModel>> getStockList(int currLength) async {
+  Future<List<StockModel>> getStockList({
+    int currLength = -1,
+    String search = '',
+  }) async {
     final stockList = await databases.listDocuments(
       databaseId: DbConstantsId.databaseId,
       collectionId: DbConstantsId.stockId,
       queries: [
         if (!currLength.isNegative) Query.offset(currLength),
+        if (search.isNotEmpty) ...[
+          Query.equal('name', search),
+        ]
       ],
     );
 

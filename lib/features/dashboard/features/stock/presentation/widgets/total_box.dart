@@ -15,7 +15,7 @@ class TotalBox extends StatelessWidget {
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       controller: priceController,
       decoration: InputDecoration(
-        contentPadding: Const.edgesAll16,
+        contentPadding: Const.edgesSymmetricV8H16,
         labelText: "Total",
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,

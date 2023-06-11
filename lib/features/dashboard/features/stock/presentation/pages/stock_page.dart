@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/pages/search_stock_page.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/search_box.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/stock_item.dart';
-import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
-import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/unfocus.dart';
-import 'package:posay/shared/widget_style.dart';
-
-import '../bloc/stock_bloc.dart';
+import 'package:posay/shared/widgets/empty_stock_widget.dart';
+import 'package:posay/shared/widgets/failure_widget.dart';
+import 'package:posay/shared/widgets/loading_widget.dart';
 
 class StockPage extends StatefulWidget {
   const StockPage({super.key});
@@ -22,23 +22,23 @@ class StockPage extends StatefulWidget {
 
 class StockPageState extends State<StockPage> {
   final searchController = TextEditingController();
-  final _controller = ScrollController();
+  final _scrollController = ScrollController();
 
   @override
   void initState() {
-    final stockEmpty = context.read<StockBloc>().state.stockList.isEmpty;
-    if (stockEmpty) context.read<StockBloc>().add(StockGetData());
+    final stock = context.read<StockBloc>();
+    final stockEmpty = stock.state.stocks.isEmpty;
+    if (stockEmpty) stock.add(StockGetData());
 
-    // Setup the listener.
-    _controller.addListener(() {
-      if (_controller.position.atEdge) {
-        bool isTop = _controller.position.pixels == 0;
-        final state = context.read<StockBloc>().state;
-        if (!isTop && state is! StockLastPage) {
-          context.read<StockBloc>().add(StockNextPage());
+    _scrollController.addListener(() {
+      if (_scrollController.position.atEdge) {
+        bool isTop = _scrollController.position.pixels == 0;
+        if (!isTop && !stock.state.hasReachedMax) {
+          stock.add(const StockNextPage());
         }
       }
     });
+
     super.initState();
   }
 
@@ -48,63 +48,13 @@ class StockPageState extends State<StockPage> {
       body: Unfocus(
         child: Column(
           children: [
-            SizedBox(height: context.appBarHeight),
-            BlocBuilder<StockBloc, StockState>(
-              builder: (context, state) {
-                return SearchBox(enabled: state.stockList.isNotEmpty);
-              },
-            ),
-            Const.height8,
+            context.appBarHeight,
+            _search(context),
             Expanded(
               child: RefreshIndicator(
-                onRefresh: () {
-                  context.read<StockBloc>().add(StockGetData());
-                  return Future.value();
-                },
+                onRefresh: onRefresh,
                 child: BlocBuilder<StockBloc, StockState>(
-                  builder: (context, state) {
-                    if (state is StockDataError) {
-                      return Center(
-                          child: Padding(
-                        padding: Const.edgesAll16,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(state.message),
-                            Const.height16,
-                            TextButton(
-                                style: buttonStylePrimary,
-                                onPressed: () {
-                                  context.read<StockBloc>().add(StockGetData());
-                                },
-                                child: Text(
-                                  "Coba Lagi",
-                                  style: textStyle,
-                                ))
-                          ],
-                        ),
-                      ));
-                    }
-                    if (state is StockDataLoading) {
-                      return Container(
-                        color: IColor.background,
-                        width: double.maxFinite,
-                        height: double.maxFinite,
-                        child:
-                            const Center(child: CupertinoActivityIndicator()),
-                      );
-                    }
-                    if (state.stockList.isNotEmpty) {
-                      return SingleChildScrollView(
-                        controller: _controller,
-                        child: Column(
-                          children:
-                              state.stockList.map((e) => StockItem(e)).toList(),
-                        ),
-                      );
-                    }
-                    return const SizedBox();
-                  },
+                  builder: builder,
                 ),
               ),
             ),
@@ -112,17 +62,89 @@ class StockPageState extends State<StockPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: "Add Stock",
+        tooltip: context.tr.stockAdd,
         onPressed: () async {
-          final newData = await context.push(StockManagerPage.path);
-          if (newData is bool && newData) {
-            Future.delayed(const Duration(milliseconds: 500), () {
-              context.read<StockBloc>().add(StockGetData());
-            });
-          }
+          context.push(StockManagerPage.pathEmpty);
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _search(BuildContext context) {
+    return Stack(
+      children: [
+        SearchBox(),
+        GestureDetector(
+          onTap: () {
+            context.push(SearchStockPage.path);
+          },
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 7, 16, 16),
+            child: Container(
+              height: 50,
+              width: double.maxFinite,
+              color: Colors.transparent,
+              // color: const Color.fromARGB(42, 244, 67, 54),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget builder(BuildContext context, StockState state) {
+    if (state.status.isFail) {
+      FailureWidget(failure: state.failure);
+    }
+
+    if (state.status.isLoading) {
+      return const LoadingWidget();
+    }
+    if (state.stocks.isNotEmpty) {
+      return _MainContent(state, _scrollController);
+    } else {
+      return const EmptyStockWidget();
+    }
+  }
+
+  void listener(BuildContext context, StockState state) {
+    // autoScroll(state);
+  }
+
+  Future<void> onRefresh() {
+    context.read<StockBloc>().add(StockGetData());
+    return Future.value();
+  }
+}
+
+class _MainContent extends StatelessWidget {
+  final StockState state;
+  final ScrollController scrollController;
+  const _MainContent(this.state, this.scrollController);
+
+  Widget get bottomLoading => const Padding(
+        padding: EdgeInsets.only(bottom: 16),
+        child: CupertinoActivityIndicator(),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      itemBuilder: (BuildContext context, int index) {
+        return index >= state.stocks.length
+            ? bottomLoading
+            : state.hasReachedMax && (index + 1) == state.stocks.length
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 72),
+                    child: StockItem(state.stocks[index]),
+                  )
+                : StockItem(state.stocks[index]);
+      },
+      itemCount:
+          state.hasReachedMax ? state.stocks.length : state.stocks.length + 1,
+      controller: scrollController,
     );
   }
 }

@@ -27,7 +27,7 @@ class ExpiredBox extends StatelessWidget {
                 ],
                 controller: dateController,
                 decoration: InputDecoration(
-                  contentPadding: Const.edgesAll16,
+                  contentPadding: Const.edgesSymmetricV8H16,
                   labelText: context.tr.expiredDate,
                   focusedBorder: borderStyleLeft,
                   enabledBorder: borderStyleLeft,
@@ -39,7 +39,7 @@ class ExpiredBox extends StatelessWidget {
                 onTap: () => _restorableDatePickerRouteFuture.present(),
                 child: Container(
                   width: double.maxFinite,
-                  height: 55,
+                  height: 48,
                   color: Colors.transparent,
                 ),
               )
@@ -47,7 +47,7 @@ class ExpiredBox extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 55,
+          height: 48,
           child: TextButton(
             style: textBtnStyle,
             onPressed: _restorableDatePickerRouteFuture.present,

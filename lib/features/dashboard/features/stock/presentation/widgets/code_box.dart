@@ -18,7 +18,7 @@ class CodeBox extends StatelessWidget {
             inputFormatters: inputFormatters,
             controller: codeController,
             decoration: InputDecoration(
-              contentPadding: Const.edgesAll16,
+              contentPadding: Const.edgesSymmetricV8H16,
               labelText: context.tr.code,
               focusedBorder: borderStyleLeft,
               enabledBorder: borderStyleLeft,
@@ -28,7 +28,7 @@ class CodeBox extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 55,
+          height: 48,
           child: TextButton(
             style: textBtnStyle,
             onPressed: () async => onPress(context),

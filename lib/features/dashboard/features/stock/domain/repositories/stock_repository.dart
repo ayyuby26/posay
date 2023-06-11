@@ -4,6 +4,6 @@ import 'package:posay/features/dashboard/features/stock/domain/entities/stock.da
 import 'package:posay/shared/failure.dart';
 
 abstract class StockRepository {
-  Future<Either<Failure, List<Stock>>> getStockList(int currLength);
+  Future<Either<Failure, List<Stock>>> getStockList({int currLength, String search});
   Future<Either<Failure, Stock>> addStock(StockModel stock); 
 }

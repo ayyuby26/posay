@@ -30,6 +30,7 @@ class Const {
   static final sizeFullWidthH55 = Size(screenSize.width, 55);
   static const edgesRight16 = EdgeInsets.only(right: 16);
   static EdgeInsets edgesAll16 = const EdgeInsets.all(16);
+  static EdgeInsets edgesSymmetricHorizontal16 = const EdgeInsets.symmetric(horizontal: 16);
   static const edgesAll8 = EdgeInsets.all(8);
   static const edgesSymmetricV8H16 =
       EdgeInsets.symmetric(vertical: 8, horizontal: 16);

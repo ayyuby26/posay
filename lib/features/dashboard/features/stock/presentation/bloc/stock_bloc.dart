@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:posay/features/dashboard/features/stock/data/models/stock_model.dart';
@@ -5,44 +7,57 @@ import 'package:posay/features/dashboard/features/stock/domain/entities/stock.da
 import 'package:posay/features/dashboard/features/stock/domain/usecases/add_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/get_stock_list.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/next_page_stock.dart';
+import 'package:posay/features/dashboard/features/stock/domain/usecases/search_stock.dart';
+import 'package:posay/shared/failure.dart';
+import 'package:posay/shared/status.dart';
 
 part 'stock_event.dart';
 part 'stock_state.dart';
 
 class StockBloc extends Bloc<StockEvent, StockState> {
-  final GetStockList getStockList;
+  final GetStockList _getStockList;
   final AddStock _addStock;
   final NextPageStock _nextPageStock;
+  final SearchStock _searchStock;
 
   StockBloc(
-    this.getStockList,
+    this._searchStock,
+    this._getStockList,
     this._addStock,
     this._nextPageStock,
-  ) : super(StockInitial()) {
+  ) : super(const StockState()) {
     on<StockUpdateExpired>(_stockUpdateExpired);
     on<StockGetData>(stockGetData);
     on<StockAddData>(_stockAddData);
     on<StockNextPage>(_stockNextPage);
+    on<StockSearching>(_stockSearching);
+    on<StockHasReachMaxReset>(_stockHasReachMaxReset);
+    on<StockSearchReset>(_stockSearchReset);
   }
 
   _stockUpdateExpired(StockUpdateExpired event, Emitter<StockState> emit) {
-    emit(StockUpdated(
-      expired: event.expired?.millisecondsSinceEpoch ?? -1,
-      stockList: state.stockList,
+    emit(state.copyWith(
+      expired: event.expired,
+      update: state.update + 1,
+      statusAddStock: Status.initial,
     ));
   }
 
   stockGetData(StockGetData event, Emitter<StockState> emit) async {
-    emit(StockDataLoading(state.stockList));
-    final result = await getStockList.execute();
+    emit(state.copyWith(status: Status.loading));
+    final result = await _getStockList.execute();
     result.fold(
-      (l) => emit(StockDataError(l.message, state.stockList)),
-      (r) => emit(StockDataSuccess(r)),
+      (l) => emit(state.copyWith(failure: l)),
+      (r) => emit(state.copyWith(
+        stocks: r,
+        status: Status.success,
+        hasReachedMax: false,
+      )),
     );
   }
 
   _stockAddData(StockAddData event, Emitter<StockState> emit) async {
-    emit(StockDataLoading(state.stockList));
+    emit(state.copyWith(statusAddStock: Status.loading));
 
     final stock = StockModel(
       name: event.name,
@@ -52,32 +67,63 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       price: event.price,
       stockIn: DateTime.now(),
       currency: event.currency,
+      expired: state.expired,
       databaseId: '',
     );
 
     final result = await _addStock.execute(stock);
 
     result.fold(
-      (l) => emit(StockDataError(l.message, state.stockList)),
-      (r) => emit(StockAddSuccess(state.stockList)),
+      (l) => emit(state.copyWith(failure: l, statusAddStock: Status.error)),
+      (r) => emit(state.copyWith(
+        statusAddStock: Status.success,
+        hasReachedMax: false,
+      )),
     );
   }
 
-  _stockNextPage(StockNextPage event, Emitter<StockState> emit) async {
-    emit(StockNextPageLoading(state.stockList));
+  Future<void> _stockNextPage(
+    StockNextPage event,
+    Emitter<StockState> emit,
+  ) async {
+    if (state.hasReachedMax) return;
+    emit(state.copyWith(nextPagestatus: Status.loading));
+    final result = await _nextPageStock.execute(state.stocks.length);
 
-    final currLength = state.stockList.length;
-    final result = await _nextPageStock.execute(currLength);
-    
     result.fold(
-      (l) => emit(StockNextPageFailure(state.stockList)),
+      (l) => emit(state.copyWith(failure: l, nextPagestatus: Status.error)),
       (r) {
-        if (r.isEmpty) {
-          emit(StockLastPage(state.stockList, (state.update + 1)));
-        } else {
-          emit(StockNextPageSuccess(state.stockList..addAll(r)));
-        }
+        if (r.isEmpty) return emit(state.copyWith(hasReachedMax: true));
+        emit(state.copyWith(
+          stocks: List.of(state.stocks)..addAll(r),
+          nextPagestatus: Status.success,
+          hasReachedMax: event.isLast,
+          isScrollAuto: event.isScrollAuto,
+        ));
       },
     );
+  }
+
+  _stockSearching(StockSearching event, Emitter<StockState> emit) async {
+    emit(state.copyWith(statusSearchStock: Status.loading));
+    final result = await _searchStock.execute(event.search);
+    result.fold(
+      (l) => emit(state.copyWith(failure: l, statusSearchStock: Status.error)),
+      (r) => emit(
+          state.copyWith(searchStocks: r, statusSearchStock: Status.success)),
+    );
+  }
+
+  _stockHasReachMaxReset(
+      StockHasReachMaxReset event, Emitter<StockState> emit) {
+    emit(state.copyWith(hasReachedMax: false));
+  }
+
+  _stockSearchReset(StockSearchReset event, Emitter<StockState> emit) {
+    emit(state.copyWith(
+      statusSearchStock: Status.initial,
+      searchStocks: [],
+      status: Status.initial,
+    ));
   }
 }

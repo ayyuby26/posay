@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/widget_style.dart';
 import 'package:posay/shared/constants/const.dart';
 
@@ -9,11 +10,10 @@ class UnitBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      keyboardType: TextInputType.number,
       controller: priceController,
       decoration: InputDecoration(
-        contentPadding: Const.edgesAll16,
-        labelText: "Unit",
+        contentPadding: Const.edgesSymmetricV8H16,
+        labelText: context.tr.unit,
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,
         filled: true,

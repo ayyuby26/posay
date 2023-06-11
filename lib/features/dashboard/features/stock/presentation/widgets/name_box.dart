@@ -12,7 +12,7 @@ class NameBox extends StatelessWidget {
     return TextField(
       controller: nameController,
       decoration: InputDecoration(
-        contentPadding: Const.edgesAll16,
+        contentPadding: Const.edgesSymmetricV8H16,
         labelText: context.tr.name,
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,

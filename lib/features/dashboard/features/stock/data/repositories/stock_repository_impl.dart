@@ -10,9 +10,15 @@ class StockRepositoryImpl implements StockRepository {
   StockRepositoryImpl(this.stockDataSource);
 
   @override
-  Future<Either<Failure, List<Stock>>> getStockList(int currLength) async {
+  Future<Either<Failure, List<Stock>>> getStockList({
+    int currLength = -1,
+    String search = '',
+  }) async {
     try {
-      final result = await stockDataSource.getStockList(currLength);
+      final result = await stockDataSource.getStockList(
+        currLength: currLength,
+        search: search,
+      );
       return Right(result.map((e) => e.toEntity()).toList());
     } catch (e) {
       return Left(ServerFailure(e));
@@ -28,5 +34,4 @@ class StockRepositoryImpl implements StockRepository {
       return Left(ServerFailure(e));
     }
   }
- 
 }

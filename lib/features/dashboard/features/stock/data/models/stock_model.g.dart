@@ -29,5 +29,4 @@ Map<String, dynamic> _$StockModelToJson(StockModel instance) =>
       'stockIn': instance.stockIn.toIso8601String(),
       'expired': instance.expired?.toIso8601String(),
       'currency': instance.currency,
-      'databaseId': instance.databaseId,
     };

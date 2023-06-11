@@ -30,5 +30,12 @@
     "deleteConfirmation": "Delete Confirmation",
     "areYouSureYouWantToDelete": "Are you sure you want to delete?",
     "scanBarcode": "Scan Barcode",
-    "selectDate": "Select Date"
+    "selectDate": "Select Date",
+    "unit": "Unit",
+    "successAddData": "Successfully Add Data",
+    "stocksEmpty": "Stocks Empty",
+    "tryAgain": "Try Again",
+    "searchPage": "Search Page",
+    "searchByName": "Search by name...",
+    "findStockDesc": "Find the Stock you want to find..."
 }

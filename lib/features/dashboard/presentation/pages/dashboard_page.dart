@@ -8,7 +8,7 @@ import 'package:posay/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:posay/shared/extension.dart';
 
 class DashboardPage extends StatelessWidget {
-  static String get path => "/dashboard";
+  static String get path => "/";
   const DashboardPage({super.key});
 
   @override
