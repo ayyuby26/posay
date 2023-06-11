@@ -16,7 +16,7 @@ class TotalBox extends StatelessWidget {
       controller: priceController,
       decoration: InputDecoration(
         contentPadding: Const.edgesSymmetricV8H16,
-        labelText: "Total",
+        labelText: context.tr.amount,
         focusedBorder: outlineInputBorder,
         enabledBorder: outlineInputBorder,
         filled: true,

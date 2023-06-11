@@ -35,7 +35,7 @@ class MainContentAuth extends StatelessWidget {
       child: TextField(
         controller: _userController,
         decoration: InputDecoration(
-          contentPadding: Const.edgesAll16,
+          contentPadding: Const.edgesSymmetricV8H16,
           labelText: context.tr.username,
           focusedBorder: outlineInputBorder,
           enabledBorder: outlineInputBorder,
@@ -69,7 +69,7 @@ class MainContentAuth extends StatelessWidget {
                   },
                 ),
               ),
-              contentPadding: Const.edgesAll16,
+              contentPadding: Const.edgesSymmetricV8H16,
               labelText: context.tr.password,
               focusedBorder: outlineInputBorder,
               enabledBorder: outlineInputBorder,

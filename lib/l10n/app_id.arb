@@ -37,5 +37,6 @@
     "tryAgain": "Coba Lagi",
     "searchPage": "Halaman Pencarian",
     "searchByName": "Cari dengan nama...",
-    "findStockDesc": "Cari Stok yang ingin ditemukan..."
+    "findStockDesc": "Cari Stok yang ingin ditemukan...",
+    "amount": "Jumlah"
 }

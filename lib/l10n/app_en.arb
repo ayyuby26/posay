@@ -37,5 +37,6 @@
     "tryAgain": "Try Again",
     "searchPage": "Search Page",
     "searchByName": "Search by name...",
-    "findStockDesc": "Find the Stock you want to find..."
+    "findStockDesc": "Find the Stock you want to find...",
+    "amount": "Amount"
 }
