@@ -33,6 +33,8 @@
     "selectDate":  "Pilih Tanggal",
     "unit": "Satuan",
     "successAddData": "Berhasil Tambah Data",
+    "successEditData": "Berhasil Ubah Data",
+    "successDeleteData": "Berhasil Hapus Data",
     "stocksEmpty": "Stok Kosong",
     "tryAgain": "Coba Lagi",
     "searchPage": "Halaman Pencarian",

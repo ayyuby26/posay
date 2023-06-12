@@ -7,7 +7,7 @@ import 'package:posay/shared/failure.dart';
 
 class StockRepositoryImpl implements StockRepository {
   final StockDataSource stockDataSource;
-  StockRepositoryImpl(this.stockDataSource);
+StockRepositoryImpl(this.stockDataSource);
 
   @override
   Future<Either<Failure, List<Stock>>> getStockList({
@@ -30,6 +30,16 @@ class StockRepositoryImpl implements StockRepository {
     try {
       final result = await stockDataSource.addStock(stock);
       return Right(result.toEntity());
+    } catch (e) {
+      return Left(ServerFailure(e));
+    }
+  }
+  
+  @override
+  Future<Either<Failure, dynamic>> deleteStock(String databaseId) async{
+    try {
+      final result = await stockDataSource.deleteStock(databaseId);
+      return Right(result);
     } catch (e) {
       return Left(ServerFailure(e));
     }

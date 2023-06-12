@@ -6,4 +6,5 @@ import 'package:posay/shared/failure.dart';
 abstract class StockRepository {
   Future<Either<Failure, List<Stock>>> getStockList({int currLength, String search});
   Future<Either<Failure, Stock>> addStock(StockModel stock); 
+  Future<Either<Failure, dynamic>> deleteStock(String databaseId);  
 }

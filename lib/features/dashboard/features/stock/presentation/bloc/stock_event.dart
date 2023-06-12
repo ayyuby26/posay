@@ -51,7 +51,7 @@ class StockNextPage extends StockEvent {
   const StockNextPage({this.isLast, this.isScrollAuto = false});
 
   @override
-  List<Object?> get props => [isLast,isScrollAuto];
+  List<Object?> get props => [isLast, isScrollAuto];
 }
 
 class StockSearching extends StockEvent {
@@ -74,4 +74,23 @@ class StockHideLoadingBottom extends StockEvent {
 }
 
 class StockHasReachMaxReset extends StockEvent {}
+
 class StockSearchReset extends StockEvent {}
+
+class StockDelete extends StockEvent {
+  final String databaseId;
+
+  const StockDelete(this.databaseId);
+
+  @override
+  List<Object> get props => [databaseId];
+}
+
+class StockFillEvent extends StockEvent {
+  final String docId;
+
+  const StockFillEvent(this.docId);
+
+  @override
+  List<Object> get props => [docId];
+}

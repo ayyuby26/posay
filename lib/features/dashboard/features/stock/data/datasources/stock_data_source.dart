@@ -8,6 +8,7 @@ abstract class StockDataSource {
     String search = '',
   });
   Future<StockModel> addStock(StockModel stock);
+  Future<dynamic> deleteStock(String databaseId);
 }
 
 class StockDataSourceImpl extends StockDataSource {
@@ -32,7 +33,7 @@ class StockDataSourceImpl extends StockDataSource {
     );
 
     return stockList.documents
-        .map((e) => StockModel.fromJson(e.data)..databaseId = e.$databaseId)
+        .map((e) => StockModel.fromJson(e.data)..databaseId = e.$id)
         .toList();
   }
 
@@ -46,5 +47,15 @@ class StockDataSourceImpl extends StockDataSource {
     );
 
     return StockModel.fromJson(create.data);
+  }
+  
+  @override
+  Future deleteStock(String databaseId)async {
+    return await databases.deleteDocument(
+      databaseId: DbConstantsId.databaseId,
+      collectionId: DbConstantsId.stockId,
+      documentId: databaseId,
+    );
+ 
   }
 }

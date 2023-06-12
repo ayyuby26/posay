@@ -8,6 +8,7 @@ import 'package:posay/features/dashboard/features/stock/presentation/widgets/pri
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/total_box.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/unit_box.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:posay/shared/action.dart';
 import 'package:posay/shared/helper.dart';
 import 'package:posay/shared/widget_style.dart';
 import 'package:posay/shared/constants/const.dart';
@@ -29,35 +30,40 @@ class StockManagerPage extends StatefulWidget {
 
 class _StockManagerPageState extends State<StockManagerPage>
     with RestorationMixin {
+  StockBloc? _stockBloc;
+
   @override
   void initState() {
+    _stockBloc = context.read<StockBloc>();
     if (widget.databaseId.isPathEmpty) {
-      context.read<StockBloc>().add(const StockUpdateExpired(expired: null));
+      _stockBloc?.add(const StockUpdateExpired(expired: null));
+    } else {
+      _stockBloc?.add(StockFillEvent(widget.databaseId));
     }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<StockBloc, StockState>(
-      listener: (context, state) {
-        if (state.statusAddStock.isSuccess) {
-          context.untilPop(DashboardPage.path);
-          context.snackBar(context.tr.successAddData);
-        }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.databaseId.isPathEmpty
+            ? context.tr.stockAdd
+            : context.tr.stockDetail),
+      ),
+      body: BlocListener<StockBloc, StockState>(
+        listener: (context, state) {
+          if (state.statusManagerStock.isSuccess) {
+            context.untilPop(DashboardPage.path);
+            context.snackBar(message(state.action));
+          }
 
-        if (state.statusAddStock.isLoading) context.loading;
-        if (state.statusAddStock.isFail) {
-          context.failure(content: state.failure.message);
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.databaseId.isPathEmpty
-              ? context.tr.stockAdd
-              : context.tr.stockDetail),
-        ),
-        body: Unfocus(
+          if (state.statusManagerStock.isLoading) context.loading;
+          if (state.statusManagerStock.isFail) {
+            context.failure(content: state.failure.message);
+          }
+        },
+        child: Unfocus(
           child: Padding(
             padding: Const.edgesSymmetricHorizontal16,
             child: SingleChildScrollView(
@@ -112,6 +118,19 @@ class _StockManagerPageState extends State<StockManagerPage>
     registerForRestoration(RestorableDateTime(DateTime.now()), 'selected_date');
     registerForRestoration(_restorable, 'date_picker_route_future');
   }
+
+  String message(ActionDo action) {
+    switch (action) {
+      case ActionDo.add:
+        return context.tr.successAddData;
+      case ActionDo.edit:
+        return context.tr.successEditData;
+      case ActionDo.delete:
+        return context.tr.successDeleteData;
+      default:
+        return "";
+    }
+  }
 }
 
 class _MainContent extends StatelessWidget {
@@ -164,10 +183,23 @@ class _MainContent extends StatelessWidget {
   }
 
   void listen(BuildContext context, StockState state) {
+    StockBloc bloc = context.read<StockBloc>();
     if (state.expired == null) {
       _dateController.text = "";
     } else {
       _dateController.text = context.dateStringify(state.expired!);
+    }
+
+    final stock = bloc.state.stock;
+    if (stock != null) {
+      _codeController.text = stock.code;
+      _nameController.text = stock.name;
+      _priceController.text = "${stock.price}";
+      _totalController.text = "${stock.total}";
+      _unitController.text = stock.unit;
+      if (stock.expired != null) {
+        _dateController.text = context.dateStringify(stock.expired!);
+      }
     }
   }
 
@@ -205,7 +237,7 @@ class _MainContent extends StatelessWidget {
           content: context.tr.areYouSureYouWantToDelete,
           titleOk: context.tr.delete,
           onPressed: () {
-            // context.read<AuthBloc>().add(AuthLogout(context));
+            context.read<StockBloc>().add(StockDelete(databaseId));
           },
         );
       },

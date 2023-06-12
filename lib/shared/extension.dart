@@ -19,7 +19,6 @@ extension TranslateExtension on BuildContext {
 extension Path on String {
   bool get isPathEmpty => this == "-";
 }
- 
 
 extension HelperNeedContext on BuildContext {
   String dateStringify(DateTime dateTime) {
@@ -61,6 +60,7 @@ extension ProcessStatus on Status {
 
 extension Loading on BuildContext {
   Future get loading {
+    closeDialog();
     return showDialog(
       barrierDismissible: false,
       context: this,
@@ -80,7 +80,7 @@ extension Loading on BuildContext {
 
 extension Dialog on BuildContext {
   Future failure({required String content}) {
-    if (ModalRoute.of(this)?.isCurrent != true) pop();
+    closeDialog();
     return showDialog(
       context: this,
       builder: (context) {

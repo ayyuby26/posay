@@ -33,6 +33,8 @@
     "selectDate": "Select Date",
     "unit": "Unit",
     "successAddData": "Successfully Add Data",
+    "successEditData": "Successfully Update Data",
+    "successDeleteData": "Successfully Delete Data",
     "stocksEmpty": "Stocks Empty",
     "tryAgain": "Try Again",
     "searchPage": "Search Page",

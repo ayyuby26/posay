@@ -28,8 +28,7 @@ class AuthPageState extends State<AuthPage> {
           if (state is AuthLoginFailure) {
             final dbErr = state.message is DatabaseFailure;
             final user404 = context.tr.userNotFound;
-            context.ok(
-              title: 'Oops',
+            context.failure(
               content: dbErr ? user404 : "${state.message?.message}",
             );
           }

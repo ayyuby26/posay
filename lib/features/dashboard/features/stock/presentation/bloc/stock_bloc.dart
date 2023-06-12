@@ -5,9 +5,11 @@ import 'package:equatable/equatable.dart';
 import 'package:posay/features/dashboard/features/stock/data/models/stock_model.dart';
 import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/add_stock.dart';
+import 'package:posay/features/dashboard/features/stock/domain/usecases/delete_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/get_stock_list.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/next_page_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/search_stock.dart';
+import 'package:posay/shared/action.dart';
 import 'package:posay/shared/failure.dart';
 import 'package:posay/shared/status.dart';
 
@@ -19,8 +21,10 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   final AddStock _addStock;
   final NextPageStock _nextPageStock;
   final SearchStock _searchStock;
+  final DeleteStock _deleteStock;
 
   StockBloc(
+    this._deleteStock,
     this._searchStock,
     this._getStockList,
     this._addStock,
@@ -33,13 +37,15 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     on<StockSearching>(_stockSearching);
     on<StockHasReachMaxReset>(_stockHasReachMaxReset);
     on<StockSearchReset>(_stockSearchReset);
+    on<StockDelete>(_stockDelete);
+    on<StockFillEvent>(_stockFillEvent);
   }
 
   _stockUpdateExpired(StockUpdateExpired event, Emitter<StockState> emit) {
     emit(state.copyWith(
       expired: event.expired,
       update: state.update + 1,
-      statusAddStock: Status.initial,
+      statusManagerStock: Status.initial,
     ));
   }
 
@@ -57,7 +63,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   }
 
   _stockAddData(StockAddData event, Emitter<StockState> emit) async {
-    emit(state.copyWith(statusAddStock: Status.loading));
+    emit(state.copyWith(statusManagerStock: Status.loading));
 
     final stock = StockModel(
       name: event.name,
@@ -74,9 +80,9 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     final result = await _addStock.execute(stock);
 
     result.fold(
-      (l) => emit(state.copyWith(failure: l, statusAddStock: Status.error)),
+      (l) => emit(state.copyWith(failure: l, statusManagerStock: Status.error)),
       (r) => emit(state.copyWith(
-        statusAddStock: Status.success,
+        statusManagerStock: Status.success,
         hasReachedMax: false,
       )),
     );
@@ -125,5 +131,22 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       searchStocks: [],
       status: Status.initial,
     ));
+  }
+
+  _stockDelete(StockDelete event, Emitter<StockState> emit) async {
+    emit(state.copyWith(
+      statusManagerStock: Status.loading,
+      action: ActionDo.delete,
+    ));
+    final result = await _deleteStock.execute(event.databaseId);
+    result.fold(
+      (l) => emit(state.copyWith(failure: l, statusManagerStock: Status.error)),
+      (r) => emit(state.copyWith(statusManagerStock: Status.success)),
+    );
+  }
+
+  _stockFillEvent(StockFillEvent event, Emitter<StockState> emit) {
+    final stock = state.stocks.firstWhere((e) => e.databaseId == event.docId);
+    emit(state.copyWith(stock: stock));
   }
 }

@@ -5,7 +5,8 @@ class StockState extends Equatable {
   final List<Stock> searchStocks;
   final Failure failure;
   final Status status;
-  final Status statusAddStock;
+  final Status statusManagerStock;
+  final ActionDo action;
   final Status statusSearchStocks;
   final Status nextPagestatus;
   final DateTime? expired;
@@ -15,15 +16,18 @@ class StockState extends Equatable {
   final bool isScrollable;
   final bool isSearch;
   final bool isScrollAuto;
+  final Stock? stock;
 
   const StockState({
+    this.stock,
+    this.action = ActionDo.init,
     this.isScrollAuto = false,
     this.isSearch = false,
     this.isScrollable = false,
     this.hasReachedMax = false,
     this.failure = const InitFailure(""),
     this.status = Status.initial,
-    this.statusAddStock = Status.initial,
+    this.statusManagerStock = Status.initial,
     this.statusSearchStocks = Status.initial,
     this.nextPagestatus = Status.initial,
     this.addLoadingBottom = false,
@@ -34,15 +38,17 @@ class StockState extends Equatable {
   });
 
   StockState copyWith({
+    ActionDo? action,
     bool? isScrollAuto,
     bool? isSearch,
     bool? isScrollable,
     bool? hasReachedMax,
     List<Stock>? stocks,
+    Stock? stock,
     List<Stock>? searchStocks,
     Failure? failure,
     Status? status,
-    Status? statusAddStock,
+    Status? statusManagerStock,
     Status? statusSearchStock,
     Status? nextPagestatus,
     DateTime? expired,
@@ -50,10 +56,12 @@ class StockState extends Equatable {
     bool? addLoadingBottom,
   }) {
     return StockState(
+      stock: stock ?? this.stock,
+      action: action ?? this.action,
       searchStocks: searchStocks ?? this.searchStocks,
       statusSearchStocks: statusSearchStock ?? statusSearchStocks,
       status: status ?? this.status,
-      statusAddStock: statusAddStock ?? this.statusAddStock,
+      statusManagerStock: statusManagerStock ?? this.statusManagerStock,
       failure: failure ?? this.failure,
       stocks: stocks ?? this.stocks,
       expired: expired,
@@ -68,9 +76,11 @@ class StockState extends Equatable {
 
   @override
   List<Object?> get props => [
+        stock,
+        action,
         failure,
         statusSearchStocks,
-        statusAddStock,
+        statusManagerStock,
         expired,
         searchStocks,
         stocks,
