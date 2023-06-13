@@ -16,7 +16,8 @@ StockModel _$StockModelFromJson(Map<String, dynamic> json) => StockModel(
       expired: json['expired'] == null
           ? null
           : DateTime.parse(json['expired'] as String),
-      currency: json['currency'] as String, databaseId: '',
+      currency: json['currency'] as String,
+      documentId: '',
     );
 
 Map<String, dynamic> _$StockModelToJson(StockModel instance) =>

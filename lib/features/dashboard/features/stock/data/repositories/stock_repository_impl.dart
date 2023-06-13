@@ -26,9 +26,10 @@ class StockRepositoryImpl implements StockRepository {
   }
 
   @override
-  Future<Either<Failure, Stock>> addStock(StockModel stock) async {
+  Future<Either<Failure, Stock>> addStock(Stock stock) async {
     try {
-      final result = await stockDataSource.addStock(stock);
+      final result =
+          await stockDataSource.addStock(StockModel.fromEntity(stock));
       return Right(result.toEntity());
     } catch (e) {
       return Left(ServerFailure(e));
@@ -39,6 +40,17 @@ class StockRepositoryImpl implements StockRepository {
   Future<Either<Failure, dynamic>> deleteStock(String databaseId) async {
     try {
       final result = await stockDataSource.deleteStock(databaseId);
+      return Right(result);
+    } catch (e) {
+      return Left(ServerFailure(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateStock(Stock stock) async {
+    try {
+      final result =
+          await stockDataSource.updateStock(StockModel.fromEntity(stock));
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(e));

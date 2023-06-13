@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:posay/features/dashboard/features/stock/data/models/stock_model.dart';
 import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/add_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/delete_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/get_stock_list.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/next_page_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/search_stock.dart';
+import 'package:posay/features/dashboard/features/stock/domain/usecases/update_stock.dart';
 import 'package:posay/shared/action.dart';
 import 'package:posay/shared/failure.dart';
 import 'package:posay/shared/status.dart';
@@ -22,14 +22,17 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   final NextPageStock _nextPageStock;
   final SearchStock _searchStock;
   final DeleteStock _deleteStock;
+  final UpdateStock _updateStock;
 
   StockBloc(
+    this._updateStock,
     this._deleteStock,
     this._searchStock,
     this._getStockList,
     this._addStock,
     this._nextPageStock,
   ) : super(const StockState()) {
+    on<StockUpdateEvent>(_stockUpdateEvent);
     on<StockUpdateExpired>(_stockUpdateExpired);
     on<StockGetData>(stockGetData);
     on<StockAddData>(_stockAddData);
@@ -65,9 +68,10 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   }
 
   _stockAddData(StockAddData event, Emitter<StockState> emit) async {
-    emit(state.copyWith(statusManagerStock: Status.loading));
+    emit(state.copyWith(
+        statusManagerStock: Status.loading, action: ActionDo.add));
 
-    final stock = StockModel(
+    final stock = Stock(
       name: event.name,
       code: event.code,
       total: event.total,
@@ -76,16 +80,21 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       stockIn: DateTime.now(),
       currency: event.currency,
       expired: state.expired,
-      databaseId: '',
+      documentId: '',
     );
 
     final result = await _addStock.execute(stock);
 
     result.fold(
-      (l) => emit(state.copyWith(failure: l, statusManagerStock: Status.error)),
+      (l) => emit(state.copyWith(
+        failure: l,
+        statusManagerStock: Status.error,
+        action: ActionDo.add,
+      )),
       (r) => emit(state.copyWith(
         statusManagerStock: Status.success,
         hasReachedMax: false,
+        action: ActionDo.add,
       )),
     );
   }
@@ -148,7 +157,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   }
 
   _stockFillEvent(StockFillEvent event, Emitter<StockState> emit) {
-    final stock = state.stocks.firstWhere((e) => e.databaseId == event.docId);
+    final stock = state.stocks.firstWhere((e) => e.documentId == event.docId);
     emit(state.copyWith(stock: stock));
   }
 
@@ -164,5 +173,42 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     Emitter<StockState> emit,
   ) {
     emit(state.copyWith(isScrollable: event.val));
+  }
+
+  _stockUpdateEvent(
+    StockUpdateEvent event,
+    Emitter<StockState> emit,
+  ) async {
+    emit(state.copyWith(
+      statusManagerStock: Status.loading,
+      action: ActionDo.edit,
+    ));
+    final stockIn = state.stocks
+        .firstWhere((e) => e.documentId == event.documentId)
+        .stockIn;
+
+    final stock = Stock(
+      documentId: event.documentId,
+      name: event.name,
+      code: event.code,
+      total: event.total,
+      unit: event.unit,
+      price: event.price,
+      stockIn: stockIn,
+      currency: event.currency,
+    );
+
+    final result = await _updateStock.execute(stock);
+    result.fold(
+      (l) => emit(state.copyWith(
+        failure: l,
+        statusManagerStock: Status.error,
+        action: ActionDo.edit,
+      )),
+      (r) => emit(state.copyWith(
+        statusManagerStock: Status.success,
+        action: ActionDo.edit,
+      )),
+    );
   }
 }

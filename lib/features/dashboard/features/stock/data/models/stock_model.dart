@@ -9,7 +9,7 @@ part 'stock_model.g.dart';
 @Entity()
 class StockModel {
   int id = 0;
-  String databaseId;
+  String documentId;
   final String name;
   final String code;
   @Property(uid: 8658536853573444526)
@@ -21,7 +21,7 @@ class StockModel {
   final String currency;
 
   StockModel({
-    required this.databaseId,
+    required this.documentId,
     required this.name,
     required this.code,
     required this.total,
@@ -34,7 +34,7 @@ class StockModel {
 
   Stock toEntity() {
     return Stock(
-      databaseId: databaseId,
+      documentId: documentId,
       name: name,
       code: code,
       total: total,
@@ -43,6 +43,19 @@ class StockModel {
       stockIn: stockIn,
       expired: expired,
       currency: currency,
+    );
+  }
+
+  factory StockModel.fromEntity(Stock stock) {
+    return StockModel(
+      documentId: stock.documentId,
+      name: stock.name,
+      code: stock.code,
+      total: stock.total,
+      unit: stock.unit,
+      price: stock.price,
+      stockIn: stock.stockIn,
+      currency: stock.currency,
     );
   }
 

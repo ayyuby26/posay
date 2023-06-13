@@ -4,7 +4,7 @@ import 'dart:core' as x;
 import 'package:equatable/equatable.dart';
 
 class Stock extends Equatable {
-  final String databaseId;
+  final String documentId;
   final String name;
   final String code;
   final int total;
@@ -15,7 +15,7 @@ class Stock extends Equatable {
   final String currency;
 
   const Stock({
-    required this.databaseId,
+    required this.documentId,
     required this.name,
     required this.code,
     required this.total,
@@ -28,7 +28,7 @@ class Stock extends Equatable {
 
   @override
   List<Object?> get props => [
-        databaseId,
+        documentId,
         name,
         code,
         total,

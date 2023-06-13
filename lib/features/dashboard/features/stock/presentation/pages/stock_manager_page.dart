@@ -140,7 +140,7 @@ class _StockManagerPageState extends State<StockManagerPage>
 }
 
 class _MainContent extends StatelessWidget {
-  final String databaseId;
+  final String documentId;
   final _codeController = TextEditingController();
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
@@ -149,7 +149,7 @@ class _MainContent extends StatelessWidget {
   final _dateController = TextEditingController();
 
   final RestorableRouteFuture<DateTime?> _restorable;
-  _MainContent(this._restorable, this.databaseId);
+  _MainContent(this._restorable, this.documentId);
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +184,7 @@ class _MainContent extends StatelessWidget {
           Const.height16,
           _mainBtn(context),
           Const.height16,
-          if (databaseId.length != 1)
+          if (documentId.length != 1)
             Column(
               children: [
                 _deleteBtn(context),
@@ -222,19 +222,34 @@ class _MainContent extends StatelessWidget {
     return TextButton(
       style: buttonStylePrimary,
       onPressed: () {
-        context.read<StockBloc>().add(
-              StockAddData(
-                code: _codeController.text,
-                currency: context.languageCode,
-                name: _nameController.text,
-                price: Helper.dotRemover(_priceController.text, context),
-                total: int.parse(_totalController.text),
-                unit: _unitController.text,
-              ),
-            );
+        if (documentId.length == 1) {
+          context.read<StockBloc>().add(
+                StockAddData(
+                  code: _codeController.text,
+                  currency: context.languageCode,
+                  name: _nameController.text,
+                  price: Helper.dotRemover(_priceController.text, context),
+                  total: int.parse(_totalController.text),
+                  unit: _unitController.text,
+                ),
+              );
+        } else {
+
+          context.read<StockBloc>().add(
+                StockUpdateEvent(
+                  documentId: documentId,
+                  code: _codeController.text,
+                  currency: context.languageCode,
+                  name: _nameController.text,
+                  price: Helper.dotRemover(_priceController.text, context),
+                  total: int.parse(_totalController.text),
+                  unit: _unitController.text,
+                ),
+              );
+        }
       },
       child: Text(
-        databaseId.isPathEmpty
+        documentId.isPathEmpty
             ? context.tr.add.toUpperCase()
             : context.tr.save.toUpperCase(),
         style: textStyle,
@@ -252,7 +267,7 @@ class _MainContent extends StatelessWidget {
           content: context.tr.areYouSureYouWantToDelete,
           titleOk: context.tr.delete,
           onPressed: () {
-            context.read<StockBloc>().add(StockDelete(databaseId));
+            context.read<StockBloc>().add(StockDelete(documentId));
           },
         );
       },
@@ -264,7 +279,7 @@ class _MainContent extends StatelessWidget {
   }
 
   String currency(StockState state, BuildContext context) {
-    if (databaseId.length == 1) {
+    if (documentId.length == 1) {
       return context.isEn ? "\$  " : "Rp  ";
     } else {
       final currency = adaptif(state.stock?.currency);

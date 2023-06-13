@@ -31,7 +31,7 @@ class StockItem extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                context.push(StockManagerPage.pathParam(stock.databaseId));
+                context.push(StockManagerPage.pathParam(stock.documentId));
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

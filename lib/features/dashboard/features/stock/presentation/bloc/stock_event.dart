@@ -90,7 +90,6 @@ class StockFillEvent extends StockEvent {
   final String docId;
 
   const StockFillEvent(this.docId);
-
 }
 
 class StockManagerResetEvent extends StockEvent {}
@@ -102,4 +101,37 @@ class StockChangeStateIsScrollableEvent extends StockEvent {
 
   @override
   List<Object> get props => [val];
+}
+
+class StockUpdateEvent extends StockEvent {
+
+  final String documentId;
+  final String code;
+  final String name;
+  final double price;
+  final int total;
+  final String currency;
+  final String unit;
+
+  const StockUpdateEvent({
+    required this.documentId,
+    required this.code,
+    required this.name,
+    required this.price,
+    required this.total,
+    required this.currency,
+    required this.unit,
+    DateTime? expired,
+  }) : super(expired: expired);
+
+  @override
+  List<Object?> get props => [
+    documentId,
+        code,
+        name,
+        price,
+        total,
+        currency,
+        unit,
+      ];
 }

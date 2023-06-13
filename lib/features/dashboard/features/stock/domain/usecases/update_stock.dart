@@ -3,12 +3,12 @@ import 'package:posay/features/dashboard/features/stock/domain/entities/stock.da
 import 'package:posay/features/dashboard/features/stock/domain/repositories/stock_repository.dart';
 import 'package:posay/shared/failure.dart';
 
-class AddStock {
+class UpdateStock {
   final StockRepository stockRepository;
 
-  AddStock({required this.stockRepository});
+  UpdateStock({required this.stockRepository});
 
-  Future<Either<Failure, Stock>> execute(Stock stock) async {
-    return stockRepository.addStock(stock);
+  Future<Either<Failure, Map<String, dynamic>>> execute(Stock stock) async {
+    return stockRepository.updateStock(stock);
   }
 }

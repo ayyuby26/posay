@@ -23,6 +23,7 @@ import 'package:posay/features/dashboard/features/stock/domain/usecases/delete_s
 import 'package:posay/features/dashboard/features/stock/domain/usecases/get_stock_list.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/next_page_stock.dart';
 import 'package:posay/features/dashboard/features/stock/domain/usecases/search_stock.dart';
+import 'package:posay/features/dashboard/features/stock/domain/usecases/update_stock.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
@@ -62,7 +63,7 @@ class Injector {
 
     // [ PROVIDER ]-------------------------------------------------------------
     _locator.registerFactory(
-        () => StockBloc(_locator(), _locator(), _locator(), _locator(),_locator()));
+        () => StockBloc(_locator(), _locator(), _locator(), _locator(),_locator(),_locator()));
     _locator.registerFactory(
         () => AuthBloc(_locator(), _locator(), _locator(), _locator()));
     _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
@@ -79,6 +80,9 @@ class Injector {
     // STOCK
     _locator.registerLazySingleton(
       () => GetStockList(stockRepository: _locator()),
+    );
+    _locator.registerLazySingleton(
+      () => UpdateStock(stockRepository: _locator()),
     );
     _locator.registerLazySingleton(() => AddStock(stockRepository: _locator()));
     _locator.registerLazySingleton(
