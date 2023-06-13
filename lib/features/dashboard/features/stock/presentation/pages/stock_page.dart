@@ -149,9 +149,9 @@ class _MainContent extends StatelessWidget {
             return state.hasReachedMax && (index + 1) == state.stocks.length
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 72),
-                    child: StockItem(index, scrollController),
+                    child: StockItem(state.stocks[index]),
                   )
-                : StockItem(index, scrollController);
+                : StockItem(state.stocks[index]);
           },
           itemCount: state.stocks.length,
           controller: scrollController,

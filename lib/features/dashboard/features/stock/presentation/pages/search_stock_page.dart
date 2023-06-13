@@ -96,7 +96,7 @@ class _MainContent extends StatelessWidget {
     return ListView.builder(
       padding: EdgeInsets.zero,
       itemBuilder: (BuildContext context, int index) {
-        return StockItem(index, null);
+        return StockItem(state.stocks[index]);
       },
       itemCount: state.searchStocks.length,
       controller: _scrollController,
