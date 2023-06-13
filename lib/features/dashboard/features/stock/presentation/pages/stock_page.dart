@@ -23,8 +23,6 @@ class StockPage extends StatefulWidget {
 class StockPageState extends State<StockPage> {
   late ScrollController _scrollController;
 
-  final searchController = TextEditingController();
-
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -151,9 +149,9 @@ class _MainContent extends StatelessWidget {
             return state.hasReachedMax && (index + 1) == state.stocks.length
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 72),
-                    child: StockItem(state.stocks[index]),
+                    child: StockItem(index, scrollController),
                   )
-                : StockItem(state.stocks[index]);
+                : StockItem(index, scrollController);
           },
           itemCount: state.stocks.length,
           controller: scrollController,

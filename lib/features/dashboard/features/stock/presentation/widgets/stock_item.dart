@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/shared/constants/const.dart';
@@ -10,11 +9,15 @@ import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 
 class StockItem extends StatelessWidget {
-  final Stock stock;
-  const StockItem(this.stock, {super.key});
+  final int index;
+  final ScrollController? scrollController;
+
+  const StockItem(this.index, this.scrollController, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final stock = context.read<StockBloc>().state.stocks[index];
+
     return Column(
       children: [
         Padding(
@@ -118,10 +121,24 @@ class StockItem extends StatelessWidget {
   }
 
   void onPressed(BuildContext context, StockState state) async {
-    final page = StockManagerPage.pathParam(stock.documentId);
+    // List<Stock> last25Elements = state.stocks.sublist(state.stocks.length - 25);
+
+    final page = StockManagerPage.pathParam(state.stocks[index].documentId);
     final result = await context.push(page);
+    final indexItem = index;
+    
+    // Future.delayed(const Duration(milliseconds: 500), () {
+    //   scrollController?.animateTo(
+    //     indexItem * 94,
+    //     duration: const Duration(seconds: 1),
+    //     curve: Curves.fastEaseInToSlowEaseOut,
+    //   );
+    // });
+
     if (result is bool && result) {
-      // state.
+      Future.delayed(const Duration(milliseconds: 500), () {
+        context.read<StockBloc>().add(StockGetData());
+      });
     }
   }
 }
