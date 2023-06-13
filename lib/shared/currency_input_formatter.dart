@@ -5,8 +5,9 @@ import 'package:posay/shared/extension.dart';
 
 class CurrencyInputFormatter extends TextInputFormatter {
   final BuildContext context;
+  final String currency;
 
-  CurrencyInputFormatter(this.context);
+  CurrencyInputFormatter(this.context, this.currency);
 
   @override
   TextEditingValue formatEditUpdate(
@@ -20,12 +21,32 @@ class CurrencyInputFormatter extends TextInputFormatter {
     double value = double.parse(newValue.text);
 
     final formatter = NumberFormat.currency(
-      locale: context.isEn ? 'en_US' : 'id_ID',
-      decimalDigits: context.isEn ? 2 : 0,
+      locale: currency.isEmpty
+          ? context.isEn
+              ? 'en_US'
+              : 'id_ID'
+          : currency == "usd"
+              ? 'en_US'
+              : 'id_ID',
+      decimalDigits: currency.isEmpty
+          ? context.isEn
+              ? 2
+              : 0
+          : currency == "usd"
+              ? 2
+              : 0,
       symbol: "",
     );
 
-    String newText = formatter.format(context.isEn ? value / 100 : value);
+    String newText = formatter.format(
+      currency.isEmpty
+          ? context.isEn
+              ? value / 100
+              : value
+          : currency == "usd"
+              ? value / 100
+              : value,
+    );
 
     return newValue.copyWith(
       text: newText,

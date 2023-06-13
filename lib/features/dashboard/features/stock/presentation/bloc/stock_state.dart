@@ -1,6 +1,6 @@
 part of 'stock_bloc.dart';
 
-class StockState extends Equatable {
+final class StockState extends Equatable {
   final List<Stock> stocks;
   final List<Stock> searchStocks;
   final Failure failure;
@@ -56,7 +56,7 @@ class StockState extends Equatable {
     bool? addLoadingBottom,
   }) {
     return StockState(
-      stock: stock ?? this.stock,
+      stock: stock ,
       action: action ?? this.action,
       searchStocks: searchStocks ?? this.searchStocks,
       statusSearchStocks: statusSearchStock ?? statusSearchStocks,

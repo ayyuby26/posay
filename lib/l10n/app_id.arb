@@ -40,5 +40,6 @@
     "searchPage": "Halaman Pencarian",
     "searchByName": "Cari dengan nama...",
     "findStockDesc": "Cari Stok yang ingin ditemukan...",
+    "failureServer": "Server Bermasalah",
     "amount": "Jumlah"
 }

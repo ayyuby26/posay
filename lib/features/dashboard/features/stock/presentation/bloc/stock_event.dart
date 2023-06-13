@@ -94,3 +94,5 @@ class StockFillEvent extends StockEvent {
   @override
   List<Object> get props => [docId];
 }
+
+class StockManagerResetEvent extends StockEvent {}

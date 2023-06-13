@@ -44,6 +44,12 @@ class _StockManagerPageState extends State<StockManagerPage>
   }
 
   @override
+  void dispose() {
+    _stockBloc?.add(StockManagerResetEvent());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -156,7 +162,15 @@ class _MainContent extends StatelessWidget {
           Const.height16,
           NameBox(_nameController),
           Const.height16,
-          PriceBox(_priceController),
+          BlocBuilder<StockBloc, StockState>(
+            builder: (context, state) {
+              return PriceBox(
+                _priceController,
+                currency(state, context),
+                state.stock?.currency ?? "",
+              );
+            },
+          ),
           Const.height16,
           Row(
             children: [
@@ -194,7 +208,8 @@ class _MainContent extends StatelessWidget {
     if (stock != null) {
       _codeController.text = stock.code;
       _nameController.text = stock.name;
-      _priceController.text = "${stock.price}";
+      _priceController.text =
+          Helper.currencyDoubleToStr("${stock.price}", stock.currency);
       _totalController.text = "${stock.total}";
       _unitController.text = stock.unit;
       if (stock.expired != null) {
@@ -246,5 +261,19 @@ class _MainContent extends StatelessWidget {
         style: textStyle,
       ),
     );
+  }
+
+  String currency(StockState state, BuildContext context) {
+    if (databaseId.length == 1) {
+      return context.isEn ? "\$  " : "Rp  ";
+    } else {
+      final currency = adaptif(state.stock?.currency);
+      return currency;
+    }
+  }
+
+  adaptif(String? currency) {
+    if (currency == null) return "";
+    return currency == "usd" ? "\$  " : "Rp  ";
   }
 }

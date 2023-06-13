@@ -40,5 +40,6 @@
     "searchPage": "Search Page",
     "searchByName": "Search by name...",
     "findStockDesc": "Find the Stock you want to find...",
+    "failureServer": "Server Error",
     "amount": "Amount"
 }

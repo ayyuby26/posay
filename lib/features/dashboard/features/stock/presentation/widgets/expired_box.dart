@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/widget_style.dart';
 import 'package:posay/shared/constants/const.dart';
@@ -18,22 +20,29 @@ class ExpiredBox extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              TextField(
-                style: const TextStyle(color: Colors.black),
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  CurrencyInputFormatter(context),
-                ],
-                controller: dateController,
-                decoration: InputDecoration(
-                  contentPadding: Const.edgesSymmetricV8H16,
-                  labelText: context.tr.expiredDate,
-                  focusedBorder: borderStyleLeft,
-                  enabledBorder: borderStyleLeft,
-                  filled: true,
-                  fillColor: Colors.white,
-                ),
+              BlocBuilder<StockBloc, StockState>(
+                builder: (context, state) {
+                  return TextField(
+                    style: const TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CurrencyInputFormatter(
+                        context,
+                        state.stock?.currency ?? "",
+                      ),
+                    ],
+                    controller: dateController,
+                    decoration: InputDecoration(
+                      contentPadding: Const.edgesSymmetricV8H16,
+                      labelText: context.tr.expiredDate,
+                      focusedBorder: borderStyleLeft,
+                      enabledBorder: borderStyleLeft,
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                  );
+                },
               ),
               GestureDetector(
                 onTap: () => _restorableDatePickerRouteFuture.present(),

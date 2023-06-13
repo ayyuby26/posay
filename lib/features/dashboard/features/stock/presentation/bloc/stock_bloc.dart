@@ -39,6 +39,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     on<StockSearchReset>(_stockSearchReset);
     on<StockDelete>(_stockDelete);
     on<StockFillEvent>(_stockFillEvent);
+    on<StockManagerResetEvent>(_stockManagerResetEvent);
   }
 
   _stockUpdateExpired(StockUpdateExpired event, Emitter<StockState> emit) {
@@ -148,5 +149,12 @@ class StockBloc extends Bloc<StockEvent, StockState> {
   _stockFillEvent(StockFillEvent event, Emitter<StockState> emit) {
     final stock = state.stocks.firstWhere((e) => e.databaseId == event.docId);
     emit(state.copyWith(stock: stock));
+  }
+
+  _stockManagerResetEvent(
+    StockManagerResetEvent event,
+    Emitter<StockState> emit,
+  ) {
+    emit(state.copyWith(stock: null, statusManagerStock: Status.initial));
   }
 }
