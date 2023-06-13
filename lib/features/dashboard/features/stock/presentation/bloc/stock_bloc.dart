@@ -40,6 +40,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     on<StockDelete>(_stockDelete);
     on<StockFillEvent>(_stockFillEvent);
     on<StockManagerResetEvent>(_stockManagerResetEvent);
+    on<StockChangeStateIsScrollableEvent>(_stockChangeStateIsScrollableEvent);
   }
 
   _stockUpdateExpired(StockUpdateExpired event, Emitter<StockState> emit) {
@@ -156,5 +157,12 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     Emitter<StockState> emit,
   ) {
     emit(state.copyWith(stock: null, statusManagerStock: Status.initial));
+  }
+
+  _stockChangeStateIsScrollableEvent(
+    StockChangeStateIsScrollableEvent event,
+    Emitter<StockState> emit,
+  ) {
+    emit(state.copyWith(isScrollable: event.val));
   }
 }

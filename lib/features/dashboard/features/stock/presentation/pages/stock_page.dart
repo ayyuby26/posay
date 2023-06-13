@@ -21,16 +21,23 @@ class StockPage extends StatefulWidget {
 }
 
 class StockPageState extends State<StockPage> {
+  late ScrollController _scrollController;
+
   final searchController = TextEditingController();
-  final _scrollController = ScrollController();
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+
     final stock = context.read<StockBloc>();
     final stockEmpty = stock.state.stocks.isEmpty;
     if (stockEmpty) stock.add(StockGetData());
 
     _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        stock.add(const StockChangeStateIsScrollableEvent(true));
+      }
       if (_scrollController.position.atEdge) {
         bool isTop = _scrollController.position.pixels == 0;
         if (!isTop && !stock.state.hasReachedMax) {
@@ -40,6 +47,12 @@ class StockPageState extends State<StockPage> {
     });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -130,21 +143,22 @@ class _MainContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      itemBuilder: (BuildContext context, int index) {
-        return index >= state.stocks.length
-            ? bottomLoading
-            : state.hasReachedMax && (index + 1) == state.stocks.length
+    return BlocBuilder<StockBloc, StockState>(
+      builder: (context, state) {
+        return ListView.builder(
+          padding: EdgeInsets.zero,
+          itemBuilder: (BuildContext context, int index) {
+            return state.hasReachedMax && (index + 1) == state.stocks.length
                 ? Padding(
                     padding: const EdgeInsets.only(bottom: 72),
                     child: StockItem(state.stocks[index]),
                   )
                 : StockItem(state.stocks[index]);
+          },
+          itemCount: state.stocks.length,
+          controller: scrollController,
+        );
       },
-      itemCount:
-          state.hasReachedMax ? state.stocks.length : state.stocks.length + 1,
-      controller: scrollController,
     );
   }
 }

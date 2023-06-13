@@ -8,7 +8,7 @@ class DbConstantsId {
 
   DbConstantsId._();
 
-  static String get databaseId => "647cf24da7aa1549c941";
-  static String get authId => "647cf43a799b57f5e20c";
-  static String get stockId => "6480bd15643cad33520d";
+  static String get databaseId => const String.fromEnvironment('DATABASE_ID');
+  static String get authId => const String.fromEnvironment('AUTH_ID');
+  static String get stockId => const String.fromEnvironment('STOCK_ID');
 }
