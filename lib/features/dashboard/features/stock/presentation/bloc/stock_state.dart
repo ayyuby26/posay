@@ -17,8 +17,10 @@ final class StockState extends Equatable {
   final bool isSearch;
   final bool isScrollAuto;
   final Stock? stock;
+  final (int, int) indexPage;
 
   const StockState({
+    this.indexPage = (-1, -1),
     this.stock,
     this.action = ActionDo.init,
     this.isScrollAuto = false,
@@ -38,6 +40,7 @@ final class StockState extends Equatable {
   });
 
   StockState copyWith({
+    (int, int)? indexPage,
     ActionDo? action,
     bool? isScrollAuto,
     bool? isSearch,
@@ -56,7 +59,8 @@ final class StockState extends Equatable {
     bool? addLoadingBottom,
   }) {
     return StockState(
-      stock: stock ,
+      indexPage: indexPage ?? this.indexPage,
+      stock: stock,
       action: action ?? this.action,
       searchStocks: searchStocks ?? this.searchStocks,
       statusSearchStocks: statusSearchStock ?? statusSearchStocks,
@@ -76,6 +80,7 @@ final class StockState extends Equatable {
 
   @override
   List<Object?> get props => [
+        indexPage,
         stock,
         action,
         failure,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
+import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
@@ -19,54 +21,57 @@ class StockItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           child: SizedBox(
             width: double.maxFinite,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: Const.edgesAll16,
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: IColor.tertiary.withOpacity(.3),
+            child: BlocBuilder<StockBloc, StockState>(
+              builder: (context, state) {
+                return TextButton(
+                  style: TextButton.styleFrom(
+                    padding: Const.edgesAll16,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        color: IColor.tertiary.withOpacity(.3),
+                      ),
+                      borderRadius: Const.radiusCircular8,
+                    ),
                   ),
-                  borderRadius: Const.radiusCircular8,
-                ),
-              ),
-              onPressed: () {
-                context.push(StockManagerPage.pathParam(stock.documentId));
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+                  onPressed: () => onPressed(context, state),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: Text(
-                          stock.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              stock.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
-                        ),
+                          Text("${stock.total} ${stock.unit}"),
+                        ],
                       ),
-                      Text("${stock.total} ${stock.unit}"),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                              "${currencyFormatter(stock.price, stock.currency)}"),
+                          Text(
+                            expiredString(stock.expired, context),
+                            style: TextStyle(
+                              color: expiredColor(stock.expired),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("${currencyFormatter(stock.price, stock.currency)}"),
-                      Text(
-                        expiredString(stock.expired, context),
-                        style: TextStyle(
-                          color: expiredColor(stock.expired),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),
@@ -110,5 +115,13 @@ class StockItem extends StatelessWidget {
     if (dateTime == null) return null;
     final dateFormat = DateFormat.yMMMd(context.isEn ? 'en_US' : 'id_ID');
     return dateFormat.format(dateTime);
+  }
+
+  void onPressed(BuildContext context, StockState state) async {
+    final page = StockManagerPage.pathParam(stock.documentId);
+    final result = await context.push(page);
+    if (result is bool && result) {
+      // state.
+    }
   }
 }
