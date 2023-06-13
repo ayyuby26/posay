@@ -58,7 +58,7 @@ class StockItem extends StatelessWidget {
                     children: [
                       Text("${currencyFormatter(stock.price, stock.currency)}"),
                       Text(
-                        "EXP: ${dateStringify(stock.expired, context)}",
+                        expiredString(stock.expired, context),
                         style: TextStyle(
                           color: expiredColor(stock.expired),
                         ),
@@ -72,6 +72,11 @@ class StockItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String expiredString(DateTime? expired, BuildContext context) {
+    final dateString = dateStringify(expired, context);
+    return dateString == null ? "" : "EXP: $dateString";
   }
 
   Color expiredColor(DateTime? expired) {
@@ -102,7 +107,8 @@ class StockItem extends StatelessWidget {
   }
 
   String? dateStringify(DateTime? dateTime, BuildContext context) {
+    if (dateTime == null) return null;
     final dateFormat = DateFormat.yMMMd(context.isEn ? 'en_US' : 'id_ID');
-    return dateTime == null ? "" : dateFormat.format(dateTime);
+    return dateFormat.format(dateTime);
   }
 }
