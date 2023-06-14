@@ -75,7 +75,13 @@ class StockPageState extends State<StockPage> {
       floatingActionButton: FloatingActionButton(
         tooltip: context.tr.stockAdd,
         onPressed: () async {
-          context.push(StockManagerPage.pathEmpty);
+          final result = await context.push(StockManagerPage.pathEmpty);
+
+          if (result is bool && result) {
+            Future.delayed(const Duration(milliseconds: 500), () {
+              context.read<StockBloc>().add(StockGetData());
+            });
+          }
         },
         child: const Icon(Icons.add),
       ),

@@ -245,7 +245,9 @@ class _MainContent extends StatelessWidget {
                     currency: stock.currency,
                     name: _nameController.text,
                     price: Helper.parseCurrency(
-                        _priceController.text, stock.currency),
+                      _priceController.text,
+                      stock.currency,
+                    ),
                     total: int.parse(_totalController.text),
                     unit: _unitController.text,
                   ),

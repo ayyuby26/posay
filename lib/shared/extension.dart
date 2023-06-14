@@ -47,7 +47,7 @@ extension Tools on BuildContext {
   void untilPop(String path) {
     if (ModalRoute.of(this)?.isCurrent != true) pop();
     while (GoRouter.of(this).location != path) {
-      GoRouter.of(this).pop(true);
+      pop(true);
     }
   }
 }

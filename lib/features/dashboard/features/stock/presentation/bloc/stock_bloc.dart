@@ -69,7 +69,9 @@ class StockBloc extends Bloc<StockEvent, StockState> {
 
   _stockAddData(StockAddData event, Emitter<StockState> emit) async {
     emit(state.copyWith(
-        statusManagerStock: Status.loading, action: ActionDo.add));
+      statusManagerStock: Status.loading,
+      action: ActionDo.add,
+    ));
 
     final stock = Stock(
       name: event.name,
@@ -184,8 +186,8 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       action: ActionDo.edit,
     ));
 
-    final stockCurrentValue = state.stocks
-        .firstWhere((e) => e.documentId == event.documentId); 
+    final stockCurrentValue =
+        state.stocks.firstWhere((e) => e.documentId == event.documentId);
 
     final stock = Stock(
       documentId: event.documentId,
