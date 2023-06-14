@@ -9,8 +9,12 @@ sealed class StockEvent extends Equatable {
   List<Object?> get props => [expired];
 }
 
-class StockUpdateExpired extends StockEvent {
-  const StockUpdateExpired({DateTime? expired}) : super(expired: expired);
+class StockUpdateEvent2 extends StockEvent {
+  final Stock? stock;
+  const StockUpdateEvent2({required this.stock});
+
+  @override
+  List<Object?> get props => [stock];
 }
 
 final class StockGetData extends StockEvent {}

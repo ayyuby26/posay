@@ -33,7 +33,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     this._nextPageStock,
   ) : super(const StockState()) {
     on<StockUpdateEvent>(_stockUpdateEvent);
-    on<StockUpdateExpired>(_stockUpdateExpired);
+    on<StockUpdateEvent2>(_stockUpdateExpired);
     on<StockGetData>(stockGetData);
     on<StockAddData>(_stockAddData);
     on<StockNextPage>(_stockNextPage);
@@ -46,11 +46,11 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     on<StockChangeStateIsScrollableEvent>(_stockChangeStateIsScrollableEvent);
   }
 
-  _stockUpdateExpired(StockUpdateExpired event, Emitter<StockState> emit) {
+  _stockUpdateExpired(StockUpdateEvent2 event, Emitter<StockState> emit) {
     emit(state.copyWith(
-      expired: event.expired,
       update: state.update + 1,
       statusManagerStock: Status.initial,
+      stock: event.stock,
     ));
   }
 
@@ -81,7 +81,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       price: event.price,
       stockIn: DateTime.now(),
       currency: event.currency,
-      expired: state.expired,
+      expired: state.stock?.expired,
       documentId: '',
     );
 
@@ -167,7 +167,10 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     StockManagerResetEvent event,
     Emitter<StockState> emit,
   ) {
-    emit(state.copyWith(stock: null, statusManagerStock: Status.initial));
+    emit(state.copyWith(
+      stock: null,
+      statusManagerStock: Status.initial,
+    ));
   }
 
   _stockChangeStateIsScrollableEvent(
@@ -181,15 +184,18 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     StockUpdateEvent event,
     Emitter<StockState> emit,
   ) async {
+    final ad = state.stock == null;
     emit(state.copyWith(
       statusManagerStock: Status.loading,
       action: ActionDo.edit,
+      stock: state.stock,
     ));
 
     final stockCurrentValue =
         state.stocks.firstWhere((e) => e.documentId == event.documentId);
 
     final stock = Stock(
+      expired: event.expired,
       documentId: event.documentId,
       name: event.name,
       code: event.code,
@@ -206,10 +212,12 @@ class StockBloc extends Bloc<StockEvent, StockState> {
         failure: l,
         statusManagerStock: Status.error,
         action: ActionDo.edit,
+        stock: state.stock,
       )),
       (r) => emit(state.copyWith(
         statusManagerStock: Status.success,
         action: ActionDo.edit,
+        stock: state.stock,
       )),
     );
   }

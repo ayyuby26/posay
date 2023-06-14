@@ -8,8 +8,7 @@ final class StockState extends Equatable {
   final Status statusManagerStock;
   final ActionDo action;
   final Status statusSearchStocks;
-  final Status nextPagestatus;
-  final DateTime? expired;
+  final Status nextPagestatus; 
   final int update;
   final bool addLoadingBottom;
   final bool hasReachedMax;
@@ -32,8 +31,7 @@ final class StockState extends Equatable {
     this.statusManagerStock = Status.initial,
     this.statusSearchStocks = Status.initial,
     this.nextPagestatus = Status.initial,
-    this.addLoadingBottom = false,
-    this.expired,
+    this.addLoadingBottom = false, 
     this.stocks = const [],
     this.searchStocks = const [],
     this.update = -1,
@@ -53,8 +51,7 @@ final class StockState extends Equatable {
     Status? status,
     Status? statusManagerStock,
     Status? statusSearchStock,
-    Status? nextPagestatus,
-    DateTime? expired,
+    Status? nextPagestatus, 
     int? update,
     bool? addLoadingBottom,
   }) {
@@ -67,8 +64,7 @@ final class StockState extends Equatable {
       status: status ?? this.status,
       statusManagerStock: statusManagerStock ?? this.statusManagerStock,
       failure: failure ?? this.failure,
-      stocks: stocks ?? this.stocks,
-      expired: expired,
+      stocks: stocks ?? this.stocks, 
       update: update ?? this.update,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
       nextPagestatus: nextPagestatus ?? this.nextPagestatus,
@@ -85,8 +81,7 @@ final class StockState extends Equatable {
         action,
         failure,
         statusSearchStocks,
-        statusManagerStock,
-        expired,
+        statusManagerStock, 
         searchStocks,
         stocks,
         update,

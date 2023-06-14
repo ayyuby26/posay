@@ -56,6 +56,7 @@ class StockModel {
       price: stock.price,
       stockIn: stock.stockIn,
       currency: stock.currency,
+      expired: stock.expired,
     );
   }
 

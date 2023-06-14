@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:posay/features/dashboard/features/stock/domain/entities/stock.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/bloc/stock_bloc.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/code_box.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/widgets/expired_box.dart';
@@ -30,22 +31,20 @@ class StockManagerPage extends StatefulWidget {
 
 class _StockManagerPageState extends State<StockManagerPage>
     with RestorationMixin {
-  StockBloc? _stockBloc;
+  late StockBloc _stockBloc;
 
   @override
   void initState() {
     _stockBloc = context.read<StockBloc>();
-    if (widget.documentId.isPathEmpty) {
-      _stockBloc?.add(const StockUpdateExpired(expired: null));
-    } else {
-      _stockBloc?.add(StockFillEvent(widget.documentId));
+    if (!widget.documentId.isPathEmpty) {
+      _stockBloc.add(StockFillEvent(widget.documentId));
     }
     super.initState();
   }
 
   @override
   void dispose() {
-    _stockBloc?.add(StockManagerResetEvent());
+    _stockBloc.add(StockManagerResetEvent());
     super.dispose();
   }
 
@@ -93,7 +92,7 @@ class _StockManagerPageState extends State<StockManagerPage>
     BuildContext context,
     Object? arguments,
   ) {
-    final expiredDate = context.read<StockBloc>().state.expired;
+    final expiredDate = context.read<StockBloc>().state.stock?.expired;
     return DialogRoute<DateTime>(
       context: context,
       builder: (BuildContext context) {
@@ -109,10 +108,23 @@ class _StockManagerPageState extends State<StockManagerPage>
   }
 
   void _selectDate(DateTime? newSelectedDate) {
+    final bloc = context.read<StockBloc>();
+    final stock = bloc.state.stock;
     if (newSelectedDate != null) {
-      context
-          .read<StockBloc>()
-          .add(StockUpdateExpired(expired: newSelectedDate));
+      if (stock != null) {
+        final ss = Stock(
+          documentId: stock.documentId,
+          name: stock.name,
+          code: stock.code,
+          total: stock.total,
+          unit: stock.unit,
+          price: stock.price,
+          stockIn: stock.stockIn,
+          currency: stock.currency,
+          expired: newSelectedDate,
+        );
+        bloc.add(StockUpdateEvent2(stock: ss));
+      }
     }
   }
 
@@ -147,6 +159,7 @@ class _MainContent extends StatelessWidget {
   final _totalController = TextEditingController();
   final _unitController = TextEditingController();
   final _dateController = TextEditingController();
+  final _dateController2 = TextEditingController();
 
   final RestorableRouteFuture<DateTime?> _restorable;
   _MainContent(this._restorable, this.documentId);
@@ -197,14 +210,15 @@ class _MainContent extends StatelessWidget {
   }
 
   void listen(BuildContext context, StockState state) {
-    StockBloc bloc = context.read<StockBloc>();
-    if (state.expired == null) {
+    final expired = state.stock?.expired; 
+    if (expired == null) {
       _dateController.text = "";
     } else {
-      _dateController.text = context.dateStringify(state.expired!);
+      _dateController.text = context.dateStringify(expired);
+      _dateController2.text = expired.toIso8601String();
     }
 
-    final stock = bloc.state.stock;
+    final stock = state.stock;
     if (stock != null) {
       _codeController.text = stock.code;
       _nameController.text = stock.name;
@@ -240,6 +254,7 @@ class _MainContent extends StatelessWidget {
           if (stock != null) {
             context.read<StockBloc>().add(
                   StockUpdateEvent(
+                    expired: DateTime.parse(_dateController2.text),
                     documentId: documentId,
                     code: _codeController.text,
                     currency: stock.currency,
