@@ -228,24 +228,29 @@ class _MainContent extends StatelessWidget {
                   code: _codeController.text,
                   currency: context.languageCode,
                   name: _nameController.text,
-                  price: Helper.dotRemover(_priceController.text, context),
+                  price: Helper.parseCurrencyByLang(
+                      _priceController.text, context),
                   total: int.parse(_totalController.text),
                   unit: _unitController.text,
                 ),
               );
         } else {
-
-          context.read<StockBloc>().add(
-                StockUpdateEvent(
-                  documentId: documentId,
-                  code: _codeController.text,
-                  currency: context.languageCode,
-                  name: _nameController.text,
-                  price: Helper.dotRemover(_priceController.text, context),
-                  total: int.parse(_totalController.text),
-                  unit: _unitController.text,
-                ),
-              );
+          final bloc = context.read<StockBloc>();
+          final stock = bloc.state.stock;
+          if (stock != null) {
+            context.read<StockBloc>().add(
+                  StockUpdateEvent(
+                    documentId: documentId,
+                    code: _codeController.text,
+                    currency: stock.currency,
+                    name: _nameController.text,
+                    price: Helper.parseCurrency(
+                        _priceController.text, stock.currency),
+                    total: int.parse(_totalController.text),
+                    unit: _unitController.text,
+                  ),
+                );
+          }
         }
       },
       child: Text(

@@ -8,9 +8,15 @@ class Helper {
         : addThousandsSeparator(number.split(".")[0]);
   }
 
-  static double dotRemover(String number, BuildContext context) {
-    final x = context.isEn ? number : number.replaceAll(".", "");
-    return double.parse(x);
+  static double parseCurrency(String number, String currency) {
+    final isDollar = currency == "usd";
+    final formattedNumber = isDollar ? number : number.replaceAll(".", "");
+    return double.parse(formattedNumber);
+  }
+
+  static double parseCurrencyByLang(String number, BuildContext context) {
+    final formattedNumber = context.isEn ? number : number.replaceAll(".", "");
+    return double.parse(formattedNumber);
   }
 
   static widgetLoaded(Function() x) {
