@@ -15,64 +15,62 @@ class StockItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          child: SizedBox(
-            width: double.maxFinite,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: Const.edgesAll16,
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: IColor.tertiary.withOpacity(.3),
-                  ),
-                  borderRadius: Const.radiusCircular8,
-                ),
-              ),
-              onPressed: () => onPressed(context),
-              child: Column(
+    return Padding( 
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: SizedBox(
+        width: double.maxFinite,
+        child: TextButton(
+          style: btnStyle,
+          onPressed: () => onPressed(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          stock.name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
+                  Expanded(
+                    child: Text(
+                      stock.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                      Text("${stock.total} ${stock.unit}"),
-                    ],
+                    ),
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("${currencyFormatter(stock.price, stock.currency)}"),
-                      Text(
-                        expiredString(stock.expired, context),
-                        style: TextStyle(
-                          color: expiredColor(stock.expired),
-                        ),
-                      ),
-                    ],
+                  Text("${stock.total} ${stock.unit}"),
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("${currencyFormatter(stock.price, stock.currency)}"),
+                  Text(
+                    expiredString(stock.expired, context),
+                    style: TextStyle(
+                      color: expiredColor(stock.expired),
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
+
+  get btnStyle => TextButton.styleFrom(
+        padding: Const.edgesAll16,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: IColor.tertiary.withOpacity(.3),
+          ),
+          borderRadius: Const.radiusCircular8,
+        ),
+      );
 
   String expiredString(DateTime? expired, BuildContext context) {
     final dateString = dateStringify(expired, context);
