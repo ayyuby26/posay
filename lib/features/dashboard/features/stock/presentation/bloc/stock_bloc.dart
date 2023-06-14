@@ -149,7 +149,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       statusManagerStock: Status.loading,
       action: ActionDo.delete,
     ));
-    final result = await _deleteStock.execute(event.databaseId);
+    final result = await _deleteStock.execute(event.documentId);
     result.fold(
       (l) => emit(state.copyWith(failure: l, statusManagerStock: Status.error)),
       (r) => emit(state.copyWith(statusManagerStock: Status.success)),
@@ -183,9 +183,9 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       statusManagerStock: Status.loading,
       action: ActionDo.edit,
     ));
-    final stockIn = state.stocks
-        .firstWhere((e) => e.documentId == event.documentId)
-        .stockIn;
+
+    final stockCurrentValue = state.stocks
+        .firstWhere((e) => e.documentId == event.documentId); 
 
     final stock = Stock(
       documentId: event.documentId,
@@ -194,8 +194,8 @@ class StockBloc extends Bloc<StockEvent, StockState> {
       total: event.total,
       unit: event.unit,
       price: event.price,
-      stockIn: stockIn,
-      currency: event.currency,
+      stockIn: stockCurrentValue.stockIn,
+      currency: stockCurrentValue.currency,
     );
 
     final result = await _updateStock.execute(stock);

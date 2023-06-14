@@ -19,10 +19,10 @@ class StockManagerPage extends StatefulWidget {
   static String get _path => "/stockManager";
   static String get pathEmpty => "$_path/-";
   static String pathParam(String param) => "$_path/$param";
-  static String get pathForGoRouter => "$_path/:databaseId";
+  static String get pathForGoRouter => "$_path/:documentId";
 
-  const StockManagerPage(this.databaseId, {super.key});
-  final String databaseId;
+  const StockManagerPage(this.documentId, {super.key});
+  final String documentId;
 
   @override
   State<StockManagerPage> createState() => _StockManagerPageState();
@@ -35,10 +35,10 @@ class _StockManagerPageState extends State<StockManagerPage>
   @override
   void initState() {
     _stockBloc = context.read<StockBloc>();
-    if (widget.databaseId.isPathEmpty) {
+    if (widget.documentId.isPathEmpty) {
       _stockBloc?.add(const StockUpdateExpired(expired: null));
     } else {
-      _stockBloc?.add(StockFillEvent(widget.databaseId));
+      _stockBloc?.add(StockFillEvent(widget.documentId));
     }
     super.initState();
   }
@@ -53,7 +53,7 @@ class _StockManagerPageState extends State<StockManagerPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.databaseId.isPathEmpty
+        title: Text(widget.documentId.isPathEmpty
             ? context.tr.stockAdd
             : context.tr.stockDetail),
       ),
@@ -73,7 +73,7 @@ class _StockManagerPageState extends State<StockManagerPage>
           child: Padding(
             padding: Const.edgesSymmetricHorizontal16,
             child: SingleChildScrollView(
-              child: _MainContent(_restorable, widget.databaseId),
+              child: _MainContent(_restorable, widget.documentId),
             ),
           ),
         ),

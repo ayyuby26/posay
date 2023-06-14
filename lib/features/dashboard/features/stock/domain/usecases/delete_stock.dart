@@ -7,7 +7,7 @@ class DeleteStock {
 
   DeleteStock({required this.stockRepository});
 
-  Future<Either<Failure, dynamic>> execute(String databaseId) async {
-    return stockRepository.deleteStock(databaseId);
+  Future<Either<Failure, dynamic>> execute(String documentId) async {
+    return stockRepository.deleteStock(documentId);
   }
 }

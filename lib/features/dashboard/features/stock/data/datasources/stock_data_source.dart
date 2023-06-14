@@ -9,7 +9,7 @@ abstract class StockDataSource {
   });
   Future<StockModel> addStock(StockModel stock);
   Future<Map<String, dynamic>> updateStock(StockModel stock);
-  Future<dynamic> deleteStock(String databaseId);
+  Future<dynamic> deleteStock(String documentId);
 }
 
 class StockDataSourceImpl extends StockDataSource {
@@ -51,21 +51,22 @@ class StockDataSourceImpl extends StockDataSource {
   }
 
   @override
-  Future deleteStock(String databaseId) async {
+  Future deleteStock(String documentId) async {
     return await databases.deleteDocument(
       databaseId: DbConstantsId.databaseId,
       collectionId: DbConstantsId.stockId,
-      documentId: databaseId,
+      documentId: documentId,
     );
   }
 
   @override
   Future<Map<String, dynamic>> updateStock(StockModel stock) async {
     final response = await databases.updateDocument(
-        databaseId: DbConstantsId.databaseId,
-        collectionId: DbConstantsId.stockId,
-        documentId: stock.documentId,
-        data: stock.toJson());
+      databaseId: DbConstantsId.databaseId,
+      collectionId: DbConstantsId.stockId,
+      documentId: stock.documentId,
+      data: stock.toJson(),
+    );
 
     return response.data;
   }

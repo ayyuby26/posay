@@ -40,7 +40,7 @@ final router = GoRouter(
     GoRoute(
       path: StockManagerPage.pathForGoRouter,
       builder: (context, state) {
-        return StockManagerPage(state.pathParameters['databaseId'] ?? "");
+        return StockManagerPage(state.pathParameters['documentId'] ?? "");
       },
     ),
     GoRoute(

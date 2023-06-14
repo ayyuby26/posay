@@ -37,9 +37,9 @@ class StockRepositoryImpl implements StockRepository {
   }
 
   @override
-  Future<Either<Failure, dynamic>> deleteStock(String databaseId) async {
+  Future<Either<Failure, dynamic>> deleteStock(String documentId) async {
     try {
-      final result = await stockDataSource.deleteStock(databaseId);
+      final result = await stockDataSource.deleteStock(documentId);
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(e));

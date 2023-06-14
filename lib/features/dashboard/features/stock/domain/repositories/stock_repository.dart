@@ -9,5 +9,5 @@ abstract class StockRepository {
   });
   Future<Either<Failure, Stock>> addStock(Stock stock);
   Future<Either<Failure, Map<String, dynamic>>> updateStock(Stock stock);
-  Future<Either<Failure, dynamic>> deleteStock(String databaseId);
+  Future<Either<Failure, dynamic>> deleteStock(String documentId);
 }

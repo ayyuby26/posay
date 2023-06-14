@@ -78,12 +78,12 @@ class StockHasReachMaxReset extends StockEvent {}
 class StockSearchReset extends StockEvent {}
 
 class StockDelete extends StockEvent {
-  final String databaseId;
+  final String documentId;
 
-  const StockDelete(this.databaseId);
+  const StockDelete(this.documentId);
 
   @override
-  List<Object> get props => [databaseId];
+  List<Object> get props => [documentId];
 }
 
 class StockFillEvent extends StockEvent {
@@ -104,7 +104,6 @@ class StockChangeStateIsScrollableEvent extends StockEvent {
 }
 
 class StockUpdateEvent extends StockEvent {
-
   final String documentId;
   final String code;
   final String name;
@@ -126,7 +125,7 @@ class StockUpdateEvent extends StockEvent {
 
   @override
   List<Object?> get props => [
-    documentId,
+        documentId,
         code,
         name,
         price,
