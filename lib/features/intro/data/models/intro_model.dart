@@ -13,6 +13,10 @@ class IntroModel {
 
   IconData get icon => IconData(iconCodePoint, fontFamily: 'MaterialIcons');
 
+  factory IntroModel.fromEntity(Intro intro) {
+    return IntroModel(iconCodePoint: intro.icon.codePoint, desc: intro.desc);
+  }
+
   Intro toEntity() {
     return Intro(icon: icon, desc: desc);
   }

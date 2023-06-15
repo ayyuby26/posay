@@ -37,12 +37,13 @@ extension Snackbar on BuildContext {
 }
 
 extension Tools on BuildContext {
-  Widget get appBarHeight =>
+  double get appBarHeightValue => MediaQuery.of(this).viewPadding.top;
+  Widget get appBarHeightSizedBox =>
       SizedBox(height: MediaQuery.of(this).viewPadding.top);
 
   void get closeSnackBar => ScaffoldMessenger.of(this).removeCurrentSnackBar();
 
-  closeDialog() => ModalRoute.of(this)?.isCurrent != true ? pop() : null;
+  void closeDialog() => ModalRoute.of(this)?.isCurrent != true ? pop() : null;
 
   void untilPop(String path) {
     if (ModalRoute.of(this)?.isCurrent != true) pop();
@@ -54,7 +55,7 @@ extension Tools on BuildContext {
 
 extension ProcessStatus on Status {
   bool get isLoading => this == Status.loading;
-  bool get isFail => this == Status.error;
+  bool get isFail => this == Status.failure;
   bool get isSuccess => this == Status.success;
 }
 

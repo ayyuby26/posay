@@ -11,17 +11,14 @@ abstract class LanguageDataSource {
 }
 
 class LanguageDataSourceImpl extends LanguageDataSource {
-  final List<Locale> supportedLocales;
-  final Box<LanguageModel> objectBoxLanguage;
+  final List<Locale> _supportedLocales;
+  final Box<LanguageModel> _objectBoxLanguage;
 
-  LanguageDataSourceImpl({
-    required this.objectBoxLanguage,
-    required this.supportedLocales,
-  });
+  LanguageDataSourceImpl(this._objectBoxLanguage, this._supportedLocales);
 
   @override
   Language getDefaultLanguage() {
-    final Locale locale = supportedLocales.first;
+    final Locale locale = _supportedLocales.first;
     return Language(
       code: locale.languageCode,
       name: locale.languageCode.toUpperCase(),
@@ -30,7 +27,7 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   List<Language> getLanguages() {
-    return supportedLocales
+    return _supportedLocales
         .map((e) => Language(
               code: e.languageCode,
               name: e.languageCode.toUpperCase(),
@@ -40,15 +37,15 @@ class LanguageDataSourceImpl extends LanguageDataSource {
 
   @override
   Language getSavedLanguage() {
-    final List<LanguageModel> languages = objectBoxLanguage.getAll();
+    final List<LanguageModel> languages = _objectBoxLanguage.getAll();
     if (languages.isNotEmpty) return languages.first.toEntity();
     return getDefaultLanguage();
   }
 
   @override
   bool saveLanguageToLocalDb(Language language) {
-    objectBoxLanguage.removeAll();
-    final int result = objectBoxLanguage.put(language.toModel());
-    return result == 1;
+    _objectBoxLanguage.removeAll();
+    _objectBoxLanguage.put(language.toModel());
+    return _objectBoxLanguage.getAll().length == 1;
   }
 }

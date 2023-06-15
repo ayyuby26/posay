@@ -24,16 +24,17 @@ class AuthPageState extends State<AuthPage> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthLoadingState) context.loading;
-          if (state is AuthLoginFailure) {
-            final dbErr = state.message is DatabaseFailure;
+          if (state.status.isLoading) context.loading;
+          if (state.status.isFail) {
+            context.closeDialog();
+            final dbErr = state.failure is DatabaseFailure;
             final user404 = context.tr.userNotFound;
             context.failure(
-              content: dbErr ? user404 : "${state.message?.message}",
+              content: dbErr ? user404 : "${state.failure?.message}",
             );
           }
-          if (state is AuthLoginSuccess) {
-            if (context.canPop()) context.pop();
+          if (state.status.isSuccess) {
+            context.closeDialog();
             context.pushReplacement(DashboardPage.path);
           }
         },
@@ -42,7 +43,8 @@ class AuthPageState extends State<AuthPage> {
             children: [
               background,
               MainContentAuth(),
-              Align(alignment: Alignment.topRight, child: LanguageSwitch()),
+              const Align(
+                  alignment: Alignment.topRight, child: LanguageSwitch()),
             ],
           ),
         ),

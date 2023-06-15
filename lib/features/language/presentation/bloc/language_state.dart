@@ -1,21 +1,32 @@
 part of 'language_bloc.dart';
 
-abstract class LanguageState extends Equatable {
-  final String message;
-  const LanguageState({this.message = ""});
+final class LanguageState extends Equatable {
+  final Failure? failure;
+  final Locale? languageSelected;
+  final Language? defaultLanguage;
+
+  const LanguageState({
+    this.failure,
+    this.languageSelected,
+    this.defaultLanguage,
+  });
 
   @override
-  List<Object> get props => [message];
-}
+  List<Object?> get props => [
+        failure,
+        languageSelected,
+        defaultLanguage,
+      ];
 
-class LanguageInit extends LanguageState {
-  const LanguageInit({super.message});
-}
-
-class LanguageUpdateState extends LanguageState {
-  final Locale locale;
-  const LanguageUpdateState({required this.locale, super.message});
-
-  @override
-  List<Object> get props => [locale];
+  LanguageState copyWith({
+    Failure? failure,
+    Locale? languageSelected,
+    Language? defaultLanguage,
+  }) {
+    return LanguageState(
+      failure: failure ?? this.failure,
+      defaultLanguage: defaultLanguage ?? this.defaultLanguage,
+      languageSelected: languageSelected ?? this.languageSelected,
+    );
+  }
 }

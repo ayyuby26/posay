@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
@@ -28,15 +30,15 @@ class SsettingPageState extends State<SettingPage> {
       body: Stack(
         children: [
           background,
-          SafeArea(
+          const SafeArea(
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.centerRight,
                   child: LanguageSwitch(),
                 ),
-                const Profile(),
-                const Btn(),
+                Profile(),
+                Btn(),
               ],
             ),
           ),
@@ -116,7 +118,12 @@ class Btn extends StatelessWidget {
             content: context.tr.logoutConfirmContent,
             titleOk: context.tr.logout,
             onPressed: () {
-              context.read<AuthBloc>().add(AuthLogout(context));
+              final authBloc = context.read<AuthBloc>();
+              authBloc.add(AuthLogout());
+              if (authBloc.state.status.isSuccess) {
+                context.closeDialog();
+                context.pushReplacement(AuthPage.path);
+              }
             },
           );
         },

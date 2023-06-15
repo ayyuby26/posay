@@ -1,32 +1,28 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:go_router/go_router.dart';
-import 'package:posay/core/state_enum.dart';
 import 'package:posay/features/auth/domain/entities/user.dart';
 import 'package:posay/features/auth/domain/usecases/get_local_user.dart';
 import 'package:posay/features/auth/domain/usecases/login.dart';
 import 'package:posay/features/auth/domain/usecases/logout.dart';
 import 'package:posay/features/auth/domain/usecases/save_user_to_local_db.dart';
-import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/shared/failure.dart';
+import 'package:posay/shared/status.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final Login login;
-  final Logout logout;
-  final SaveUserToLocalDb saveUserToLocalDb;
-  final GetLocalUser getLocalUser;
+  final Login _login;
+  final Logout _logout;
+  final SaveUserToLocalDb _saveUserToLocalDb;
+  final GetLocalUser _getLocalUser;
   AuthBloc(
-    this.login,
-    this.saveUserToLocalDb,
-    this.logout,
-    this.getLocalUser,
-  ) : super(AuthInitial()) {
+    this._login,
+    this._saveUserToLocalDb,
+    this._logout,
+    this._getLocalUser,
+  ) : super(const AuthState()) {
     on<AuthLogin>(_authLogin);
     on<AuthLogout>(_authLogout);
     on<AuthShowPassEvent>(_authShowPassEvent);
@@ -34,39 +30,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   FutureOr<void> _authLogin(AuthLogin event, Emitter<AuthState> emit) async {
-    emit(AuthLoadingState());
-    final result = await login.execute(
+    emit(state.copyWith(status: Status.loading));
+
+    final login = await _login.execute(
       event.username,
       event.password,
     );
-    emit(AuthLoadedState());
 
-    result.fold((l) => emit(AuthLoginFailure(l)), (user) {
-      saveUserToLocalDb.execute(user);
-      emit(AuthLoginSuccess(user));
-    });
+    User? user;
+    login.fold(
+      (l) => emit(state.copyWith(failure: l, status: Status.failure)),
+      (r) => user = r,
+    );
+
+    if (user != null) {
+      final saveUser = _saveUserToLocalDb.execute(user!);
+      saveUser.fold(
+        (l) => emit(state.copyWith(failure: l, status: Status.failure)),
+        (r) => emit(state.copyWith(user: user, status: Status.success)),
+      );
+    }
   }
 
   FutureOr<void> _authLogout(AuthLogout event, Emitter<AuthState> emit) {
-    if (event.context.canPop()) event.context.pop();
-    final result = logout.execute();
-    result.fold((l) => emit(AuthLogoutFailure(l)), (r) {
-      event.context.pushReplacement(AuthPage.path);
-      emit(AuthLogoutSuccess());
-    });
+    final logout = _logout.execute();
+    logout.fold(
+      (l) => emit(state.copyWith(failure: l, status: Status.failure)),
+      (r) => emit(state.copyWith(status: Status.success)),
+    );
   }
 
   FutureOr<void> _authShowPassEvent(
     AuthShowPassEvent event,
     Emitter<AuthState> emit,
   ) {
-    emit(AuthShowPass(!state.isShowPass));
+    emit(state.copyWith(isShowPass: !state.isShowPass, status: Status.initial));
   }
 
-  FutureOr<void> _authGetLocalUser(
-      AuthGetLocalUser event, Emitter<AuthState> emit) {
-    final result = getLocalUser.execute();
-    result.fold((l) => emit(AuthLocalUserFailure(l)),
-        (r) => emit(AuthLocalUserLoaded(r)));
+  _authGetLocalUser(AuthGetLocalUser event, Emitter<AuthState> emit) {
+    final result = _getLocalUser.execute();
+    result.fold(
+      (l) => emit(state.copyWith(failure: l, status: Status.failure)),
+      (r) => emit(state.copyWith(user: r, status: Status.success)),
+    );
   }
 }

@@ -13,68 +13,90 @@ part 'language_event.dart';
 part 'language_state.dart';
 
 class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
-  GetSavedLanguage getSavedLanguage;
-  SaveLanguageToLocalDb saveLanguageToLocalDb;
-  GetLanguages getLanguages;
-  GetDefaultLanguage getDefaultLanguage;
+  final GetSavedLanguage _getSavedLanguage;
+  final SaveLanguageToLocalDb _saveLanguageToLocalDb;
+  final GetLanguages _getLanguages;
+  final GetDefaultLanguage _getDefaultLanguage;
 
-  String _message = "";
-  late Language _language;
-
-  LanguageBloc({
-    required this.getDefaultLanguage,
-    required this.getLanguages,
-    required this.getSavedLanguage,
-    required this.saveLanguageToLocalDb,
-  }) : super(const LanguageInit()) {
+  LanguageBloc(
+    this._getDefaultLanguage,
+    this._getLanguages,
+    this._getSavedLanguage,
+    this._saveLanguageToLocalDb,
+  ) : super(const LanguageState()) {
     on<LoadLanguageEvent>(_loadLanguageEvent);
     on<ChangeLanguageEvent>(_changeLanguageEvent);
+    on<LanguageGetDefault>(_languageGetDefault);
   }
 
-  void _setMessage(Failure failure) => _message = failure.message;
-
-  FutureOr<void> _loadLanguageEvent(
+  _loadLanguageEvent(
     LoadLanguageEvent event,
     Emitter<LanguageState> emit,
   ) {
-    final savedLanguage = getSavedLanguage.execute();
+    final savedLanguage = _getSavedLanguage.execute();
 
-    savedLanguage.fold((l) {
-      final defaultLang = getDefaultLanguage.execute();
-      defaultLang.fold(_setMessage, (r) => _language = r);
-    }, (r) => _language = r);
 
-    saveLanguageToLocalDb.execute(_language);
+    Language? langSelected;
 
-    final languageUpdateState = LanguageUpdateState(
-      locale: Locale(_language.code),
-      message: _message,
+    savedLanguage.fold(
+      (l) => emit(state.copyWith(failure: l)),
+      (r) => langSelected = r,
     );
 
-    emit(languageUpdateState);
+    if (langSelected != null) {
+      return emit(
+        state.copyWith(languageSelected: Locale(langSelected!.code)),
+      );
+    }
+
+    final defaultLang = _getDefaultLanguage.execute();
+    defaultLang.fold(
+      (l) => emit(state.copyWith(failure: l)),
+      (r) {
+        emit(state.copyWith(languageSelected: Locale(r.code)));
+        langSelected = r;
+      },
+    );
+
+    final saveToLocal = _saveLanguageToLocalDb.execute(langSelected!);
+    if (saveToLocal) {
+      final languageUpdateState = state.copyWith(
+        languageSelected: Locale(langSelected!.code),
+      );
+      return emit(languageUpdateState);
+    }
   }
 
   FutureOr<void> _changeLanguageEvent(
     ChangeLanguageEvent event,
     Emitter<LanguageState> emit,
   ) {
-    try {
-      final languages = getLanguages.execute();
+    Language? langSelected;
 
-      languages.fold(_setMessage, (r) {
-        _language = r.firstWhere((e) => e.code != event.locale.languageCode);
-      });
+    final languages = _getLanguages.execute();
+    languages.fold(
+      (l) => emit(state.copyWith(failure: l)),
+      (r) {
+        langSelected = r.firstWhere((e) => e.code != event.locale.languageCode);
+      },
+    );
+    
+    if (langSelected != null) {
+      final save = _saveLanguageToLocalDb.execute(langSelected!);
 
-      saveLanguageToLocalDb.execute(_language);
-
-      final languageUpdateState = LanguageUpdateState(
-        locale: Locale(_language.code),
-        message: _message,
-      );
-
-      emit(languageUpdateState);
-    } catch (e) {
-      _message = e.toString();
+      if (save) {
+        emit(state.copyWith(
+          languageSelected: Locale(langSelected!.code),
+        ));
+      }
     }
+  }
+
+  _languageGetDefault(LanguageGetDefault event, Emitter<LanguageState> emit) {
+    final result = _getDefaultLanguage.execute();
+    result.fold(
+      (l) => emit(state.copyWith(failure: l)),
+      (r) => emit(state.copyWith(defaultLanguage: r)),
+    );
   }
 }

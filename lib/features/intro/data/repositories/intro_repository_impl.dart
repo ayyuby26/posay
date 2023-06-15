@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:posay/features/intro/data/datasources/intro_data_source.dart';
 import 'package:posay/features/intro/data/models/intro_model.dart';
@@ -11,17 +12,34 @@ class IntroRepositoryImpl implements IntroRepository {
   IntroRepositoryImpl({required this.dataSource});
 
   @override
-  List<Intro> getIntroContents(AppLocalizations appLocalizations) {
-    final introList = dataSource.getIntroList(appLocalizations);
-    return introList.map((e) => e.toEntity()).toList();
+  Either<Failure, List<Intro>> getIntroContents(
+    AppLocalizations appLocalizations,
+  ) {
+    try {
+      final introList = dataSource.getIntroList(appLocalizations);
+      return Right(introList.map((e) => e.toEntity()).toList());
+    } catch (e) {
+      return Left(DatabaseFailure("$e"));
+    }
   }
 
   @override
-  void saveIntro(IntroModel intro) {
+  Either<Failure, bool> isIntroSeen() {
     try {
-      dataSource.saveIntro(intro);
+      final result = dataSource.isIntroSeen();
+      return Right(result);
     } catch (e) {
-      throw const LocalDatabaseFailure();
+      return Left(LocalDatabaseFailure(e));
+    }
+  }
+
+  @override
+  Either<Failure, bool> saveIntro(Intro intro) {
+    try {
+      dataSource.saveIntro(IntroModel.fromEntity(intro));
+      return const Right(true);
+    } catch (e) {
+      return Left(LocalDatabaseFailure(e));
     }
   }
 }

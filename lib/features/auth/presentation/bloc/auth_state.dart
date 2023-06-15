@@ -1,48 +1,36 @@
 part of 'auth_bloc.dart';
 
-abstract class AuthState extends Equatable {
+final class AuthState extends Equatable {
   final User? user;
-  final RequestState status;
+  final Status status;
   final bool isShowPass;
-  final Failure? message;
-  const AuthState(
-      {this.message,
-      this.isShowPass = false,
-      this.status = RequestState.empty,
-      this.user});
+  final Failure? failure;
+  const AuthState({
+    this.failure,
+    this.isShowPass = false,
+    this.status = Status.initial,
+    this.user,
+  });
 
   @override
-  List<Object?> get props => [isShowPass, status, user, message];
-}
+  List<Object?> get props => [
+        isShowPass,
+        status,
+        user,
+        failure,
+      ];
 
-class AuthInitial extends AuthState {}
-
-class AuthLoginSuccess extends AuthState {
-  const AuthLoginSuccess(User user) : super(user: user);
-}
-
-class AuthLoginFailure extends AuthState {
-  const AuthLoginFailure(Failure message) : super(message: message);
-}
-
-class AuthLogoutSuccess extends AuthState {}
-
-class AuthLogoutFailure extends AuthState {
-  const AuthLogoutFailure(Failure message) : super(message: message);
-}
-
-class AuthShowPass extends AuthState {
-  const AuthShowPass(isShowPass) : super(isShowPass: isShowPass);
-}
-
-class AuthLoadingState extends AuthState {}
-
-class AuthLoadedState extends AuthState {}
-
-class AuthLocalUserLoaded extends AuthState {
-  const AuthLocalUserLoaded(User user) : super(user: user);
-}
-
-class AuthLocalUserFailure extends AuthState {
-  const AuthLocalUserFailure(Failure message) : super(message: message);
+  AuthState copyWith({
+    User? user,
+    Status? status,
+    bool? isShowPass,
+    Failure? failure,
+  }) {
+    return AuthState(
+      failure: failure ?? this.failure,
+      status: status ?? this.status,
+      isShowPass: isShowPass ?? this.isShowPass,
+      user: user ?? this.user,
+    );
+  }
 }

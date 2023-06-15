@@ -1,4 +1,5 @@
-import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/appwrite.dart' as ap;
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:posay/core/appwrite_client.dart';
@@ -30,6 +31,8 @@ import 'package:posay/features/intro/data/models/intro_model.dart';
 import 'package:posay/features/intro/data/repositories/intro_repository_impl.dart';
 import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/domain/usecases/get_intro.dart';
+import 'package:posay/features/intro/domain/usecases/is_intro_seen.dart';
+import 'package:posay/features/intro/domain/usecases/save_intro.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/language/data/datasources/language_data_source.dart';
 import 'package:posay/features/language/data/models/language_model.dart';
@@ -59,21 +62,17 @@ class Injector {
 
   static void init(Store store) {
     // languages from lib/l10n/*.arb
-    _locator.registerFactory(() => AppLocalizations.supportedLocales);
+    _locator.registerFactory<List<Locale>>(() => AppLocalizations.supportedLocales);
 
     // [ PROVIDER ]-------------------------------------------------------------
-    _locator.registerFactory(
-        () => StockBloc(_locator(), _locator(), _locator(), _locator(),_locator(),_locator()));
+    _locator.registerFactory(() => StockBloc(_locator(), _locator(), _locator(),
+        _locator(), _locator(), _locator()));
     _locator.registerFactory(
         () => AuthBloc(_locator(), _locator(), _locator(), _locator()));
-    _locator.registerFactory(() => IntroBloc(getIntro: _locator()));
+    _locator
+        .registerFactory(() => IntroBloc(_locator(), _locator(), _locator()));
     _locator.registerFactory(
-      () => LanguageBloc(
-        getDefaultLanguage: _locator(),
-        getLanguages: _locator(),
-        getSavedLanguage: _locator(),
-        saveLanguageToLocalDb: _locator(),
-      ),
+      () => LanguageBloc(_locator(), _locator(), _locator(), _locator()),
     );
 
     // [ USECASE ]--------------------------------------------------------------
@@ -96,7 +95,11 @@ class Injector {
     );
 
     // intro
+    _locator
+        .registerLazySingleton(() => SaveIntro(introRepository: _locator()));
     _locator.registerLazySingleton(() => GetIntro(introRepository: _locator()));
+    _locator
+        .registerLazySingleton(() => IsIntroSeen(introRepository: _locator()));
 
     // language
     _locator.registerLazySingleton(
@@ -146,10 +149,7 @@ class Injector {
       () => IntroDataSourceImpl(_locator()),
     );
     _locator.registerLazySingleton<LanguageDataSource>(
-      () => LanguageDataSourceImpl(
-        objectBoxLanguage: _locator(),
-        supportedLocales: _locator(),
-      ),
+      () => LanguageDataSourceImpl(_locator(), _locator()),
     );
 
     // helper
@@ -158,9 +158,9 @@ class Injector {
     // external
     _locator.registerLazySingleton<ObjectBox>(() => ObjectBox(store));
     _locator.registerLazySingleton<AppwriteConfig>(() => AppwriteConfig());
-    _locator.registerLazySingleton<Client>(
+    _locator.registerLazySingleton<ap.Client>(
         () => AppwriteClient(_locator()).setAppWriteConfig());
-    _locator.registerLazySingleton<Databases>(() => Databases(_locator()));
+    _locator.registerLazySingleton<ap.Databases>(() => ap.Databases(_locator()));
     _locator.registerFactory<Box<LanguageModel>>(
       () => store.box<LanguageModel>(),
     );

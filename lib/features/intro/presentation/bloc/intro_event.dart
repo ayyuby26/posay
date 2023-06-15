@@ -1,25 +1,36 @@
 part of 'intro_bloc.dart';
 
-abstract class IntroEvent extends Equatable {
+sealed class IntroEvent extends Equatable {
   const IntroEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class ChangeIndexIntro extends IntroEvent {
+class IntroChangeIndex extends IntroEvent {
   final int index;
 
-  const ChangeIndexIntro({required this.index});
+  const IntroChangeIndex({required this.index});
 
   @override
   List<Object> get props => [index];
 }
 
-class GetIntroListEvent extends IntroEvent {
+class IntroGetContents extends IntroEvent {
   final AppLocalizations tr;
-  const GetIntroListEvent(this.tr);
+  const IntroGetContents(this.tr);
 
   @override
   List<Object> get props => [tr];
 }
+
+class IntroSetAsSeen extends IntroEvent {
+  final Intro intro;
+
+  const IntroSetAsSeen(this.intro);
+
+  @override
+  List<Object> get props => [intro];
+}
+
+class IntroIsSeen extends IntroEvent {}

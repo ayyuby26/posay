@@ -5,7 +5,8 @@ import 'package:posay/features/intro/data/models/intro_model.dart';
 
 abstract class IntroDataSource {
   List<IntroModel> getIntroList(AppLocalizations appLocalizations);
-  void saveIntro(IntroModel intro);
+  int saveIntro(IntroModel intro);
+  bool isIntroSeen();
 }
 
 class IntroDataSourceImpl implements IntroDataSource {
@@ -31,7 +32,12 @@ class IntroDataSourceImpl implements IntroDataSource {
   }
 
   @override
-  void saveIntro(IntroModel introModel) {
-    box.put(introModel);
+  int saveIntro(IntroModel introModel) {
+    return box.put(introModel);
+  }
+
+  @override
+  bool isIntroSeen() {
+    return !box.isEmpty();
   }
 }

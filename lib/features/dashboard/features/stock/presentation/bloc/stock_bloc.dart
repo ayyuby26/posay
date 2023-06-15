@@ -90,7 +90,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     result.fold(
       (l) => emit(state.copyWith(
         failure: l,
-        statusManagerStock: Status.error,
+        statusManagerStock: Status.failure,
         action: ActionDo.add,
       )),
       (r) => emit(state.copyWith(
@@ -110,7 +110,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     final result = await _nextPageStock.execute(state.stocks.length);
 
     result.fold(
-      (l) => emit(state.copyWith(failure: l, nextPagestatus: Status.error)),
+      (l) => emit(state.copyWith(failure: l, nextPagestatus: Status.failure)),
       (r) {
         if (r.isEmpty) return emit(state.copyWith(hasReachedMax: true));
         emit(state.copyWith(
@@ -127,7 +127,8 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     emit(state.copyWith(statusSearchStock: Status.loading));
     final result = await _searchStock.execute(event.search);
     result.fold(
-      (l) => emit(state.copyWith(failure: l, statusSearchStock: Status.error)),
+      (l) =>
+          emit(state.copyWith(failure: l, statusSearchStock: Status.failure)),
       (r) => emit(
           state.copyWith(searchStocks: r, statusSearchStock: Status.success)),
     );
@@ -153,7 +154,8 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     ));
     final result = await _deleteStock.execute(event.documentId);
     result.fold(
-      (l) => emit(state.copyWith(failure: l, statusManagerStock: Status.error)),
+      (l) =>
+          emit(state.copyWith(failure: l, statusManagerStock: Status.failure)),
       (r) => emit(state.copyWith(statusManagerStock: Status.success)),
     );
   }
@@ -184,7 +186,6 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     StockUpdateEvent event,
     Emitter<StockState> emit,
   ) async {
-    final ad = state.stock == null;
     emit(state.copyWith(
       statusManagerStock: Status.loading,
       action: ActionDo.edit,
@@ -210,7 +211,7 @@ class StockBloc extends Bloc<StockEvent, StockState> {
     result.fold(
       (l) => emit(state.copyWith(
         failure: l,
-        statusManagerStock: Status.error,
+        statusManagerStock: Status.failure,
         action: ActionDo.edit,
         stock: state.stock,
       )),

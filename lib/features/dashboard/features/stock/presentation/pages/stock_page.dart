@@ -59,7 +59,7 @@ class StockPageState extends State<StockPage> {
       body: Unfocus(
         child: Column(
           children: [
-            context.appBarHeight,
+            context.appBarHeightSizedBox,
             _search(context),
             Expanded(
               child: RefreshIndicator(

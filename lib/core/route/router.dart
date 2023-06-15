@@ -1,27 +1,31 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:objectbox/objectbox.dart';
-import 'package:posay/features/auth/domain/repositories/user_repository.dart';
+import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/search_stock_page.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_manager_page.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:posay/features/intro/data/models/intro_model.dart';
-import 'package:posay/injector.dart';
+import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
+import 'package:posay/shared/extension.dart';
 import '../../features/intro/presentation/pages/intro_page.dart';
 
-// GoRouter configuration
 final router = GoRouter(
   initialLocation: DashboardPage.path,
   redirect: (context, state) {
-    dynamic user;
+    final authBloc = context.read<AuthBloc>();
+    final introBloc = context.read<IntroBloc>();
 
-    final getUser = Injector.gett<UserRepository>().getLocalUser();
-    getUser.fold((e) {}, (r) => user = r);
+    authBloc.add(AuthGetLocalUser());
+    final userExisting = authBloc.state.status.isSuccess;
 
-    final introNotSeen = Injector.gett<Box<IntroModel>>().isEmpty();
+    introBloc.add(IntroIsSeen());
 
-    if (introNotSeen) return IntroPage.path;
-    if (user == null) return AuthPage.path;
+    final isIntroSeen = introBloc.state.isIntroSeen;
+    if (isIntroSeen == false) {
+      introBloc.add(IntroGetContents(context.tr));
+      return IntroPage.path;
+    }
+    if (userExisting == false) return AuthPage.path;
     return null;
   },
   routes: [

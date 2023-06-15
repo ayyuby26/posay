@@ -1,54 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:posay/features/intro/domain/entities/intro.dart';
-import 'package:posay/features/intro/domain/repositories/intro_repository.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
 import 'package:posay/features/language/presentation/pages/language_switch.dart';
-import 'package:posay/injector.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
 import 'package:posay/shared/widget_style.dart';
 
-class IntroPage extends StatelessWidget {
+class IntroPage extends StatefulWidget {
   static String get path => "/intro";
   const IntroPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          Injector.gett<IntroBloc>()..add(GetIntroListEvent(context.tr)),
-      child: const _IntroPage(),
-    );
-  }
+  State<IntroPage> createState() => IntroPageState();
 }
 
-class _IntroPage extends StatefulWidget {
-  const _IntroPage();
-
-  @override
-  State<_IntroPage> createState() => _IntroPageState();
-}
-
-class _IntroPageState extends State<_IntroPage> {
+class IntroPageState extends State<IntroPage> {
   final _pageController = PageController();
-  final _introRepository = Injector.gett<IntroRepository>();
+  late IntroBloc _introBloc;
+
+  @override
+  void initState() {
+    _introBloc = context.read<IntroBloc>();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final contents = _introRepository.getIntroContents(context.tr);
     return Scaffold(
       body: Stack(
         children: [
           background,
-          Column(children: [
-            buildIntro(contents),
-            buildIndicator(contents),
-          ]),
-          Align(
+          BlocBuilder<IntroBloc, IntroState>(
+            builder: (context, state) {
+              return Column(children: [
+                buildIntro(state.introContents),
+                buildIndicator(state.introContents),
+              ]);
+            },
+          ),
+          const Align(
             alignment: Alignment.topRight,
             child: LanguageSwitch(),
           ),
@@ -72,7 +73,7 @@ class _IntroPageState extends State<_IntroPage> {
           return PageView(
             controller: _pageController,
             onPageChanged: (i) {
-              context.read<IntroBloc>().add(ChangeIndexIntro(index: i));
+              _introBloc.add(IntroChangeIndex(index: i));
             },
             children: introList,
           );
@@ -117,22 +118,25 @@ class _IntroPageState extends State<_IntroPage> {
       child: TextButton(
         style: buttonStylePrimary,
         onPressed: () async {
-          final currIndex = context.read<IntroBloc>().state.index;
-          final contents = _introRepository.getIntroContents(context.tr);
-          if ((contents.length - 1) == currIndex) {
-            Injector.gett<IntroRepository>().saveIntro(contents.first.toModel);
-            context.pushReplacement(IntroPage.path);
+          final bloc = context.read<IntroBloc>();
+          final index = bloc.state.index;
+          final contents = bloc.state.introContents;
+          final lastIntro = contents.length - 1 == index;
+
+          if (lastIntro) {
+            bloc.add(IntroSetAsSeen(contents[index]));
+            if (bloc.state.isIntroSeen) {
+              context.pushReplacement(DashboardPage.path);
+            }
           } else {
             _pageController.animateToPage(
-              currIndex + 1,
+              index + 1,
               duration: const Duration(milliseconds: 500),
               curve: Curves.easeInOut,
             );
           }
         },
-        child:
-            // const Text("data")
-            BlocBuilder<IntroBloc, IntroState>(
+        child: BlocBuilder<IntroBloc, IntroState>(
           builder: (context, state) {
             return Text(
               state.introContents.length - 1 == state.index
