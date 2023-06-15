@@ -7,9 +7,7 @@
 # Technologies:
 - get_it = Depedency injection
 - bloc = State Management
-- objectbox = Local Storage
 - go_router = Route Manager
-- flutter_localizations = Multilingual Manager
 ---
 # First After Clone
 run command `flutter pub get && flutter gen-l10n && dart pub run build_runner build`
