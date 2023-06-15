@@ -1,0 +1,161 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:2069918841730721824",
+      "lastPropertyId": "3:4190175132657548243",
+      "name": "LanguageModel",
+      "properties": [
+        {
+          "id": "1:7058779309097967234",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4794601489422377466",
+          "name": "code",
+          "type": 9
+        },
+        {
+          "id": "3:4190175132657548243",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:4194264137188653454",
+      "lastPropertyId": "4:7490457124938310107",
+      "name": "UserModel",
+      "properties": [
+        {
+          "id": "1:4092580621457696650",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:333551077068005480",
+          "name": "username",
+          "type": 9
+        },
+        {
+          "id": "3:8922954093219094183",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "4:7490457124938310107",
+          "name": "name",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:8559749505975480336",
+      "lastPropertyId": "3:3988834944833707962",
+      "name": "IntroModel",
+      "properties": [
+        {
+          "id": "1:8178162916766674764",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3500295344501256651",
+          "name": "desc",
+          "type": 9
+        },
+        {
+          "id": "3:3988834944833707962",
+          "name": "iconCodePoint",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:5393992314492888139",
+      "lastPropertyId": "12:5201367708836884262",
+      "name": "StockModel",
+      "properties": [
+        {
+          "id": "1:5746512170530693625",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4858240443448692043",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:5978283439603713289",
+          "name": "code",
+          "type": 9
+        },
+        {
+          "id": "5:6805162859483657906",
+          "name": "unit",
+          "type": 9
+        },
+        {
+          "id": "6:2963499251054935655",
+          "name": "price",
+          "type": 8
+        },
+        {
+          "id": "8:4217456598480092040",
+          "name": "stockIn",
+          "type": 10
+        },
+        {
+          "id": "9:2617755096472287869",
+          "name": "expired",
+          "type": 10
+        },
+        {
+          "id": "10:6267336932081482825",
+          "name": "currency",
+          "type": 9
+        },
+        {
+          "id": "11:8658536853573444526",
+          "name": "total",
+          "type": 6
+        },
+        {
+          "id": "12:5201367708836884262",
+          "name": "databaseId",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "5:5393992314492888139",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    3635502072383462503
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    795334333386078555,
+    2245495035191193770,
+    6838634390823731386,
+    3947681284290246740
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

@@ -1,0 +1,1 @@
+enum ActionDo { init, delete, edit, add }
