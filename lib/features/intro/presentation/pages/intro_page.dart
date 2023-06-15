@@ -48,11 +48,7 @@ class IntroPageState extends State<IntroPage> {
                 buildIndicator(state.introContents),
               ]);
             },
-          ),
-          const Align(
-            alignment: Alignment.topRight,
-            child: LanguageSwitch(),
-          ),
+          ), 
         ],
       ),
       bottomNavigationBar: nextButton,

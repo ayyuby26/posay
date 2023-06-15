@@ -32,11 +32,7 @@ class SsettingPageState extends State<SettingPage> {
           background,
           const SafeArea(
             child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: LanguageSwitch(),
-                ),
+              children: [ 
                 Profile(),
                 Btn(),
               ],
