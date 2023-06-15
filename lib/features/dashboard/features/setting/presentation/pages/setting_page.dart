@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/features/auth/presentation/pages/auth_page.dart';
-import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';
@@ -32,7 +31,7 @@ class SsettingPageState extends State<SettingPage> {
           background,
           const SafeArea(
             child: Column(
-              children: [ 
+              children: [
                 Profile(),
                 Btn(),
               ],

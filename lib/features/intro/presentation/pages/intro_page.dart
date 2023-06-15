@@ -5,7 +5,6 @@ import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart'
 import 'package:posay/features/intro/domain/entities/intro.dart';
 import 'package:posay/features/intro/presentation/bloc/intro_bloc.dart';
 import 'package:posay/features/intro/presentation/widgets/intro_content_widget.dart';
-import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/shared/constants/const.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/i_colors.dart';

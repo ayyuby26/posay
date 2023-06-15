@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:posay/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:posay/features/auth/presentation/widgets/main_content.dart';
 import 'package:posay/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:posay/features/language/presentation/pages/language_switch.dart';
 import 'package:posay/shared/extension.dart';
 import 'package:posay/shared/failure.dart';
 import 'package:posay/shared/unfocus.dart';
@@ -42,7 +41,7 @@ class AuthPageState extends State<AuthPage> {
           child: Stack(
             children: [
               background,
-              MainContentAuth(), 
+              MainContentAuth(),
             ],
           ),
         ),
