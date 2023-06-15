@@ -87,7 +87,7 @@ extension Dialog on BuildContext {
       builder: (context) {
         return AlertDialog(
           shape: Const.roundedCircular16,
-          title: const Center(child: Text("Gagal")),
+          title: const Center(child: Text("Error")),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [Text(content)],

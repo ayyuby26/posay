@@ -48,7 +48,7 @@ class IntroPageState extends State<IntroPage> {
                 buildIndicator(state.introContents),
               ]);
             },
-          ), 
+          ),
         ],
       ),
       bottomNavigationBar: nextButton,
@@ -121,9 +121,11 @@ class IntroPageState extends State<IntroPage> {
 
           if (lastIntro) {
             bloc.add(IntroSetAsSeen(contents[index]));
-            if (bloc.state.isIntroSeen) {
-              context.pushReplacement(DashboardPage.path);
-            }
+            bloc.stream.listen((state) {
+              if (bloc.state.isIntroSeen) {
+                context.pushReplacement(DashboardPage.path);
+              }
+            });
           } else {
             _pageController.animateToPage(
               index + 1,
