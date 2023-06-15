@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:posay/features/dashboard/features/report/presentation/pages/report_page.dart';
 import 'package:posay/features/dashboard/features/setting/presentation/pages/setting_page.dart';
 import 'package:posay/features/dashboard/features/stock/presentation/pages/stock_page.dart';
-import 'package:posay/features/dashboard/features/transaction/presentation/pages/transaction_page.dart';
 import 'package:posay/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:posay/shared/extension.dart';
 
@@ -28,12 +26,7 @@ class _DashboardPage extends StatefulWidget {
 }
 
 class __DashboardPageState extends State<_DashboardPage> {
-  final pages = [
-    const ReportPage(),
-    const TransactionPage(),
-    const StockPage(),
-    const SettingPage()
-  ];
+  final pages = [const StockPage(), const SettingPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +37,6 @@ class __DashboardPageState extends State<_DashboardPage> {
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             items: [
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.bar_chart_rounded),
-                label: context.tr.report,
-              ),
-              BottomNavigationBarItem(
-                icon: const Icon(Icons.compare_arrows_rounded),
-                label: context.tr.transaction,
-              ),
               BottomNavigationBarItem(
                 icon: const Icon(
                   Icons.inventory,

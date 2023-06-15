@@ -31,7 +31,7 @@ class LanguageSwitch extends StatelessWidget {
     return Switch(
       value: currentlanguage == 'en',
       onChanged: (isEnglish) {
-        context 
+        context
             .read<LanguageBloc>()
             .add(ChangeLanguageEvent(locale: Locale(currentlanguage)));
         context.read<IntroBloc>().add(IntroGetContents(context.tr));
