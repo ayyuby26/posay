@@ -30,18 +30,17 @@ class IntroPageState extends State<IntroPage> {
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           background,
-          BlocBuilder<IntroBloc, IntroState>(
+          BlocConsumer<IntroBloc, IntroState>(
+            listener: (context, state) {
+              if (state.isIntroSeen) {
+                context.pushReplacement(DashboardPage.path);
+              }
+            },
             builder: (context, state) {
               return Column(children: [
                 buildIntro(state.introContents),
@@ -49,6 +48,10 @@ class IntroPageState extends State<IntroPage> {
               ]);
             },
           ),
+          const Align(
+            alignment: Alignment.topRight,
+            child: LanguageSwitch(),
+          )
         ],
       ),
       bottomNavigationBar: nextButton,
@@ -121,16 +124,11 @@ class IntroPageState extends State<IntroPage> {
 
           if (lastIntro) {
             bloc.add(IntroSetAsSeen(contents[index]));
-            bloc.stream.listen((state) {
-              if (bloc.state.isIntroSeen) {
-                context.pushReplacement(DashboardPage.path);
-              }
-            });
           } else {
             _pageController.animateToPage(
               index + 1,
               duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
+              curve: Curves.fastEaseInToSlowEaseOut,
             );
           }
         },

@@ -42,7 +42,11 @@ class AuthPageState extends State<AuthPage> {
           child: Stack(
             children: [
               background,
-              MainContentAuth(), 
+              MainContentAuth(),
+              const Align(
+                alignment: Alignment.topRight,
+                child: LanguageSwitch(),
+              ),
             ],
           ),
         ),

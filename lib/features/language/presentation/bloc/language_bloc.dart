@@ -35,7 +35,6 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
   ) {
     final savedLanguage = _getSavedLanguage.execute();
 
-
     Language? langSelected;
 
     savedLanguage.fold(
@@ -71,25 +70,25 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
     ChangeLanguageEvent event,
     Emitter<LanguageState> emit,
   ) {
-    Language? langSelected;
+    Language? languageSelected;
+    List<Language>? languages;
 
-    final languages = _getLanguages.execute();
-    languages.fold(
+    final getLanguages = _getLanguages.execute();
+    getLanguages.fold(
       (l) => emit(state.copyWith(failure: l)),
-      (r) {
-        langSelected = r.firstWhere((e) => e.code != event.locale.languageCode);
-      },
+      (r) => languages = r,
     );
-    
-    if (langSelected != null) {
-      final save = _saveLanguageToLocalDb.execute(langSelected!);
 
-      if (save) {
-        emit(state.copyWith(
-          languageSelected: Locale(langSelected!.code),
-        ));
-      }
-    }
+    languageSelected =
+        languages?.firstWhere((e) => e.code != event.locale.languageCode);
+
+    if (languageSelected == null) return null;
+    final save = _saveLanguageToLocalDb.execute(languageSelected);
+    if (save == false) return null;
+
+    emit(state.copyWith(
+      languageSelected: Locale(languageSelected.code),
+    ));
   }
 
   _languageGetDefault(LanguageGetDefault event, Emitter<LanguageState> emit) {

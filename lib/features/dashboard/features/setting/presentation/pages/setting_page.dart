@@ -30,14 +30,18 @@ class SsettingPageState extends State<SettingPage> {
       body: Stack(
         children: [
           background,
-          const SafeArea(
-            child: Column(
-              children: [ 
-                Profile(),
-                Btn(),
-              ],
-            ),
+          Column(
+            children: [
+              context.appBarHeightSizedBox,
+              context.appBarHeightSizedBox,
+              const Profile(),
+              const Btn(),
+            ],
           ),
+          const Align(
+            alignment: Alignment.topRight,
+            child: LanguageSwitch(),
+          )
         ],
       ),
     );
