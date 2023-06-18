@@ -37,7 +37,7 @@ extension Snackbar on BuildContext {
 }
 
 extension Tools on BuildContext {
-  double get appBarHeightValue => MediaQuery.of(this).viewPadding.top;
+  double get appBarValue => MediaQuery.of(this).viewPadding.top;
   Widget get appBarHeightSizedBox =>
       SizedBox(height: MediaQuery.of(this).viewPadding.top);
 

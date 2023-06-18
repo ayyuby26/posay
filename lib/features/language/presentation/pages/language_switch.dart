@@ -12,7 +12,7 @@ class LanguageSwitch extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 8,
-        vertical: 16 + (context.appBarHeightValue / 2),
+        vertical: 16 + (context.appBarValue / 2),
       ),
       width: 100,
       height: 50,
